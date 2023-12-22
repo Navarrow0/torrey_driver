@@ -44,22 +44,22 @@ String getPositiveText(DialogType dialogType) {
 
   switch (dialogType) {
     case DialogType.CONFIRMATION:
-      positiveText = "Si";
+      positiveText = "Yes";
       break;
     case DialogType.DELETE:
-      positiveText = "Eliminar";
+      positiveText = "Delete";
       break;
     case DialogType.UPDATE:
-      positiveText = "Actualizar";
+      positiveText = "Update";
       break;
     case DialogType.ADD:
-      positiveText = "Añadir";
+      positiveText = "Add";
       break;
     case DialogType.ACCEPT:
-      positiveText = "Aceptar";
+      positiveText = "Accept";
       break;
     case DialogType.RETRY:
-      positiveText = "Reintentar";
+      positiveText = "Retry";
       break;
   }
   return positiveText;
@@ -98,16 +98,16 @@ Widget getIcon(DialogType dialogType, {double? size}) {
     case DialogType.CONFIRMATION:
     case DialogType.RETRY:
     case DialogType.ACCEPT:
-      icon = Icon(Icons.done, size: size ?? 20, color: Color.fromRGBO(28, 31, 42, 1));
+      icon = Icon(Icons.done, size: size ?? 20, color: Colors.white);
       break;
     case DialogType.DELETE:
-      icon = Icon(Icons.delete_forever_outlined, size: size ?? 20, color: Color.fromRGBO(28, 31, 42, 1));
+      icon = Icon(Icons.delete_forever_outlined, size: size ?? 20, color: Colors.white);
       break;
     case DialogType.UPDATE:
-      icon = Icon(Icons.edit, size: size ?? 20, color: Color.fromRGBO(28, 31, 42, 1));
+      icon = Icon(Icons.edit, size: size ?? 20, color: Colors.white);
       break;
     case DialogType.ADD:
-      icon = Icon(Icons.add, size: size ?? 20, color: Color.fromRGBO(28, 31, 42, 1));
+      icon = Icon(Icons.add, size: size ?? 20, color: Colors.white);
       break;
   }
   return icon;
@@ -281,16 +281,7 @@ Future<bool?> showConfirmDialogCustom(
           titlePadding: EdgeInsets.zero,
           backgroundColor: Theme.of(context).cardColor,
           elevation: 4,
-          title: buildTitleWidget(
-            _,
-            dialogType,
-            Color.fromRGBO(28, 31, 42, 1),
-            customCenterWidget,
-            height ?? customDialogHeight,
-            width ?? customDialogWidth,
-            centerImage,
-            shape,
-          ),
+          title: buildTitleWidget(_, dialogType, primaryColor, customCenterWidget, height ?? customDialogHeight, width ?? customDialogWidth, centerImage, shape),
           content: Container(
             width: width ?? customDialogWidth,
             color: Theme.of(context).cardColor,
@@ -298,27 +289,11 @@ Future<bool?> showConfirmDialogCustom(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  title ?? getTitle(dialogType),
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color.fromRGBO(28, 31, 42, 1),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                Text(title ?? getTitle(dialogType), style: boldTextStyle(size: 16), textAlign: TextAlign.center),
                 Visibility(visible: subTitle.validate().isNotEmpty, child: SizedBox(height: 8)),
                 Visibility(
                   visible: subTitle.validate().isNotEmpty,
-                  child: Text(
-                    subTitle.validate(),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color.fromRGBO(28, 31, 42, 1),
-                      fontWeight:FontWeight.normal,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  child: Text(subTitle.validate(), style: secondaryTextStyle(size: 16), textAlign: TextAlign.center),
                 ),
                 SizedBox(height: 16),
                 Row(
@@ -345,13 +320,13 @@ Future<bool?> showConfirmDialogCustom(
                               children: [
                                 Icon(
                                   Icons.close,
-                                  color: Color.fromRGBO(28, 31, 42, 1),
+                                  color: textPrimaryColorGlobal,
                                   size: 20,
                                 ),
                                 SizedBox(width: 6),
                                 Text(
-                                  negativeText ?? 'Cancelar',
-                                  style: boldTextStyle(color: Color.fromRGBO(28, 31, 42, 1)),
+                                  negativeText ?? 'Cancel',
+                                  style: boldTextStyle(color: negativeTextColor ?? textPrimaryColorGlobal),
                                 ),
                               ],
                             ),
@@ -385,7 +360,7 @@ Future<bool?> showConfirmDialogCustom(
                                 SizedBox(width: 6),
                                 Text(
                                   positiveText ?? getPositiveText(dialogType),
-                                  style: boldTextStyle(color: Color.fromRGBO(28, 31, 42, 1)),
+                                  style: boldTextStyle(color: Colors.white),
                                 ),
                               ],
                             ),

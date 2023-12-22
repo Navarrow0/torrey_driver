@@ -20,22 +20,22 @@ class EarningTodayWidgetState extends State<EarningTodayWidget> {
   @override
   void initState() {
     super.initState();
+    afterBuildCreated(() {
+      appStore.setLoading(true);
+    });
     init();
   }
 
   void init() async {
-    appStore.setLoading(true);
     Map req = {
       "type": "today",
     };
     await earningList(req: req).then((value) {
-      appStore.setLoading(false);
-
       totalCashRide = value.totalCashRide!;
       totalWalletRide = value.totalWalletRide!;
       todayEarnings = value.todayEarnings!;
       todayRideRequest = value.todayRideRequest!;
-
+      appStore.setLoading(false);
       setState(() {});
     }).catchError((error) {
       appStore.setLoading(false);
@@ -54,20 +54,20 @@ class EarningTodayWidgetState extends State<EarningTodayWidget> {
     return Stack(
       children: [
         SingleChildScrollView(
-          padding: EdgeInsets.only(top: 32, bottom: 16, right: 16, left: 16),
+          padding: EdgeInsets.only(top: 16, bottom: 16, right: 16, left: 16),
           child: Column(
             children: [
-              Text('${printDate('${DateTime.now()}')}', style: boldTextStyle(size: 20)),
+              // Text('${printDate('${DateTime.now()}')}', style: boldTextStyle(size: 20)),
+              earningText(title: language.rides, amount: todayRideRequest,isRides: true),
               SizedBox(height: 16),
+              earningText(title: language.cash, amount: totalCashRide),
               SizedBox(height: 16),
-              earningText(title: language.totalCash, amount: totalCashRide),
-              SizedBox(height: 16),
-              earningText(title: language.totalWallet, amount: totalWalletRide),
-              SizedBox(height: 16),
-              earningText(title: language.totalRide, amount: todayRideRequest),
+              earningText(title: language.wallet, amount: totalWalletRide),
+              // SizedBox(height: 16),
+
               SizedBox(height: 16),
               Divider(color: primaryColor),
-              earningText(title: language.todayEarning, amount: todayEarnings),
+              earningText(title: language.todayEarning, amount: todayEarnings, isTotal: true),
               SizedBox(height: 16),
             ],
           ),

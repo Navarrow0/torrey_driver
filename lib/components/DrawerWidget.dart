@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 import '../utils/Colors.dart';
 import '../utils/Common.dart';
+import '../utils/Constants.dart';
 import '../utils/Extensions/app_common.dart';
 
 class DrawerWidget extends StatefulWidget {
   final String title;
   final String iconData;
+  final IconData? icon;
   final Function() onTap;
 
-  DrawerWidget({required this.title, required this.iconData, required this.onTap});
+  DrawerWidget({required this.title, required this.iconData, this.icon, required this.onTap});
 
   @override
   DrawerWidgetState createState() => DrawerWidgetState();
 }
 
 class DrawerWidgetState extends State<DrawerWidget> {
-  @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  void init() async {
-    //
-  }
-
   @override
   void setState(fn) {
     if (mounted) super.setState(fn);
@@ -34,22 +28,21 @@ class DrawerWidgetState extends State<DrawerWidget> {
   Widget build(BuildContext context) {
     return inkWellWidget(
       onTap: widget.onTap,
-      child: Container(
-        margin: EdgeInsets.only(top: 8, bottom: 8),
+      child: Padding(
+        padding:  EdgeInsets.symmetric(vertical:  8.0),
         child: Column(
           children: [
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(2),
-                  //decoration: BoxDecoration(border: Border.all(color: primaryColor.withOpacity(0.6)), color: primaryColor.withOpacity(0.2), borderRadius: radius(10)),
+                  decoration: BoxDecoration(border: Border.all(color: dividerColor), borderRadius: radius(defaultRadius)),
                   child: Image.asset(widget.iconData, height: 30, width: 30),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 14),
                 Expanded(
                   child: Text(widget.title, style: primaryTextStyle()),
                 ),
-                Icon(Icons.arrow_forward_ios, size: 16)
+                Icon(Icons.arrow_forward_ios, size: 16, color: dividerColor)
               ],
             ),
           ],

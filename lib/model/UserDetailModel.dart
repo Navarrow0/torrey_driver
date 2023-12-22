@@ -57,6 +57,7 @@ class UserData {
   num? rating;
   int? isAvailable;
 
+
   UserData({
     this.address,
     this.contactNumber,

@@ -11,8 +11,6 @@ import 'package:taki_booking_driver/screens/RideHistoryScreen.dart';
 import 'package:taki_booking_driver/utils/Colors.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 import 'package:taki_booking_driver/utils/Extensions/app_common.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../components/AboutWidget.dart';
@@ -71,8 +69,8 @@ class RideDetailScreenState extends State<RideDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(riderModel != null ? "${language.ride} #${riderModel!.id}" : "", style: boldTextStyle(color: Colors.white)),
         actions: [
           IconButton(
@@ -87,7 +85,7 @@ class RideDetailScreenState extends State<RideDetailScreen> {
           )
         ],
       ),
-      child: Stack(
+      body: Stack(
         children: [
           if (riderModel != null)
             SingleChildScrollView(
@@ -95,319 +93,15 @@ class RideDetailScreenState extends State<RideDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 8),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: appStore.isDarkMode ? scaffoldSecondaryDark : primaryColor.withOpacity(0.05),
-                      borderRadius: radius(),
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Ionicons.calendar, color: textSecondaryColorGlobal, size: 18),
-                                SizedBox(width: 8),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 2),
-                                  child: Text('${printDate(riderModel!.createdAt.validate())}', style: primaryTextStyle(size: 14)),
-                                ),
-                              ],
-                            ),
-                            inkWellWidget(
-                              onTap: () {
-                                generateInvoiceCall(riderModel, payment: payment);
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(language.invoice, style: primaryTextStyle(color: primaryColor)),
-                                  SizedBox(width: 4),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 2),
-                                    child: Icon(MaterialIcons.file_download, size: 18, color: primaryColor),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(height: 30, thickness: 1),
-                        Text('${language.distance}: ${riderModel!.distance.toString()} ${riderModel!.distanceUnit.toString()}', style: boldTextStyle(size: 14)),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Column(
-                              children: [
-                                Icon(Icons.near_me, color: Colors.green),
-                                SizedBox(height: 4),
-                                SizedBox(
-                                  height: 50,
-                                  child: DottedLine(
-                                    direction: Axis.vertical,
-                                    lineLength: double.infinity,
-                                    lineThickness: 1,
-                                    dashLength: 2,
-                                    dashColor: primaryColor,
-                                  ),
-                                ),
-                                SizedBox(height: 2),
-                                Icon(Icons.location_on, color: Colors.red),
-                              ],
-                            ),
-                            SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 2),
-                                  if (riderModel!.startTime != null) Text(riderModel!.startTime != null ? printDate(riderModel!.startTime!) : '', style: secondaryTextStyle(size: 12)),
-                                  if (riderModel!.startTime != null) SizedBox(height: 4),
-                                  Text(riderModel!.startAddress.validate(), style: primaryTextStyle(size: 14)),
-                                  SizedBox(height: 22),
-                                  if (riderModel!.endTime != null) Text(riderModel!.endTime != null ? printDate(riderModel!.endTime!) : '', style: secondaryTextStyle(size: 12)),
-                                  if (riderModel!.endTime != null) SizedBox(height: 4),
-                                  Text(riderModel!.endAddress.validate(), style: primaryTextStyle(size: 14)),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(height: 30, thickness: 1),
-                        inkWellWidget(
-                          onTap: () {
-                            launchScreen(context, RideHistoryScreen(rideHistory: rideHistory), pageRouteAnimation: PageRouteAnimation.SlideBottomTop);
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(language.viewHistory, style: primaryTextStyle(color: primaryColor)),
-                              Icon(Entypo.chevron_right, color: primaryColor, size: 18),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: appStore.isDarkMode ? scaffoldSecondaryDark : primaryColor.withOpacity(0.05),
-                      borderRadius: radius(),
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(language.paymentDetails, style: boldTextStyle(size: 16)),
-                        Divider(height: 30, thickness: 1),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(language.paymentType, style: primaryTextStyle()),
-                            Text(paymentStatus(riderModel!.paymentType.validate()), style: boldTextStyle()),
-                          ],
-                        ),
-                        SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(language.paymentStatus, style: primaryTextStyle()),
-                            Text(paymentStatus(riderModel!.paymentStatus.validate()), style: boldTextStyle()),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (riderModel!.otherRiderData != null)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 16),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(color: appStore.isDarkMode ? scaffoldSecondaryDark : primaryColor.withOpacity(0.05), borderRadius: radius()),
-                          padding: EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(language.riderInformation.capitalizeFirstLetter(), style: boldTextStyle()),
-                              Divider(height: 30, thickness: 1),
-                              Row(
-                                children: [
-                                  Icon(FontAwesome.user, size: 18, color: textPrimaryColorGlobal),
-                                  SizedBox(width: 12),
-                                  Text(riderModel!.otherRiderData!.name.validate(), style: primaryTextStyle()),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              InkWell(
-                                onTap: () {
-                                  launchUrl(Uri.parse('tel:${riderModel!.otherRiderData!.conatctNumber.validate()}'), mode: LaunchMode.externalApplication);
-                                },
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(2),
-                                      decoration: BoxDecoration(color: Colors.green, borderRadius: radius(6)),
-                                      child: Icon(Icons.call_sharp, color: Colors.white, size: 16),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(riderModel!.otherRiderData!.conatctNumber.validate(), style: primaryTextStyle())
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  SizedBox(height: 16),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          contentPadding: EdgeInsets.zero,
-                          content: AboutWidget(driverId: riderModel!.riderId),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(color: appStore.isDarkMode ? scaffoldSecondaryDark : primaryColor.withOpacity(0.05), borderRadius: BorderRadius.circular(8)),
-                      padding: EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(language.aboutRider, style: boldTextStyle(size: 16)),
-                          Divider(height: 30, thickness: 1),
-                          Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(35),
-                                child: commonCachedNetworkImage(riderModel!.driverProfileImage.validate(), height: 70, width: 70, fit: BoxFit.cover),
-                              ),
-                              SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(riderModel!.riderName.validate(), style: boldTextStyle()),
-                                    SizedBox(height: 6),
-                                    if (riderRatting != null)
-                                      RatingBar.builder(
-                                        direction: Axis.horizontal,
-                                        glow: false,
-                                        allowHalfRating: false,
-                                        ignoreGestures: true,
-                                        wrapAlignment: WrapAlignment.spaceBetween,
-                                        itemCount: 5,
-                                        itemSize: 20,
-                                        initialRating: double.parse(riderRatting!.rating.toString()),
-                                        itemPadding: EdgeInsets.symmetric(horizontal: 0),
-                                        itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
-                                        onRatingUpdate: (rating) {
-                                          //
-                                        },
-                                      ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: Text(riderModel!.riderContactNumber.validate(), style: primaryTextStyle(size: 14)),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            launchUrl(Uri.parse('tel:${riderModel!.riderContactNumber}'), mode: LaunchMode.externalApplication);
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(4),
-                                            decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(defaultRadius)),
-                                            child: Icon(Icons.call_sharp, color: Colors.white, size: 20),
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  aboutRiderWidget(),
                   SizedBox(height: 12),
-                  Container(
-                    decoration: BoxDecoration(color: appStore.isDarkMode ? scaffoldSecondaryDark : primaryColor.withOpacity(0.05), borderRadius: BorderRadius.circular(8)),
-                    padding: EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(language.priceDetail, style: boldTextStyle(size: 16)),
-                        Divider(height: 30, thickness: 1),
-                        SizedBox(height: 12),
-                        (riderModel!.minimumFare ?? 0) == ((riderModel!.subtotal ?? 0) - (riderModel!.extraChargesAmount ?? 0))
-                            ? totalCount(title: language.minimumFare, description: '', subTitle: '${riderModel!.minimumFare}')
-                            : Column(
-                          children: [
-                            totalCount(title: language.basePrice, description: '', subTitle: '${riderModel!.baseFare}'),
-                            SizedBox(height: 8),
-                            totalCount(title: language.distancePrice, description: '', subTitle: riderModel!.perDistanceCharge.toString()),
-                            SizedBox(height: 8),
-                            totalCount(title: language.duration, description: '', subTitle: '${riderModel!.perMinuteDriveCharge}'),
-                            SizedBox(height: 8),
-                            totalCount(title: language.waitTime, description: '', subTitle: '${riderModel!.perMinuteWaitingCharge}'),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        if (payment != null) totalCount(title: language.tip, description: '', subTitle: payment!.driverTips.toString()),
-                        if (payment != null) SizedBox(height: 16),
-                        if (riderModel!.extraCharges!.isNotEmpty)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(language.extraCharges, style: boldTextStyle()),
-                              SizedBox(height: 8),
-                              ...riderModel!.extraCharges!.map((e) {
-                                return Padding(
-                                  padding: EdgeInsets.only(top: 4, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(e.key.validate().capitalizeFirstLetter(), style: primaryTextStyle()),
-                                      Text(appStore.currencyPosition == LEFT ? '${appStore.currencyCode} ${e.value}' : '${e.value} ${appStore.currencyCode}', style: primaryTextStyle()),
-                                    ],
-                                  ),
-                                );
-                              }).toList()
-                            ],
-                          ),
-                        if (riderModel!.couponData != null && riderModel!.couponDiscount != 0) SizedBox(height: 8),
-                        if (riderModel!.couponData != null && riderModel!.couponDiscount != 0)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(language.couponDiscount, style: primaryTextStyle(color: Colors.red)),
-                              Text(appStore.currencyPosition == LEFT ? '-${appStore.currencyCode} ${riderModel!.couponDiscount.toString()}' : '-${riderModel!.couponDiscount.toString()} ${appStore.currencyCode}',
-                                  style: primaryTextStyle(color: Colors.green)),
-                            ],
-                          ),
-                        Divider(height: 30, thickness: 1),
-                        payment!.driverTips != 0
-                            ? totalCount(title: language.total, description: '', subTitle: '${riderModel!.subtotal! + payment!.driverTips!}',isTotal: true)
-                            : totalCount(title: language.total, description: '', subTitle: '${riderModel!.subtotal}',isTotal: true),
-                      ],
-                    ),
-
-                  ),
+                  if (riderModel!.otherRiderData != null) riderDetailWidget(),
+                  if (riderModel!.otherRiderData != null) SizedBox(height: 12),
+                  addressComponent(),
+                  SizedBox(height: 12),
+                  priceDetailWidget(),
+                  SizedBox(height: 12),
+                  paymentDetailWidget(),
                 ],
               ),
             ),
@@ -417,6 +111,346 @@ class RideDetailScreenState extends State<RideDetailScreen> {
               child: loaderWidget(),
             );
           })
+        ],
+      ),
+    );
+  }
+
+  Widget addressComponent() {
+    return Container(
+      decoration: BoxDecoration(color: Colors.transparent, border: Border.all(color: dividerColor.withOpacity(0.5)), borderRadius: radius()),
+      padding: EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Ionicons.calendar, color: textSecondaryColorGlobal, size: 16),
+                  SizedBox(width: 4),
+                  Padding(
+                    padding: EdgeInsets.only(top: 2),
+                    child: Text('${printDate(riderModel!.createdAt.validate())}', style: primaryTextStyle(size: 14)),
+                  ),
+                ],
+              ),
+              inkWellWidget(
+                onTap: () {
+                  generateInvoiceCall(riderModel, payment: payment);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(language.invoice, style: primaryTextStyle(color: primaryColor)),
+                    SizedBox(width: 4),
+                    Padding(
+                      padding: EdgeInsets.only(top: 2),
+                      child: Icon(MaterialIcons.file_download, size: 18, color: primaryColor),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text('${language.distance}: ${riderModel!.distance!.toStringAsFixed(2)} ${riderModel!.distanceUnit.toString()}', style: boldTextStyle(size: 14)),
+          SizedBox(height: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 2),
+              Row(
+                children: [
+                  Icon(Icons.near_me, color: Colors.green, size: 18),
+                  SizedBox(width: 4),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (riderModel!.startTime != null) Text(riderModel!.startTime != null ? printDate(riderModel!.startTime!) : '', style: secondaryTextStyle(size: 12)),
+                        if (riderModel!.startTime != null) SizedBox(height: 4),
+                        Text(riderModel!.startAddress.validate(), style: primaryTextStyle(size: 14)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  SizedBox(
+                    height: 30,
+                    child: DottedLine(
+                      direction: Axis.vertical,
+                      lineLength: double.infinity,
+                      lineThickness: 1,
+                      dashLength: 2,
+                      dashColor: primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.location_on, color: Colors.red, size: 18),
+                  SizedBox(width: 4),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (riderModel!.endTime != null) Text(riderModel!.endTime != null ? printDate(riderModel!.endTime!) : '', style: secondaryTextStyle(size: 12)),
+                        if (riderModel!.endTime != null) SizedBox(height: 4),
+                        Text(riderModel!.endAddress.validate(), style: primaryTextStyle(size: 14)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          inkWellWidget(
+            onTap: () {
+              launchScreen(context, RideHistoryScreen(rideHistory: rideHistory), pageRouteAnimation: PageRouteAnimation.SlideBottomTop);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(language.viewHistory, style: primaryTextStyle(size: 14)),
+                Icon(Entypo.chevron_right, color: dividerColor, size: 16),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget paymentDetailWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        border: Border.all(color: dividerColor.withOpacity(0.5).withOpacity(0.5)),
+        borderRadius: radius(),
+      ),
+      padding: EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(language.paymentDetail, style: boldTextStyle(size: 16)),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(language.via, style: primaryTextStyle()),
+              Text(paymentStatus(riderModel!.paymentType.validate()), style: boldTextStyle()),
+            ],
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(language.status, style: primaryTextStyle()),
+              Text(paymentStatus(riderModel!.paymentStatus.validate()), style: boldTextStyle(color: paymentStatusColor(riderModel!.paymentStatus.validate()))),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget riderDetailWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(color: dividerColor.withOpacity(0.5).withOpacity(0.5)),
+            borderRadius: radius(),
+          ),
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(language.riderInformation.capitalizeFirstLetter(), style: boldTextStyle()),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Icon(Ionicons.person_outline, size: 18),
+                  SizedBox(width: 8),
+                  Text(riderModel!.otherRiderData!.name.validate(), style: primaryTextStyle()),
+                ],
+              ),
+              SizedBox(height: 10),
+              InkWell(
+                onTap: () {
+                  launchUrl(Uri.parse('tel:${riderModel!.otherRiderData!.conatctNumber.validate()}'), mode: LaunchMode.externalApplication);
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [Icon(Icons.call_sharp, size: 18, color: Colors.green), SizedBox(width: 8), Text(riderModel!.otherRiderData!.conatctNumber.validate(), style: primaryTextStyle())],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget priceDetailWidget() {
+    return Container(
+      decoration: BoxDecoration(color: Colors.transparent, border: Border.all(color: dividerColor.withOpacity(0.5)), borderRadius: BorderRadius.circular(8)),
+      padding: EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(language.priceDetail, style: boldTextStyle(size: 16)),
+          SizedBox(height: 12),
+          riderModel!.subtotal! <= riderModel!.minimumFare!
+              ? totalCount(title:language.minimumFees, amount: riderModel!.minimumFare)
+              : Column(
+                  children: [
+                    totalCount(title: language.basePrice, amount: riderModel!.baseFare),
+                    SizedBox(height: 8),
+                    totalCount(title:language.distancePrice, amount: riderModel!.perDistanceCharge),
+                    SizedBox(height: 8),
+                    totalCount(title:language.minutePrice, amount: riderModel!.perMinuteDriveCharge),
+                    SizedBox(height: 8),
+                    totalCount(title: language.waitingTimePrice, amount: riderModel!.perMinuteWaitingCharge),
+                  ],
+                ),
+          SizedBox(height: 8),
+          if (riderModel!.couponData != null && riderModel!.couponDiscount != 0)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(language.couponDiscount, style: secondaryTextStyle()),
+                Text(
+                  "- " + printAmount(riderModel!.couponDiscount!.toStringAsFixed(digitAfterDecimal)),
+                  style: boldTextStyle(color: Colors.green, size: 14),
+                ),
+              ],
+            ),
+          if (riderModel!.couponData != null && riderModel!.couponDiscount != 0) SizedBox(height: 8),
+          if (payment != null && payment!.driverTips != 0) totalCount(title: language.tips, amount: payment!.driverTips),
+          if (payment != null && payment!.driverTips != 0) SizedBox(height: 8),
+          if (riderModel!.extraCharges!.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(language.additionalFees, style: boldTextStyle()),
+                ...riderModel!.extraCharges!.map((e) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: 4, bottom: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(e.key.validate().capitalizeFirstLetter(), style: secondaryTextStyle()),
+                        Text(printAmount(e.value!.toStringAsFixed(digitAfterDecimal)), style: boldTextStyle(size: 14)),
+                      ],
+                    ),
+                  );
+                }).toList()
+              ],
+            ),
+
+          Divider(thickness: 1),
+          payment != null && payment!.driverTips != 0
+              ? totalCount(title: language.total, amount: riderModel!.subtotal! + payment!.driverTips!, isTotal: true)
+              : totalCount(title: language.total, amount: riderModel!.subtotal, isTotal: true),
+        ],
+      ),
+    );
+  }
+
+  Widget aboutRiderWidget() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(color: Colors.transparent, border: Border.all(color: dividerColor.withOpacity(0.5)), borderRadius: BorderRadius.circular(8)),
+      padding: EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(language.aboutRider, style: boldTextStyle(size: 16)),
+              // InkWell(
+              //   onTap: () {
+              //     showDialog(
+              //       context: context,
+              //       builder: (_) => AlertDialog(
+              //         contentPadding: EdgeInsets.zero,
+              //         content: AboutWidget(driverId: riderModel!.riderId),
+              //       ),
+              //     );
+              //   },
+              //   child: Icon(Icons.info_outline),
+              // )
+            ],
+          ),
+          SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(defaultRadius),
+                child: commonCachedNetworkImage(riderModel!.riderProfileImage.validate(), height: 50, width: 50, fit: BoxFit.cover),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(riderModel!.riderName.validate(), style: boldTextStyle()),
+                    SizedBox(height: 4),
+                    if (riderRatting != null)
+                      RatingBar.builder(
+                        direction: Axis.horizontal,
+                        glow: false,
+                        allowHalfRating: false,
+                        ignoreGestures: true,
+                        wrapAlignment: WrapAlignment.spaceBetween,
+                        itemCount: 5,
+                        itemSize: 16,
+                        initialRating: double.parse(riderRatting!.rating.toString()),
+                        itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                        itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+                        onRatingUpdate: (rating) {
+                          //
+                        },
+                      ),
+                    SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(riderModel!.riderContactNumber.validate(), style: primaryTextStyle(size: 14)),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            launchUrl(Uri.parse('tel:${riderModel!.riderContactNumber}'), mode: LaunchMode.externalApplication);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(border: Border.all(color: dividerColor), borderRadius: radius(10)),
+                            padding: EdgeInsets.all(4),
+                            child: Icon(Icons.call_sharp, size: 18, color: Colors.green),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

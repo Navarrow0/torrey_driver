@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../utils/Colors.dart';
 import '../utils/Extensions/app_common.dart';
@@ -34,11 +32,11 @@ class TermsConditionScreenState extends State<TermsConditionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(widget.title!, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: SingleChildScrollView(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: HtmlWidget("${widget.subtitle}"),
       ),

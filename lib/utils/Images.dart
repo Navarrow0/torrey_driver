@@ -6,9 +6,13 @@ const paymentSuccessful = 'images/Successful.json';
 const locationGIF = 'images/location-permissions.json';
 
 const ic_google = 'images/ic_google.png';
+const ic_logout = 'images/ic_logout.png';
+
+const ic_map_icon = 'images/ic_map_icon.png';
+
 const ic_mobile = 'images/ic_mobile.png';
 const ic_logo_white = 'images/ic_driver_white.png';
-const ic_taxi_logo = 'images/ic_app_logo.png';
+const ic_taxi_logo = 'images/ic_app_logo.jpg';
 const ic_insta_logo = 'images/ic_insta.png';
 const ic_twitter_logo = 'images/ic_twitter.png';
 const ic_linked_logo = 'images/ic_linked.png';
@@ -27,7 +31,7 @@ const ic_my_rides = 'images/ic_my_rides.png';
 const ic_vehical_detail = 'images/ic_vehical_detail.png';
 const ic_my_wallet = 'images/my_wallet.png';
 const ic_emergency = 'images/ic_emergency_contact.png';
-const ic_wallet = 'images/money.png';
+const ic_wallet = 'images/my_wallet.png';
 const ic_verify_document = 'images/ic_verify_document.png';
 const ic_update_bank_info = 'images/ic_update_bank_info.png';
 const ic_setting = 'images/ic_setting.png';

@@ -37,7 +37,7 @@ class CreateTabScreenState extends State<CreateTabScreen> {
     init();
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        if (currentPage < totalPage) {
+        if (currentPage != totalPage) {
           appStore.setLoading(true);
           currentPage++;
           setState(() {});
@@ -88,82 +88,7 @@ class CreateTabScreenState extends State<CreateTabScreen> {
                     position: index,
                     duration: Duration(milliseconds: 375),
                     child: SlideAnimation(
-                      child: IntrinsicHeight(
-                        child: inkWellWidget(
-                          onTap: () {
-                            if (data.status != CANCELED) {
-                              launchScreen(context, RideDetailScreen(orderId: data.id!), pageRouteAnimation: PageRouteAnimation.SlideBottomTop);
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 16,horizontal: 16),
-                            margin: EdgeInsets.only(top: 8, bottom: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(defaultRadius),
-                              boxShadow: [
-                                BoxShadow(color: Colors.grey.withOpacity(0.4), blurRadius: 10,spreadRadius: 0,offset: Offset(0.0, 0.0)),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(Ionicons.calendar, color: textPrimaryColorGlobal, size: 16),
-                                        SizedBox(width: 8),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 2),
-                                          child: Text('${printDate(data.createdAt.validate())}', style: primaryTextStyle(size: 14)),
-                                        ),
-                                      ],
-                                    ),
-                                    Text('${language.ride} #${data.id}', style: boldTextStyle(size: 14)),
-                                  ],
-                                ),
-                                Divider(height: 24,thickness: 0.5),
-                                Row(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Icon(Icons.near_me, color: Colors.green,size: 18),
-                                        SizedBox(height: 2),
-                                        SizedBox(
-                                          height: 34,
-                                          child: DottedLine(
-                                            direction: Axis.vertical,
-                                            lineLength: double.infinity,
-                                            lineThickness: 1,
-                                            dashLength: 2,
-                                            dashColor: primaryColor,
-                                          ),
-                                        ),
-                                        SizedBox(height: 2),
-                                        Icon(Icons.location_on, color: Colors.red,size: 18),
-                                      ],
-                                    ),
-                                    SizedBox(width: 16),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(height: 2),
-                                          Text(data.startAddress.validate(), style: primaryTextStyle(size: 14),maxLines: 2),
-                                          SizedBox(height: 22),
-                                          Text(data.endAddress.validate(), style: primaryTextStyle(size: 14),maxLines: 2),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: IntrinsicHeight(child: rideCardWidget(data: data)),
                     ),
                   );
                 }),
@@ -176,5 +101,82 @@ class CreateTabScreenState extends State<CreateTabScreen> {
         ],
       );
     });
+  }
+
+  Widget rideCardWidget({required RiderModel data}) {
+    return inkWellWidget(
+      onTap: () {
+        if (data.status != CANCELED) {
+          launchScreen(context, RideDetailScreen(orderId: data.id!), pageRouteAnimation: PageRouteAnimation.SlideBottomTop);
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        margin: EdgeInsets.only(top: 8, bottom: 8),
+        decoration: BoxDecoration(
+          border: Border.all(color: dividerColor),
+          borderRadius: BorderRadius.circular(defaultRadius),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Ionicons.calendar, color: textSecondaryColorGlobal, size: 16),
+                    SizedBox(width: 4),
+                    Padding(
+                      padding: EdgeInsets.only(top: 2),
+                      child: Text('${printDate(data.createdAt.validate())}', style: primaryTextStyle(size: 14)),
+                    ),
+                  ],
+                ),
+                Text('${language.rideId} #${data.id}', style: boldTextStyle(size: 14)),
+              ],
+            ),
+            Divider(height: 20, thickness: 0.5),
+            Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.near_me, color: Colors.green, size: 18),
+                      SizedBox(width: 4),
+                      Expanded(child: Text(data.startAddress.validate(), style: primaryTextStyle(size: 14), maxLines: 2)),
+                    ],
+                  ),
+                  SizedBox(height: 2),
+                  Row(
+                    children: [
+                      SizedBox(width: 8),
+                      SizedBox(
+                        height: 34,
+                        child: DottedLine(
+                          direction: Axis.vertical,
+                          lineLength: double.infinity,
+                          lineThickness: 1,
+                          dashLength: 2,
+                          dashColor: primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 2),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, color: Colors.red, size: 18),
+                      SizedBox(width: 4),
+                      Expanded(child: Text(data.endAddress.validate(), style: primaryTextStyle(size: 14), maxLines: 2)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

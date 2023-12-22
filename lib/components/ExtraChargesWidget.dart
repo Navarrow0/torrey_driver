@@ -67,163 +67,149 @@ class ExtraChargesWidgetState extends State<ExtraChargesWidget> {
       child: Stack(
         children: [
           !isLoad && additionalFeesData.isNotEmpty
-              ? StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(language.addExtraCharges, style: boldTextStyle()),
-                SizedBox(height: 8),
-                Divider(),
-                SizedBox(height: 16),
-                Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Colors.grey.withOpacity(0.15)),
-                  width: MediaQuery.of(context).size.width,
-                  child: DropdownButton<String>(
-                    hint: Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Text(language.applyExtraCharges),
-                    ),
-                    value: extraCharges,
-                    isExpanded: true,
-                    underline: SizedBox(),
-                    items: additionalFeesData.map((e) {
-                      return DropdownMenuItem(
-                        value: e.title,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 16),
-                          child: Text(e.title.validate(), style: primaryTextStyle()),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (val) {
-                      extraCharges = val!;
-                      if (list.isNotEmpty) {
-                        list.forEach((element) {
-                          if (element.key == val) {
-                            extraController.text = element.value.toString();
-                          }
-                        });
-                      }
-                      setState(() {});
-                    },
-                  ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: AppTextField(
-                        controller: extraController,
-                        autoFocus: false,
-                        textFieldType: TextFieldType.PHONE,
-                        errorThisFieldRequired: language.thisFieldRequired,
-                        decoration: inputDecoration(context, label: language.enterAmount),
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: AppButtonWidget(
-                        text: language.add,
-                        onTap: () {
-                          if (extraCharges != null) {
-                            if (extraController.text.isNotEmpty) {
-                              if (list.isNotEmpty) {
-                                if (list.any((element) => element.key == extraCharges)) {
-                                  ExtraChargeRequestModel data = list.firstWhere((element) => element.key == extraCharges);
-                                  list.remove(data);
-                                  list.add(ExtraChargeRequestModel(key: extraCharges, value: int.parse(extraController.text.trim())));
-                                } else {
-                                  list.add(ExtraChargeRequestModel(key: extraCharges, value: int.parse(extraController.text.trim())));
-                                }
-                              } else {
-                                list.add(ExtraChargeRequestModel(key: extraCharges, value: int.parse(extraController.text.trim())));
-                              }
-                              hideKeyboard(context);
-                              extraController.clear();
-                              setState(() {});
-                            } else {
-                              toast(language.pleaseAddedAmount);
-                            }
-                          } else {
-                            toast(language.pleaseSelectExtraCharges);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                if (list.isNotEmpty)
-                  Column(
+              ? StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(child: Text(language.title, style: boldTextStyle())),
-                          Expanded(child: Text(language.charges, style: boldTextStyle())),
-                          Spacer(),
+                          Text(language.addExtraCharges, style: boldTextStyle()),
+                          CloseButton(),
                         ],
                       ),
-                      SizedBox(height: 8),
-                      Column(
-                        children: list.map((e) {
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: Text(e.key.validate(), style: primaryTextStyle()),
+                      Container(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Colors.grey.withOpacity(0.15)),
+                        width: MediaQuery.of(context).size.width,
+                        child: DropdownButton<String>(
+                          hint: Padding(padding: EdgeInsets.only(left: 16,right: 16), child: Text(language.applyExtraCharges)),
+                          value: extraCharges,
+                          isExpanded: true,
+                          underline: SizedBox(),
+                          items: additionalFeesData.map((e) {
+                            return DropdownMenuItem(
+                              value: e.title,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 16,right: 16),
+                                child: Text(e.title.validate(), style: primaryTextStyle()),
                               ),
-                              SizedBox(height: 16),
-                              Expanded(
-                                child: Text(e.value.toString(), style: primaryTextStyle()),
-                              ),
-                              Expanded(
-                                child: inkWellWidget(
-                                  onTap: () {
-                                    list.remove(e);
+                            );
+                          }).toList(),
+                          onChanged: (val) {
+                            extraCharges = val!;
+                            if (list.isNotEmpty) {
+                              list.forEach((element) {
+                                if (element.key == val) {
+                                  extraController.text = element.value.toString();
+                                }
+                              });
+                            }
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: AppTextField(
+                              controller: extraController,
+                              autoFocus: false,
+                              textFieldType: TextFieldType.PHONE,
+                              errorThisFieldRequired: language.thisFieldRequired,
+                              decoration: inputDecoration(context, label: language.enterAmount),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: AppButtonWidget(
+                              child: Icon(Icons.add,color: Colors.white),
+                              onTap: () {
+                                if (extraCharges != null) {
+                                  if (extraController.text.isNotEmpty) {
+                                    if (list.isNotEmpty) {
+                                      if (list.any((element) => element.key == extraCharges)) {
+                                        ExtraChargeRequestModel data = list.firstWhere((element) => element.key == extraCharges);
+                                        list.remove(data);
+                                        list.add(ExtraChargeRequestModel(key: extraCharges, value: int.parse(extraController.text.trim())));
+                                      } else {
+                                        list.add(ExtraChargeRequestModel(key: extraCharges, value: int.parse(extraController.text.trim())));
+                                      }
+                                    } else {
+                                      list.add(ExtraChargeRequestModel(key: extraCharges, value: int.parse(extraController.text.trim())));
+                                    }
+                                    hideKeyboard(context);
+                                    extraController.clear();
                                     setState(() {});
-                                  },
-                                  child: Icon(Icons.close),
-                                ),
-                              ),
-                            ],
-                          );
-                        }).toList(),
+                                  } else {
+                                    toast(language.pleaseAddedAmount);
+                                  }
+                                } else {
+                                  toast(language.pleaseSelectExtraCharges);
+                                }
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (list.isNotEmpty)
+                        Column(
+                          children: [
+                            SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(child: Text(language.title, style: boldTextStyle())),
+                                Expanded(child: Text(language.charges, style: boldTextStyle())),
+                                Spacer(),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Column(
+                              children: list.map((e) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(e.key.validate(), style: primaryTextStyle()),
+                                    ),
+                                    Expanded(
+                                      child: Text(e.value.toString(), style: primaryTextStyle()),
+                                    ),
+                                    Expanded(
+                                      child: inkWellWidget(
+                                        onTap: () {
+                                          list.remove(e);
+                                          setState(() {});
+                                        },
+                                        child: Icon(Icons.close),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: AppButtonWidget(
+                              text: language.saveCharges,
+                              onTap: () {
+                                Navigator.pop(context, list);
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: AppButtonWidget(
-                        text: language.cancel,
-                        color: Colors.red,
-                        textStyle: boldTextStyle(color: Colors.white),
-                        onTap: () {
-                          list.clear();
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: AppButtonWidget(
-                        text: language.saveCharges,
-                        onTap: () {
-                          Navigator.pop(context, list);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }
-          )
+                  );
+                })
               : isLoad
                   ? loaderWidget()
                   : emptyWidget(),

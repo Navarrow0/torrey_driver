@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 import '../../main.dart';
 import '../model/LanguageDataModel.dart';
 import '../utils/Colors.dart';
@@ -17,27 +15,17 @@ class LanguageScreen extends StatefulWidget {
 
 class LanguageScreenState extends State<LanguageScreen> {
   @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  void init() async {
-    //
-  }
-
-  @override
   void setState(fn) {
     if (mounted) super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.language, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: SingleChildScrollView(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Wrap(
           runSpacing: 12,
@@ -55,9 +43,9 @@ class LanguageScreenState extends State<LanguageScreen> {
               child: Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
+                    border: Border.all(color: dividerColor),
                     color: (sharedPref.getString(SELECTED_LANGUAGE_CODE) ?? default_Language) == data.languageCode ? primaryColor.withOpacity(0.6) : Colors.transparent,
-                    border: Border.all(width: 0.4, color: textSecondaryColorGlobal),
-                    borderRadius: radius()),
+                    borderRadius: radius(defaultRadius)),
                 width: (MediaQuery.of(context).size.width - 44) / 2,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,14 +53,13 @@ class LanguageScreenState extends State<LanguageScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ClipRRect(borderRadius: radius(8), child: Image.asset(data.flag.validate(), width: 32, height: 32)),
-                    SizedBox(width: 12),
+                    SizedBox(width: 8),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('${data.name.validate()}',
                               style: boldTextStyle(color: (sharedPref.getString(SELECTED_LANGUAGE_CODE) ?? default_Language) == data.languageCode ? Colors.white : textPrimaryColorGlobal)),
-                          SizedBox(height: 4),
                           Text('${data.subTitle.validate()}',
                               style: secondaryTextStyle(color: (sharedPref.getString(SELECTED_LANGUAGE_CODE) ?? default_Language) == data.languageCode ? Colors.white : textSecondaryColorGlobal)),
                         ],

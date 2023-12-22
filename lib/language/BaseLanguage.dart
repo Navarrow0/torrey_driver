@@ -5,10 +5,6 @@ abstract class BaseLanguage {
 
   String get appName;
 
-  String get welcomeBack;
-
-  String get signInYourAccount;
-
   String get thisFieldRequired;
 
   String get email;
@@ -25,10 +21,6 @@ abstract class BaseLanguage {
 
   String get signUp;
 
-  String get createAccount;
-
-  String get createYourAccountToContinue;
-
   String get firstName;
 
   String get lastName;
@@ -36,12 +28,6 @@ abstract class BaseLanguage {
   String get userName;
 
   String get phoneNumber;
-
-  String get alreadyHaveAnAccount;
-
-  String get contactUs;
-
-  String get purchase;
 
   String get changePassword;
 
@@ -69,14 +55,6 @@ abstract class BaseLanguage {
 
   String get notification;
 
-  String get otpVeriFiCation;
-
-  String get weHaveSentDigitCode;
-
-  String get contactLength;
-
-  String get about;
-
   String get useInCaseOfEmergency;
 
   String get notifyAdmin;
@@ -90,10 +68,6 @@ abstract class BaseLanguage {
   String get writeDescription;
 
   String get saveComplain;
-
-  String get editProfile;
-
-  String get gender;
 
   String get address;
 
@@ -111,13 +85,7 @@ abstract class BaseLanguage {
 
   String get addContact;
 
-  String get googleMap;
-
   String get save;
-
-  String get myRides;
-
-  String get myWallet;
 
   String get availableBalance;
 
@@ -133,27 +101,13 @@ abstract class BaseLanguage {
 
   String get amount;
 
-  String get capacity;
-
-  String get paymentMethod;
-
-  String get chooseYouPaymentLate;
-
-  String get enterPromoCode;
-
   String get confirm;
-
-  String get forInstantPayment;
-
-  String get bookNow;
 
   String get wallet;
 
   String get paymentDetail;
 
   String get rideId;
-
-  String get createdAt;
 
   String get viewHistory;
 
@@ -169,8 +123,6 @@ abstract class BaseLanguage {
 
   String get distancePrice;
 
-  String get timePrice;
-
   String get waitTime;
 
   String get extraCharges;
@@ -183,25 +135,13 @@ abstract class BaseLanguage {
 
   String get cash;
 
-  String get updatePaymentStatus;
-
   String get waitingForDriverConformation;
-
-  String get continueNewRide;
-
-  String get payToPayment;
 
   String get tip;
 
   String get pay;
 
   String get howWasYourRide;
-
-  String get wouldYouLikeToAddTip;
-
-  String get addMoreTip;
-
-  String get addMore;
 
   String get addReviews;
 
@@ -211,13 +151,7 @@ abstract class BaseLanguage {
 
   String get detailScreen;
 
-  String get aboutDriver;
-
   String get rideHistory;
-
-  String get myProfile;
-
-  String get myTrips;
 
   String get emergencyContacts;
 
@@ -225,19 +159,9 @@ abstract class BaseLanguage {
 
   String get areYouSureYouWantToLogoutThisApp;
 
-  String get whatWouldYouLikeToGo;
-
-  String get enterYourDestination;
-
-  String get currentLocation;
-
   String get destinationLocation;
 
-  String get chooseOnMap;
-
   String get profile;
-
-  String get theme;
 
   String get privacyPolicy;
 
@@ -247,57 +171,21 @@ abstract class BaseLanguage {
 
   String get aboutUs;
 
-  String get lookingForNearbyDrivers;
-
-  String get weAreLookingForNearDriversAcceptsYourRide;
-
-  String get areYouSureYouWantToCancelThisRide;
-
-  String get serviceDetail;
-
-  String get get;
-
   String get rides;
 
-  String get people;
-
-  String get fare;
-
-  String get done;
-
-  String get availableOffers;
-
-  String get off;
-
   String get sendOTP;
-
-  String get otpVerification;
-
-  String get enterTheCodeSendTo;
-
-  String get didNotReceiveTheCode;
-
-  String get resend;
 
   String get carModel;
 
   String get sos;
 
-  String get driverReview;
-
   String get signInUsingYourMobileNumber;
-
-  String get otp;
-
-  String get newRideRequested;
 
   String get accepted;
 
   String get arriving;
 
   String get arrived;
-
-  String get inProgress;
 
   String get cancelled;
 
@@ -329,10 +217,6 @@ abstract class BaseLanguage {
 
   String get saveCharges;
 
-  String get mailTo;
-
-  String get bankDetail;
-
   String get bankName;
 
   String get bankCode;
@@ -346,12 +230,6 @@ abstract class BaseLanguage {
   String get addBankDetail;
 
   String get bankInfoUpdateSuccessfully;
-
-  String get vehicleDetail;
-
-  String get verifyDocument;
-
-  String get setting;
 
   String get youAreOnlineNow;
 
@@ -369,33 +247,19 @@ abstract class BaseLanguage {
 
   String get call;
 
-  String get chat;
-
-  String get applyExtraFree;
-
   String get areYouSureYouWantToArriving;
 
   String get areYouSureYouWantToArrived;
 
   String get enterOtp;
 
-  String get enterTheOtpDisplayInCustomersMobileToStartTheRide;
-
   String get pleaseEnterValidOtp;
-
-  String get areYouSureYouWantToCompletedThisRide;
-
-  String get updateBankInfo;
-
-  String get regisTRation;
 
   String get pleaseSelectService;
 
   String get userDetail;
 
   String get selectService;
-
-  String get selectGender;
 
   String get carColor;
 
@@ -457,8 +321,6 @@ abstract class BaseLanguage {
 
   String get duration;
 
-  String get paymentVia;
-
   String get moneyDebit;
 
   String get vehicleInfo;
@@ -471,15 +333,9 @@ abstract class BaseLanguage {
 
   String get online;
 
-  String get walletLessAmountMsg;
-
   String get aboutRider;
 
   String get pleaseEnterMessage;
-
-  String get complainList;
-
-  String get viewAll;
 
   String get pleaseSelectRating;
 
@@ -488,24 +344,6 @@ abstract class BaseLanguage {
   String get youCannotChangeService;
 
   String get vehicleInfoUpdateSucessfully;
-
-  String get subscription;
-
-  String get yourCurrentBalanceIs;
-
-  String get yourSubscriptionPlanIsOver;
-
-  String get perDay;
-
-  String get renew;
-
-  String get yourWalletDoNotHaveEnoughBalance;
-
-  String get addWallet;
-
-  String get yourDailyAppUseLimitHasBeenExpired;
-
-  String get recharge;
 
   String get isMandatoryDocument;
 
@@ -535,33 +373,19 @@ abstract class BaseLanguage {
 
   String get orderedDate;
 
-  String get totalCash;
-
-  String get totalRide;
-
-  String get totalWallet;
-
   String get totalEarning;
 
   String get pleaseSelectFromDateAndToDate;
 
-  String get from;
-
   String get fromDate;
-
-  String get to;
 
   String get toDate;
 
   String get ride;
 
-  String get todayRide;
-
   String get weeklyOrderCount;
 
   String get distance;
-
-  String get rideInformation;
 
   String get iAgreeToThe;
 
@@ -588,8 +412,6 @@ abstract class BaseLanguage {
   String get pleaseContactSystemAdministrator;
 
   String get youCanNotThisActionsPerformBecauseYourCurrentRideIsNotCompleted;
-
-  String get minimumFare;
 
   String get applyExtraCharges;
 
@@ -641,16 +463,45 @@ abstract class BaseLanguage {
 
   String get pleaseEnterOtp;
 
-  String get add;
-
   String get selectSources;
 
   String get file;
 
   String get earnings;
+
   String get documents;
+
   String get settings;
+
   String get finishMsg;
+
   String get extraFees;
+
   String get skip;
+
+  String get noteSelectFromDate;
+
+  String get chatWithAdmin;
+
+  String get startRideAskOTP;
+
+  String get lessWalletAmountMsg;
+
+  String get via;
+
+  String get status;
+
+  String get minutePrice;
+
+  String get waitingTimePrice;
+
+  String get additionalFees;
+
+  String get minimumFees;
+
+  String get tips;
+
+  String get welcome;
+
+  String get signcontinue;
 }

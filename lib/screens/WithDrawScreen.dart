@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../main.dart';
 import '../model/UserDetailModel.dart';
@@ -106,11 +104,11 @@ class WithDrawScreenState extends State<WithDrawScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.withDraw, style: boldTextStyle(color: Colors.white)),
       ),
-      child: Observer(builder: (context) {
+      body: Observer(builder: (context) {
         return Form(
           key: formKey,
           child: Stack(
@@ -139,7 +137,7 @@ class WithDrawScreenState extends State<WithDrawScreen> {
                                 children: [
                                   Text(language.availableBalance, style: secondaryTextStyle(color: Colors.white)),
                                   SizedBox(height: 8),
-                                  Text(appStore.currencyPosition == LEFT ? '${appStore.currencyCode} $totalAmount' : '$totalAmount ${appStore.currencyCode}', style: boldTextStyle(size: 22, color: Colors.white)),
+                                  Text(printAmount(totalAmount.toStringAsFixed(digitAfterDecimal)), style: boldTextStyle(size: 22, color: Colors.white)),
                                 ],
                               ),
                             ),

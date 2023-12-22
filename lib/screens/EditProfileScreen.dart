@@ -4,9 +4,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:taki_booking_driver/screens/DriverDashboardScreen.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
+import 'package:taki_booking_driver/screens/DashboardScreen.dart';
 import '../components/ImageSourceDialog.dart';
 import '../model/ServiceModel.dart';
 import '../network/RestApis.dart';
@@ -19,7 +17,7 @@ import '../utils/Images.dart';
 import '../../main.dart';
 import '../../utils/Common.dart';
 import '../../utils/Constants.dart';
-import 'VerifyDeliveryPersonScreen.dart';
+import 'DocumentsScreen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final bool isGoogle;
@@ -31,7 +29,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class EditProfileScreenState extends State<EditProfileScreen> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   XFile? imageProfile;
   String countryCode = defaultCountryCode;
@@ -80,7 +78,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
       firstNameController.text = value.data!.firstName.validate();
       lastNameController.text = value.data!.lastName.validate();
       addressController.text = value.data!.address.validate();
-      contactNumberController.text = value.data!.contactNumber.validate();
+      contactNumberController.text = value.data!.contactNumber.validate().splitAfter('$countryCode');
 
       if (value.data!.userDetail != null) {
         carModelController.text = value.data!.userDetail!.carModel.validate();
@@ -144,8 +142,8 @@ class EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> saveProfile() async {
     hideKeyboard(context);
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
       appStore.setLoading(true);
       await updateProfile(
         uid: sharedPref.getString(UID).toString(),
@@ -166,9 +164,9 @@ class EditProfileScreenState extends State<EditProfileScreen> {
         if (widget.isGoogle == true) {
           updateProfileUid();
           if (sharedPref.getInt(IS_Verified_Driver) == 1) {
-            launchScreen(context, DriverDashboardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            launchScreen(context, DashboardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
           } else {
-            launchScreen(context, VerifyDeliveryPersonScreen(isShow: true), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
+            launchScreen(context, DocumentsScreen(isShow: true), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
           }
         } else {
           Navigator.pop(context);
@@ -187,17 +185,16 @@ class EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
-
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.profile, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Stack(
+      body: Stack(
         children: [
           SingleChildScrollView(
             padding: EdgeInsets.only(left: 16, top: 30, right: 16, bottom: 16),
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -245,6 +242,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                   SizedBox(height: 20),
                   AppTextField(
                     readOnly: true,
+                    enabled: false,
                     controller: emailController,
                     textFieldType: TextFieldType.EMAIL,
                     focus: emailFocus,
@@ -254,10 +252,11 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                       toast(language.notChangeEmail);
                     },
                   ),
-                  if (sharedPref.getString(LOGIN_TYPE) != 'mobile' && sharedPref.getString(LOGIN_TYPE) != null) SizedBox(height: 16),
-                  if (sharedPref.getString(LOGIN_TYPE) != 'mobile' && sharedPref.getString(LOGIN_TYPE) != null)
+                  if (sharedPref.getString(LOGIN_TYPE) != LoginTypeOTP && sharedPref.getString(LOGIN_TYPE) != null) SizedBox(height: 16),
+                  if (sharedPref.getString(LOGIN_TYPE) != LoginTypeOTP && sharedPref.getString(LOGIN_TYPE) != null)
                     AppTextField(
                       readOnly: true,
+                      enabled: false,
                       controller: usernameController,
                       textFieldType: TextFieldType.USERNAME,
                       focus: userNameFocus,
@@ -341,10 +340,45 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                           focus: contactFocus,
                           nextFocus: addressFocus,
                           isValidationRequired: true,
+                          enabled: false,
                           readOnly: true,
                           decoration: inputDecoration(
                             context,
                             label: language.phoneNumber,
+                            prefixIcon: IntrinsicHeight(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CountryCodePicker(
+                                    padding: EdgeInsets.zero,
+                                    initialSelection: countryCode,
+                                    showCountryOnly: false,
+                                    dialogSize: Size(MediaQuery.of(context).size.width - 60, MediaQuery.of(context).size.height * 0.6),
+                                    showFlag: true,
+                                    showFlagDialog: true,
+                                    showOnlyCountryWhenClosed: false,
+                                    alignLeft: false,
+                                    textStyle: primaryTextStyle(),
+                                    dialogBackgroundColor: Theme.of(context).cardColor,
+                                    barrierColor: Colors.black12,
+                                    dialogTextStyle: primaryTextStyle(),
+                                    searchDecoration: InputDecoration(
+                                      iconColor: Theme.of(context).dividerColor,
+                                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor)),
+                                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryColor)),
+                                    ),
+                                    searchStyle: primaryTextStyle(),
+                                    onInit: (c) {
+                                      countryCode = c!.dialCode!;
+                                    },
+                                    onChanged: (c) {
+                                      countryCode = c.dialCode!;
+                                    },
+                                  ),
+                                  VerticalDivider(color: Colors.grey.withOpacity(0.5)),
+                                ],
+                              ),
+                            ),
                           ),
                           onTap: () {
                             toast(language.youCannotChangePhoneNumber);
@@ -355,6 +389,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                     controller: addressController,
                     focus: addressFocus,
                     textFieldType: TextFieldType.ADDRESS,
+                    textInputAction: TextInputAction.done,
                     decoration: inputDecoration(context, label: language.address),
                   ),
                   if (widget.isGoogle) SizedBox(height: 16),
@@ -416,6 +451,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                           controller: carProductionYearController,
                           textFieldType: TextFieldType.PHONE,
                           errorThisFieldRequired: language.thisFieldRequired,
+                          textInputAction: TextInputAction.done,
                           decoration: inputDecoration(context, label: language.carProductionYear),
                         ),
                       ],

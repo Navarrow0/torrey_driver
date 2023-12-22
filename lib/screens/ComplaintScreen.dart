@@ -3,8 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:taki_booking_driver/network/RestApis.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../main.dart';
 import '../model/ComplaintModel.dart';
@@ -80,11 +78,11 @@ class ComplaintScreenState extends State<ComplaintScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.complain, style: boldTextStyle(color: Colors.white)),
       ),
-      child: Stack(
+      body: Stack(
         children: [
           Form(
             key: formKey,
@@ -182,8 +180,7 @@ class ComplaintScreenState extends State<ComplaintScreen> {
                   SizedBox(height: 16),
                   if (widget.complaintModel != null)
                     AppButtonWidget(
-                      ///TODO
-                      text: "Chat with Admin",
+                      text: language.chatWithAdmin,
                       width: MediaQuery.of(context).size.width,
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (_) => ComplaintListScreen(complaint: widget.complaintModel!.id!)));

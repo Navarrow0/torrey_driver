@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:taki_booking_driver/components/OTPDialog.dart';
 import 'package:taki_booking_driver/model/UserDetailModel.dart';
-import 'package:taki_booking_driver/screens/DriverDashboardScreen.dart';
-import 'package:taki_booking_driver/screens/VerifyDeliveryPersonScreen.dart';
+import 'package:taki_booking_driver/screens/DashboardScreen.dart';
+import 'package:taki_booking_driver/screens/DocumentsScreen.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 import '../main.dart';
 import '../model/LoginResponse.dart';
 import '../network/RestApis.dart';
-import '../screens/DriverRegisterScreen.dart';
+import '../screens/SignUpScreen.dart';
 import '../screens/EditProfileScreen.dart';
 import '../utils/Common.dart';
 import '../utils/Constants.dart';
@@ -85,23 +85,28 @@ class AuthServices {
           sharedPref.setString(UID, user.uid.validate());
 
           await userService.addDocumentWithCustomId(currentUser.uid, userModel.toJson()).then((value) async {
-            Map request = {"email": userModel.email, "password": password, "player_id": sharedPref.getString(PLAYER_ID).validate(), 'user_type': 'driver'};
+            Map request = {
+              "email": userModel.email,
+              "password": password,
+              "player_id": sharedPref.getString(PLAYER_ID).validate(),
+              'user_type':DRIVER,
+            };
             if (isOtpLogin) {
               appStore.setLoading(false);
               updateProfileUid();
               if (sharedPref.getInt(IS_Verified_Driver) == 1) {
-                launchScreen(context, DriverDashboardScreen());
+                launchScreen(context, DashboardScreen());
               } else {
-                launchScreen(context, VerifyDeliveryPersonScreen(isShow: true), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
+                launchScreen(context, DocumentsScreen(isShow: true), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
               }
             } else {
               await logInApi(request).then((res) async {
                 appStore.setLoading(false);
                 updateProfileUid();
                 if (sharedPref.getInt(IS_Verified_Driver) == 1) {
-                  launchScreen(context, DriverDashboardScreen());
+                  launchScreen(context, DashboardScreen());
                 } else {
-                  launchScreen(context, VerifyDeliveryPersonScreen(isShow: true), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
+                  launchScreen(context, DocumentsScreen(isShow: true), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
                 }
               }).catchError((e) {
                 appStore.setLoading(false);
@@ -253,7 +258,7 @@ class GoogleAuthServices {
       assert(!user.isAnonymous);
 
       final User currentUser = _auth.currentUser!;
-      print("data"+user.uid.toString());
+      print("data" + user.uid.toString());
       assert(user.uid == currentUser.uid);
 
       googleSignIn.signOut();
@@ -321,29 +326,29 @@ Future<void> loginFromFirebase(User currentUser, String loginType, String? acces
     "first_name": firstName,
     "last_name": lastName,
     "username": (firstName + lastName).toLowerCase(),
-    "uid":currentUser.uid,
+    "uid": currentUser.uid,
     'accessToken': accessToken,
-    if(!currentUser.phoneNumber.isEmptyOrNull) 'contact_number': currentUser.phoneNumber.validate(),
+    if (!currentUser.phoneNumber.isEmptyOrNull) 'contact_number': currentUser.phoneNumber.validate(),
   };
 
   await logInApi(req, isSocialLogin: true).then((value) async {
     AuthServices authService = AuthServices();
-    authService.loginFromFirebaseUser(currentUser,loginDetail: value,fullName: (firstName + lastName).toLowerCase()).then((value) {});
+    authService.loginFromFirebaseUser(currentUser, loginDetail: value, fullName: (firstName + lastName).toLowerCase()).then((value) {});
     Navigator.pop(getContext);
     sharedPref.setString(UID, currentUser.uid);
     await appStore.setUserProfile(currentUser.photoURL.toString());
-    if(value.data!.contactNumber.isEmptyOrNull){
+    if (value.data!.contactNumber.isEmptyOrNull) {
       launchScreen(getContext, EditProfileScreen(isGoogle: true), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
-    }else{
-      if(value.data!.uid.isEmptyOrNull){
+    } else {
+      if (value.data!.uid.isEmptyOrNull) {
         await updateProfile(
           uid: sharedPref.getString(UID).toString(),
           userEmail: currentUser.email.validate(),
         ).then((value) {
           if (sharedPref.getInt(IS_Verified_Driver) == 1) {
-            launchScreen(getContext, DriverDashboardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            launchScreen(getContext, DashboardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
           } else {
-            launchScreen(getContext, VerifyDeliveryPersonScreen(isShow: true), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            launchScreen(getContext, DocumentsScreen(isShow: true), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
           }
         }).catchError((error) {
           log(error.toString());
@@ -351,18 +356,18 @@ Future<void> loginFromFirebase(User currentUser, String loginType, String? acces
       } else if (value.data!.playerId.isEmptyOrNull) {
         await updatePlayerId().then((value) {
           if (sharedPref.getInt(IS_Verified_Driver) == 1) {
-            launchScreen(getContext, DriverDashboardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            launchScreen(getContext, DashboardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
           } else {
-            launchScreen(getContext, VerifyDeliveryPersonScreen(isShow: true), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            launchScreen(getContext, DocumentsScreen(isShow: true), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
           }
         }).catchError((error) {
           log(error.toString());
         });
       } else {
         if (sharedPref.getInt(IS_Verified_Driver) == 1) {
-          launchScreen(getContext, DriverDashboardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+          launchScreen(getContext, DashboardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
         } else {
-          launchScreen(getContext, VerifyDeliveryPersonScreen(isShow: true), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+          launchScreen(getContext, DocumentsScreen(isShow: true), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
         }
       }
     }

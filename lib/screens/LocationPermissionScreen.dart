@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lottie/lottie.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../main.dart';
 import '../utils/Colors.dart';
 import '../utils/Common.dart';
+import '../utils/Constants.dart';
 import '../utils/Extensions/AppButtonWidget.dart';
 import '../utils/Extensions/app_common.dart';
 import '../utils/Images.dart';
-import 'DriverDashboardScreen.dart';
+import 'DashboardScreen.dart';
 
 class LocationPermissionScreen extends StatefulWidget {
   @override
@@ -25,7 +24,11 @@ class LocationPermissionScreenState extends State<LocationPermissionScreen> {
   }
 
   void init() async {
-    //determinePosition();
+    determinePosition().then((value) {
+      log("value---$value");
+      sharedPref.setDouble(LATITUDE, value!.latitude);
+      sharedPref.setDouble(LONGITUDE, value.longitude);
+    });
   }
 
   @override
@@ -35,9 +38,9 @@ class LocationPermissionScreenState extends State<LocationPermissionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(/*automaticallyImplyLeading: false*/),
-      child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(automaticallyImplyLeading: false),
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Center(
           child: Column(
@@ -54,9 +57,13 @@ class LocationPermissionScreenState extends State<LocationPermissionScreen> {
                 width: MediaQuery.of(context).size.width,
                 text: language.allow,
                 onTap: () async {
-                  //checkPermission();
                   if (await checkPermission()) {
-                    launchScreen(context, DriverDashboardScreen(), isNewTask: true);
+                    await Geolocator.getCurrentPosition().then((value) {
+                      log("value---${value.latitude}");
+                      sharedPref.setDouble(LATITUDE, value.latitude);
+                      sharedPref.setDouble(LONGITUDE, value.longitude);
+                    });
+                    launchScreen(context, DashboardScreen(), isNewTask: true);
                   }
                 },
               )

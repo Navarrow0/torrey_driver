@@ -21,10 +21,12 @@ class AppTheme {
     unselectedWidgetColor: Colors.black,
     dividerColor: viewLineColor,
     cardColor: Colors.white,
+    useMaterial3: false,
     dialogTheme: DialogTheme(shape: dialogShape()),
     appBarTheme: AppBarTheme(
       color: primaryColor,
-      systemOverlayStyle: SystemUiOverlayStyle(
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.light,
       ),
@@ -43,7 +45,7 @@ class AppTheme {
     primarySwatch: createMaterialColor(primaryColor),
     primaryColor: primaryColor,
     scaffoldBackgroundColor: scaffoldColorDark,
-    fontFamily: GoogleFonts.poppins().fontFamily,
+    fontFamily: GoogleFonts.nunito().fontFamily,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: scaffoldSecondaryDark),
     iconTheme: IconThemeData(color: Colors.white),
     textTheme: TextTheme(headline6: TextStyle(color: textSecondaryColor)),
@@ -52,8 +54,10 @@ class AppTheme {
     dividerColor: Colors.white12,
     cardColor: scaffoldSecondaryDark,
     dialogTheme: DialogTheme(shape: dialogShape()),
+    useMaterial3: false,
     appBarTheme: AppBarTheme(
       backgroundColor: primaryColor,
+      elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,

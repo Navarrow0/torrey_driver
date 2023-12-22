@@ -4,8 +4,6 @@ import 'package:taki_booking_driver/utils/Colors.dart';
 import 'package:taki_booking_driver/utils/Common.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 import 'package:taki_booking_driver/utils/Extensions/app_common.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import '../main.dart';
@@ -21,27 +19,17 @@ class RideHistoryScreen extends StatefulWidget {
 
 class RideHistoryScreenState extends State<RideHistoryScreen> {
   @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  void init() async {
-    //
-  }
-
-  @override
   void setState(fn) {
     if (mounted) super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.rideHistory, style: boldTextStyle(color: Colors.white)),
       ),
-      child: ListView.builder(
+      body: ListView.builder(
         padding: EdgeInsets.all(16),
         itemCount: widget.rideHistory.length,
         itemBuilder: (context, index) {
@@ -49,31 +37,32 @@ class RideHistoryScreenState extends State<RideHistoryScreen> {
           return TimelineTile(
             alignment: TimelineAlign.start,
             isFirst: index == 0 ? true : false,
+            axis: TimelineAxis.vertical,
             isLast: index == (widget.rideHistory.length - 1) ? true : false,
             indicatorStyle: IndicatorStyle(
               color: primaryColor,
               indicatorXY: 0.1,
               drawGap: true,
               width: 40,
-              padding: EdgeInsets.symmetric(vertical: 2),
+              padding: EdgeInsets.symmetric(vertical: 8),
               height: 40,
               indicator: Container(
                 padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(statusTypeIcon(type: mData.historyType)), color: Colors.white),
-                decoration: BoxDecoration(color: primaryColor, shape: BoxShape.circle),
+                child: ImageIcon(AssetImage(statusTypeIcon(type: mData.historyType)), color: Colors.black),
+                decoration: BoxDecoration(color: Colors.transparent, border: Border.all(color: dividerColor.withOpacity(0.5)), borderRadius: radius()),
               ),
             ),
             afterLineStyle: LineStyle(color: primaryColor, thickness: 1),
             endChild: Padding(
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              padding: EdgeInsets.only(left: 16, bottom: 24, top: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text('${printDate('${mData.createdAt}')}', style: secondaryTextStyle(size: 12)),
+                  SizedBox(height: 2),
                   Text('${mData.historyType!.replaceAll("_", " ").capitalizeFirstLetter()}', style: boldTextStyle()),
-                  SizedBox(height: 4),
+                  SizedBox(height: 2),
                   Text(mData.historyMessage.validate(), style: secondaryTextStyle(color: textPrimaryColorGlobal)),
-                  SizedBox(height: 6),
-                  Text('${printDate('${mData.createdAt}')}', style: secondaryTextStyle()),
                 ],
               ),
             ),

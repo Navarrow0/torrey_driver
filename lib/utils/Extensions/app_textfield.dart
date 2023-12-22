@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:taki_booking_driver/main.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 
 import '../Constants.dart';
@@ -224,7 +223,7 @@ class _AppTextFieldState extends State<AppTextField> {
                       : GestureDetector(
                           child: Icon(
                             isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                            color: widget.suffixIconColor ?? textPrimaryColorGlobal,
+                            color: widget.suffixIconColor ?? Theme.of(context).iconTheme.color,
                           ),
                           onTap: () {
                             isPasswordVisible = !isPasswordVisible;
@@ -234,7 +233,7 @@ class _AppTextFieldState extends State<AppTextField> {
                         )
                   : widget.suffix,
             ))
-          : InputDecoration(contentPadding: EdgeInsets.all(40)),
+          : InputDecoration(),
       focusNode: widget.focus,
       style: widget.textStyle ?? primaryTextStyle(),
       textAlign: widget.textAlign ?? TextAlign.start,
@@ -248,7 +247,7 @@ class _AppTextFieldState extends State<AppTextField> {
       maxLength: widget.maxLength,
       enableSuggestions: widget.enableSuggestions ?? true,
       autofillHints: widget.autoFillHints,
-      scrollPadding: widget.scrollPadding ?? EdgeInsets.all(40),
+      scrollPadding: widget.scrollPadding ?? EdgeInsets.all(20),
       cursorWidth: widget.cursorWidth ?? 2.0,
       cursorHeight: widget.cursorHeight,
       cursorRadius: Radius.circular(4),

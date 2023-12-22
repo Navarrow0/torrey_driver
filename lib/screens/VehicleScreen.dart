@@ -7,8 +7,6 @@ import 'package:taki_booking_driver/utils/Colors.dart';
 import 'package:taki_booking_driver/utils/Extensions/AppButtonWidget.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 import 'package:taki_booking_driver/utils/Extensions/app_common.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../utils/Common.dart';
 import '../utils/Constants.dart';
@@ -81,11 +79,11 @@ class VehicleScreenState extends State<VehicleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.vehicleInfo, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Form(
+      body: Form(
         key: formKey,
         child: Stack(
           children: [

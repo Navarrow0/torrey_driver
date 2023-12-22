@@ -3,8 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:taki_booking_driver/screens/PaymentScreen.dart';
 import 'package:taki_booking_driver/screens/WithDrawScreen.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../../main.dart';
 import '../../network/RestApis.dart';
@@ -18,12 +16,12 @@ import '../utils/Extensions/app_common.dart';
 import '../utils/Extensions/app_textfield.dart';
 import 'BankInfoScreen.dart';
 
-class MyWalletScreen extends StatefulWidget {
+class WalletScreen extends StatefulWidget {
   @override
-  MyWalletScreenState createState() => MyWalletScreenState();
+  WalletScreenState createState() => WalletScreenState();
 }
 
-class MyWalletScreenState extends State<MyWalletScreen> {
+class WalletScreenState extends State<WalletScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController addMoneyController = TextEditingController();
@@ -59,27 +57,30 @@ class MyWalletScreenState extends State<MyWalletScreen> {
 
   void init() async {
     getBankDetail();
+    getWalletData();
+  }
+
+  getWalletData() async {
     await getWalletList(pageData: currentPage).then((value) {
       appStore.setLoading(false);
 
       currentPage = value.pagination!.currentPage!;
       totalPage = value.pagination!.totalPages!;
-      if(value.walletBalance!=null) totalAmount = value.walletBalance!.totalAmount!.toInt();
+      if (value.walletBalance != null) totalAmount = value.walletBalance!.totalAmount!.toInt();
       if (currentPage == 1) {
         walletData.clear();
       }
-      walletData.addAll(value.data??[]);
+      walletData.addAll(value.data ?? []);
       setState(() {});
     }).catchError((error) {
       appStore.setLoading(false);
       log(error.toString());
     });
   }
-
   getBankDetail() async {
     await getUserDetail(userId: sharedPref.getInt(USER_ID)).then((value) {
       userBankAccount = value.data!.userBankAccount;
-      setState(() { });
+      setState(() {});
     }).then((value) {
       log(value);
     });
@@ -92,12 +93,11 @@ class MyWalletScreenState extends State<MyWalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
-
-      title: Text(language.wallet, style: boldTextStyle(color: appTextPrimaryColorWhite)),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(language.wallet, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Observer(builder: (context) {
+      body: Observer(builder: (context) {
         return Stack(
           children: [
             SingleChildScrollView(
@@ -118,8 +118,7 @@ class MyWalletScreenState extends State<MyWalletScreen> {
                         children: [
                           Text(language.availableBalance, style: secondaryTextStyle(color: Colors.white)),
                           SizedBox(height: 8),
-                          Text(appStore.currencyPosition == LEFT ? '${appStore.currencyCode} $totalAmount' : '$totalAmount ${appStore.currencyCode}',
-                              style: boldTextStyle(size: 22, color: Colors.white)),
+                          Text(printAmount(totalAmount.toStringAsFixed(digitAfterDecimal)), style: boldTextStyle(size: 22, color: Colors.white)),
                         ],
                       ),
                     ),
@@ -144,25 +143,26 @@ class MyWalletScreenState extends State<MyWalletScreen> {
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(border: Border.all(color: Colors.grey.withOpacity(0.4)), borderRadius: BorderRadius.circular(defaultRadius)),
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Colors.grey.withOpacity(0.2)),
                                     padding: EdgeInsets.all(8),
                                     child: Icon(data.type == CREDIT ? Icons.add : Icons.remove, color: primaryColor),
                                   ),
-                                  SizedBox(width: 16),
+                                  SizedBox(width: 8),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(data.type == DEBIT ? language.moneyDebit : language.moneyDeposited, style: boldTextStyle(size: 16)),
-                                        SizedBox(height: 8),
+                                        SizedBox(height: 4),
                                         Text(printDate(data.createdAt!), style: secondaryTextStyle(size: 12)),
                                       ],
                                     ),
                                   ),
-                                  Text(appStore.currencyPosition == LEFT ? '${appStore.currencyCode} ${data.amount}' : '${data.amount} ${appStore.currencyCode}',
-                                      style: secondaryTextStyle(color: data.type == CREDIT ? Colors.green : Colors.red))
+                                  Text("${data.type == CREDIT ? "+" : "-"} ${printAmount(data.amount!.toStringAsFixed(digitAfterDecimal))}",
+                                      style: boldTextStyle(color: data.type == CREDIT ? Colors.green : Colors.red))
                                 ],
                               ),
                             ),
@@ -193,16 +193,18 @@ class MyWalletScreenState extends State<MyWalletScreen> {
                   width: MediaQuery.of(context).size.width,
                   onTap: () async {
                     if (userBankAccount != null)
-                      launchScreen(context, WithDrawScreen(
-                        bankInfo:userBankAccount!,
-                        onTap: () {
-                          init();
-                        },
-                      ));
+                      launchScreen(
+                          context,
+                          WithDrawScreen(
+                            bankInfo: userBankAccount!,
+                            onTap: () {
+                              init();
+                            },
+                          ));
                     else {
                       toast(language.bankInfoNotFound);
-                      var res = await launchScreen(context,BankInfoScreen());
-                      if(res!=null){
+                      var res = await launchScreen(context, BankInfoScreen());
+                      if (res != null) {
                         getBankDetail();
                       }
                     }
@@ -231,10 +233,19 @@ class MyWalletScreenState extends State<MyWalletScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(language.addMoney, style: boldTextStyle()),
-                                    SizedBox(height: 8),
-                                    Divider(),
-                                    SizedBox(height: 12),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(language.addMoney, style: boldTextStyle()),
+                                        CloseButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            addMoneyController.clear();
+                                            currentIndex = -1;
+                                          },
+                                        )
+                                      ],
+                                    ),
                                     AppTextField(
                                       controller: addMoneyController,
                                       textFieldType: TextFieldType.PHONE,
@@ -269,7 +280,10 @@ class MyWalletScreenState extends State<MyWalletScreen> {
                                               addMoneyController.text = appStore.minAmountToAdd.toString();
                                               addMoneyController.selection = TextSelection.fromPosition(TextPosition(offset: appStore.minAmountToAdd.toString().length));
                                               toast("${language.minimum}  ${appStore.minAmountToAdd} ${language.required}");
-                                            } else if (appStore.minAmountToAdd != null && int.parse(e) < appStore.minAmountToAdd! && appStore.maxAmountToAdd != null && int.parse(e) > appStore.maxAmountToAdd.toString().length) {
+                                            } else if (appStore.minAmountToAdd != null &&
+                                                int.parse(e) < appStore.minAmountToAdd! &&
+                                                appStore.maxAmountToAdd != null &&
+                                                int.parse(e) > appStore.maxAmountToAdd.toString().length) {
                                               addMoneyController.text = appStore.maxAmountToAdd.toString();
                                               addMoneyController.selection = TextSelection.fromPosition(TextPosition(offset: e.length));
                                               toast("${language.maximum} ${appStore.maxAmountToAdd} ${language.required}");
@@ -287,48 +301,38 @@ class MyWalletScreenState extends State<MyWalletScreen> {
                                               border: Border.all(color: currentIndex == appStore.walletPresetTopUpAmount.split('|').indexOf(e) ? primaryColor : Colors.grey),
                                               borderRadius: BorderRadius.circular(defaultRadius),
                                             ),
-                                            child: Text(appStore.currencyPosition == LEFT ? '${appStore.currencyCode} $e' : '$e ${appStore.currencyCode}',
-                                                style: boldTextStyle(color: currentIndex == appStore.walletPresetTopUpAmount.split('|').indexOf(e) ? Colors.white : primaryColor)),
+                                            child: Text(
+                                              printAmount(e),
+                                              style: boldTextStyle(color: currentIndex == appStore.walletPresetTopUpAmount.split('|').indexOf(e) ? Colors.white : primaryColor),
+                                            ),
                                           ),
                                         );
                                       }).toList(),
                                     ),
                                     SizedBox(height: 16),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: AppButtonWidget(
-                                            text: language.cancel,
-                                            textStyle: boldTextStyle(color: Colors.white),
-                                            width: MediaQuery.of(context).size.width,
-                                            color: Colors.red,
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(width: 16),
-                                        Expanded(
-                                          child: AppButtonWidget(
-                                            text: language.addMoney,
-                                            textStyle: boldTextStyle(color: Colors.white),
-                                            width: MediaQuery.of(context).size.width,
-                                            color: primaryColor,
-                                            onTap: () {
-                                              if (addMoneyController.text.isNotEmpty) {
-                                                if (formKey.currentState!.validate() && addMoneyController.text.isNotEmpty) {
-                                                  Navigator.pop(context);
-                                                  launchScreen(context, PaymentScreen(amount: int.parse(addMoneyController.text)), pageRouteAnimation: PageRouteAnimation.SlideBottomTop);
-                                                } else {
-                                                  toast(language.pleaseSelectAmount);
-                                                }
-                                              } else {
-                                                toast(language.pleaseSelectAmount);
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                      ],
+                                    AppButtonWidget(
+                                      text: language.addMoney,
+                                      textStyle: boldTextStyle(color: Colors.white),
+                                      width: MediaQuery.of(context).size.width,
+                                      color: primaryColor,
+                                      onTap: () {
+                                        if (addMoneyController.text.isNotEmpty) {
+                                          if (formKey.currentState!.validate() && addMoneyController.text.isNotEmpty) {
+                                            Navigator.pop(context);
+                                            launchScreen(context, PaymentScreen(amount: int.parse(addMoneyController.text)), pageRouteAnimation: PageRouteAnimation.SlideBottomTop).then((value) {
+                                              getWalletData();
+                                              setState(() {});
+                                            });
+
+                                            addMoneyController.clear();
+                                            currentIndex = -1;
+                                          } else {
+                                            toast(language.pleaseSelectAmount);
+                                          }
+                                        } else {
+                                          toast(language.pleaseSelectAmount);
+                                        }
+                                      },
                                     )
                                   ],
                                 ),

@@ -6,7 +6,7 @@ import '../utils/Common.dart';
 import '../utils/Constants.dart';
 import '../utils/Extensions/app_common.dart';
 import '../utils/Images.dart';
-import 'LoginScreen.dart';
+import 'SignInScreen.dart';
 
 class WalkThroughScreen extends StatefulWidget {
   @override
@@ -69,10 +69,8 @@ class WalkThroughScreenState extends State<WalkThroughScreen> {
                     height: MediaQuery.of(context).size.height,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
                     decoration: BoxDecoration(
-                      color: Colors.black26
+                        color: Colors.black26
                     ),
                   ),
                   Positioned(
@@ -82,12 +80,11 @@ class WalkThroughScreenState extends State<WalkThroughScreen> {
                       children: [
                         Text(walkThroughClass[i].name!, style: boldTextStyle(size: 30, color: Colors.white), textAlign: TextAlign.center),
                         SizedBox(height: 16),
-                        SizedBox(
-                            width: 320,
-                            child: Text(walkThroughClass[i].text.toString(), style: secondaryTextStyle(size: 15, color: Colors.white), textAlign: TextAlign.center)),
+                        Text(walkThroughClass[i].text.toString(), style: secondaryTextStyle(size: 14, color: Colors.white), textAlign: TextAlign.center),
                       ],
                     ),
                   ),
+
                 ],
               );
             },
@@ -107,14 +104,14 @@ class WalkThroughScreenState extends State<WalkThroughScreen> {
                 GestureDetector(
                   onTap: () {
                     if (currentPage.toInt() >= 2) {
-                      launchScreen(context, LoginScreen(), isNewTask: true);
+                      launchScreen(context, SignInScreen(), isNewTask: true);
                       sharedPref.setBool(IS_FIRST_TIME, false);
                     } else {
                       pageController.nextPage(duration: Duration(seconds: 1), curve: Curves.linearToEaseOut);
                     }
                   },
                   child: Container(
-                    decoration: BoxDecoration(shape: BoxShape.circle, color:  Color.fromRGBO(28, 31, 42, 1)),
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: primaryColor),
                     padding: EdgeInsets.all(12),
                     child: Icon(Icons.arrow_forward, color: Colors.white),
                   ),
@@ -127,7 +124,7 @@ class WalkThroughScreenState extends State<WalkThroughScreen> {
             right: 0,
             child: TextButton(
               onPressed: () {
-                launchScreen(context, LoginScreen(), isNewTask: true);
+                launchScreen(context, SignInScreen(), isNewTask: true);
                 sharedPref.setBool(IS_FIRST_TIME, false);
               },
               child: Text(language.skip, style: boldTextStyle(color: Colors.white)),

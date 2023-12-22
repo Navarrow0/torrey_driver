@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../../main.dart';
 import '../network/RestApis.dart';
@@ -67,11 +65,11 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.changePassword, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Stack(
+      body: Stack(
         children: [
           Form(
             key: formKey,

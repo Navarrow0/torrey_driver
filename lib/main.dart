@@ -1,21 +1,14 @@
 import 'dart:async';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:taki_booking_driver/network/RestApis.dart';
-import 'package:taki_booking_driver/screens/ChatScreen.dart';
-import 'package:taki_booking_driver/screens/DriverDashboardScreen.dart';
-import 'package:taki_booking_driver/screens/MyRidesScreen.dart';
+import 'package:taki_booking_driver/firebase_options.dart';
 import 'package:taki_booking_driver/screens/SplashScreen.dart';
 import 'package:taki_booking_driver/store/AppStore.dart';
 import 'package:taki_booking_driver/utils/Colors.dart';
@@ -23,18 +16,14 @@ import 'package:taki_booking_driver/utils/Common.dart';
 import 'package:taki_booking_driver/utils/Constants.dart';
 import 'package:taki_booking_driver/utils/DataProvider.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-
 import 'AppTheme.dart';
 import 'Services/ChatMessagesService.dart';
 import 'Services/NotificationService.dart';
 import 'Services/UserServices.dart';
-import 'firebase_options.dart';
 import 'language/AppLocalizations.dart';
 import 'language/BaseLanguage.dart';
 import 'model/FileModel.dart';
 import 'model/LanguageDataModel.dart';
-import 'model/RideDetailModel.dart';
-import 'model/UserDetailModel.dart';
 import 'screens/NoInternetScreen.dart';
 import 'utils/Extensions/app_common.dart';
 
@@ -47,10 +36,11 @@ List<LanguageDataModel> localeLanguageList = [];
 LanguageDataModel? selectedLanguageDataModel;
 late BaseLanguage language;
 bool isCurrentlyOnNoInternet = false;
+int? stutasCount = 0;
 
 late List<FileModel> fileList = [];
 bool mIsEnterKey = false;
-String mSelectedImage = "assets/default_wallpaper.png";
+// String mSelectedImage = "assets/default_wallpaper.png";
 
 ChatMessageService chatMessageService = ChatMessageService();
 NotificationService notificationService = NotificationService();
@@ -72,7 +62,11 @@ Future<void> initialize({
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform,);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  ).then((value) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  });
 
   sharedPref = await SharedPreferences.getInstance();
   await initialize(aLocaleLanguageList: languageList());
@@ -82,65 +76,11 @@ void main() async {
   await appStore.setUserId(sharedPref.getInt(USER_ID) ?? 0, isInitializing: true);
   await appStore.setUserEmail(sharedPref.getString(USER_EMAIL).validate(), isInitialization: true);
   await appStore.setUserProfile(sharedPref.getString(USER_PROFILE_PHOTO).validate(), isInitialization: true);
-
-  await OneSignal.shared.setAppId(mOneSignalAppIdDriver);
-  OneSignal.shared.consentGranted(true);
-  saveOneSignalPlayerId();
-  OneSignal.shared.promptUserForPushNotificationPermission();
-  OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent event) {
-    event.complete(event.notification);
-  });
-  if (appStore.isLoggedIn) {
-    updatePlayerId();
-  }
-  OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult notification) async {
-    var notId = notification.notification.additionalData!["id"];
-    log("$notId---" + notification.notification.additionalData!['type'].toString());
-    var notType = notification.notification.additionalData!['type'];
-    if (notType != null) {
-      await rideDetail(orderId: notId).then((value) {
-        print("Step1--" + value.toJson().toString());
-        RideDetailModel mRideModel = value;
-        if (mRideModel.data!.driverId != null) {
-          if (sharedPref.getInt(USER_ID) == mRideModel.data!.driverId) {
-            if (mRideModel.data!.paymentStatus == "paid") {
-              launchScreen(getContext, MyRidesScreen());
-            } else {
-              launchScreen(getContext, DriverDashboardScreen());
-            }
-          } else {
-            toast("Sorry! You missed this ride");
-          }
-        }
-      }).catchError((error) {
-        appStore.setLoading(false);
-        log('${error.toString()}');
-      });
-    }
-    if (notId != null) {
-      if (notId.toString().contains('CHAT')) {
-        UserDetailModel user = await getUserDetail(userId: int.parse(notId.toString().replaceAll("CHAT_", "")));
-        launchScreen(getContext, ChatScreen(userData: user.data));
-      }
-    }
-  });
+  oneSignalSettings();
   runApp(MyApp());
 }
 
-Future<void> updatePlayerId() async {
-  Map req = {
-    "player_id": sharedPref.getString(PLAYER_ID),
-  };
-  updateStatus(req).then((value) {
-    //
-  }).catchError((error) {
-    //
-  });
-}
-
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -152,12 +92,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     init();
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) super.setState(fn);
-    connectivitySubscription.cancel();
   }
 
   void init() async {
@@ -175,6 +109,12 @@ class _MyAppState extends State<MyApp> {
         log('connected');
       }
     });
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
+    connectivitySubscription.cancel();
   }
 
   @override
@@ -201,12 +141,5 @@ class _MyAppState extends State<MyApp> {
         locale: Locale(appStore.selectedLanguage.validate(value: default_Language)),
       );
     });
-  }
-}
-
-class MyBehavior extends ScrollBehavior {
-  @override
-  Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
-    return child;
   }
 }

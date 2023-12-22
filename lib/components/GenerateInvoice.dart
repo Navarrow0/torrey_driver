@@ -23,19 +23,19 @@ generateInvoiceCall(RiderModel? riderModel, {Payment? payment}) async {
     ),
     InvoiceItem(
       description: language.distancePrice,
-      price: riderModel.perDistanceCharge!.toString(),
+      price: riderModel.perDistanceCharge!.toStringAsFixed(digitAfterDecimal),
     ),
     InvoiceItem(
       description: language.duration,
-      price: riderModel.perMinuteDriveCharge!.toString(),
+      price: riderModel.perMinuteDriveCharge!.toStringAsFixed(digitAfterDecimal),
     ),
     InvoiceItem(
       description: language.waitTime,
-      price: riderModel.perMinuteWaitingCharge!.toString(),
+      price: riderModel.perMinuteWaitingCharge!.toStringAsFixed(digitAfterDecimal),
     ),
     InvoiceItem(
       description: language.tip,
-      price: payment!.driverTips!.toString(),
+      price: payment!.driverTips!.toStringAsFixed(digitAfterDecimal),
     ),
     if (riderModel.extraCharges!.isNotEmpty)
       InvoiceItem(
@@ -45,7 +45,7 @@ generateInvoiceCall(RiderModel? riderModel, {Payment? payment}) async {
     if (riderModel.couponDiscount != 0)
       InvoiceItem(
         description: language.couponDiscount,
-        price: '${riderModel.couponDiscount.toString()}',
+        price: '${riderModel.couponDiscount!.toStringAsFixed(digitAfterDecimal)}',
         isDiscount: false,
       ),
   ];
@@ -55,7 +55,7 @@ generateInvoiceCall(RiderModel? riderModel, {Payment? payment}) async {
       list.add(
         InvoiceItem(
           description: element.key.validate(),
-          price: element.value!.toString(),
+          price: element.value!.toStringAsFixed(digitAfterDecimal),
         ),
       );
     });
@@ -196,7 +196,7 @@ class PdfInvoiceApi {
         item.description,
         item.isDiscount
             ? item.price.isNotEmpty
-            ? '${printAmount(item.price)}'
+            ? printAmount(item.price)
             : ''
             : item.price.isNotEmpty
             ? '-${printAmount(item.price)}'
@@ -221,9 +221,9 @@ class PdfInvoiceApi {
   static Widget buildTotal(Invoice invoice) {
     return Container(
       alignment: Alignment.centerRight,
-      child:buildText(
+      child: buildText(
         title: language.total,
-        value: Utils.formatPrice(invoice.totalAmount),
+        value: printAmount(invoice.totalAmount.toStringAsFixed(2)),
         unite: true,
       ),
     );
@@ -330,11 +330,13 @@ class InvoiceItem {
   final String description;
   final String price;
   final bool isDiscount;
+  final bool isExtraCharges;
 
   const InvoiceItem({
     required this.description,
     required this.price,
     this.isDiscount = true,
+    this.isExtraCharges = false,
   });
 }
 

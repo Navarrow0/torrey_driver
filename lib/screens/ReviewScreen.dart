@@ -3,10 +3,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:taki_booking_driver/main.dart';
 import 'package:taki_booking_driver/screens/DetailScreen.dart';
-import 'package:taki_booking_driver/screens/DriverDashboardScreen.dart';
+import 'package:taki_booking_driver/screens/DashboardScreen.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 import '../model/CurrentRequestModel.dart';
 import '../network/RestApis.dart';
 import '../utils/Colors.dart';
@@ -40,14 +38,11 @@ class ReviewScreenState extends State<ReviewScreen> {
     init();
   }
 
-  void init() async {
-    //
-    log("isOnlineReview->" + sharedPref.getInt(IS_ONLINE).toString());
-
-  }
+  void init() async {}
 
   Future<void> userReviewData() async {
     if (formKey.currentState!.validate()) {
+      hideKeyboard(context);
       if (rattingData == 0) return toast(language.pleaseSelectRating);
       formKey.currentState!.save();
       hideKeyboard(context);
@@ -58,8 +53,8 @@ class ReviewScreenState extends State<ReviewScreen> {
         "comment": reviewController.text.trim(),
       };
       await ratingReview(request: req).then((value) {
-        appStore.setLoading(false);
         getRiderCheck();
+        appStore.setLoading(false);
       }).catchError((error) {
         appStore.setLoading(false);
         log(error.toString());
@@ -73,7 +68,7 @@ class ReviewScreenState extends State<ReviewScreen> {
       if (value.payment != null && value.payment!.paymentStatus == PENDING) {
         launchScreen(context, DetailScreen(), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
       } else {
-        launchScreen(context, DriverDashboardScreen(), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
+        launchScreen(context, DashboardScreen(), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
       }
     }).catchError((error) {
       appStore.setLoading(false);
@@ -89,12 +84,12 @@ class ReviewScreenState extends State<ReviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
-        ///centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
         title: Text(language.howWasYourRide, style: boldTextStyle(color: Colors.white)),
       ),
-      child: Stack(
+      body: Stack(
         children: [
           SingleChildScrollView(
             padding: EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 16),
@@ -108,7 +103,7 @@ class ReviewScreenState extends State<ReviewScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(35),
-                        child: commonCachedNetworkImage(widget.currentData.rider!.profileImage.validate(),fit: BoxFit.fill, height: 70, width: 70),
+                        child: commonCachedNetworkImage(widget.currentData.rider!.profileImage.validate(), fit: BoxFit.fill, height: 70, width: 70),
                       ),
                       SizedBox(width: 16),
                       Column(
@@ -143,6 +138,7 @@ class ReviewScreenState extends State<ReviewScreen> {
                     controller: reviewController,
                     decoration: inputDecoration(context, label: language.writeYourComments),
                     textFieldType: TextFieldType.NAME,
+                    textInputAction: TextInputAction.done,
                     minLines: 2,
                     maxLines: 5,
                   ),

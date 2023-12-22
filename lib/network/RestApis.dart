@@ -27,7 +27,7 @@ import '../model/ServiceModel.dart';
 import '../model/WalletDetailModel.dart';
 import '../model/WalletListModel.dart';
 import '../model/WithDrawListModel.dart';
-import '../screens/LoginScreen.dart';
+import '../screens/SignInScreen.dart';
 import '../utils/Constants.dart';
 import '../utils/Extensions/app_common.dart';
 import 'NetworkUtils.dart';
@@ -47,7 +47,7 @@ Future<LoginResponse> signUpApi(Map request) async {
 
   return await handleResponse(response).then((json) async {
     var loginResponse = LoginResponse.fromJson(json);
-    if (loginResponse.data!.loginType == 'mobile') {
+    if (loginResponse.data!.loginType == LoginTypeOTP) {
       await sharedPref.setString(TOKEN, loginResponse.data!.apiToken.validate());
       await sharedPref.setString(USER_TYPE, loginResponse.data!.userType.validate());
       await sharedPref.setString(FIRST_NAME, loginResponse.data!.firstName.validate());
@@ -444,13 +444,15 @@ logOutSuccess() async {
   sharedPref.remove(ADDRESS);
   sharedPref.remove(USER_ID);
   appStore.setLoggedIn(false);
-  if (!(sharedPref.getBool(REMEMBER_ME) ?? false) || sharedPref.getString(LOGIN_TYPE)==LoginTypeGoogle || sharedPref.getString(LOGIN_TYPE)=='mobile') {
+  if (!(sharedPref.getBool(REMEMBER_ME) ?? false) || sharedPref.getString(LOGIN_TYPE)==LoginTypeGoogle || sharedPref.getString(LOGIN_TYPE)==LoginTypeOTP) {
     sharedPref.remove(USER_EMAIL);
     sharedPref.remove(USER_PASSWORD);
     sharedPref.remove(REMEMBER_ME);
   }
   sharedPref.remove(LOGIN_TYPE);
-  launchScreen(getContext, LoginScreen(), isNewTask: true);
+  sharedPref.remove(LATITUDE);
+  sharedPref.remove(LONGITUDE);
+  launchScreen(getContext, SignInScreen(), isNewTask: true);
 }
 
 Future<AppSettingModel> getAppSettingApi() async {

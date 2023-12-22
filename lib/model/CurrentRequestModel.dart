@@ -88,6 +88,7 @@ class OnRideRequest {
   String? riderName;
   String? driverProfileImage;
   String? riderProfileImage;
+  String? riderTarimaImage;
   String? startLatitude;
   String? startLongitude;
   String? startAddress;
@@ -148,6 +149,7 @@ class OnRideRequest {
     this.riderName,
     this.driverProfileImage,
     this.riderProfileImage,
+    this.riderTarimaImage,
     this.startLatitude,
     this.startLongitude,
     this.startAddress,
@@ -209,6 +211,7 @@ class OnRideRequest {
     riderName = json['rider_name'];
     driverProfileImage = json['driver_profile_image'];
     riderProfileImage = json['rider_profile_image'];
+    riderTarimaImage = json['rider_tarima_image'];
     startLatitude = json['start_latitude'];
     startLongitude = json['start_longitude'];
     startAddress = json['start_address'];
@@ -275,6 +278,7 @@ class OnRideRequest {
     data['rider_name'] = this.riderName;
     data['driver_profile_image'] = this.driverProfileImage;
     data['rider_profile_image'] = this.riderProfileImage;
+    data['rider_tarima_image'] = this.riderTarimaImage;
     data['start_latitude'] = this.startLatitude;
     data['start_longitude'] = this.startLongitude;
     data['start_address'] = this.startAddress;

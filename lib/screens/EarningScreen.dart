@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../components/EarningReportWidget.dart';
 import '../components/EarningTodayWidget.dart';
@@ -64,33 +62,27 @@ class EarningScreenState extends State<EarningScreen> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: BackgroundPage(
-        appBar: CustomAppBar(
-
+      child: Scaffold(
+        appBar: AppBar(
           title: Text(language.earning, style: boldTextStyle(color: appTextPrimaryColorWhite)),
         ),
-        child: Column(
+        body: Column(
           children: [
             Container(
               height: 40,
               margin: EdgeInsets.only(right: 16, left: 16, top: 16),
-              decoration: BoxDecoration(
-                color: dividerColor,
-                borderRadius: radius(),
-              ),
+              decoration: BoxDecoration(color: Colors.transparent,border: Border.all(color: dividerColor), borderRadius: radius()),
               child: TabBar(
-                  indicator: BoxDecoration(
-                    borderRadius: radius(),
-                    color: Color.fromRGBO(45, 45, 45, 1.0),
-                  ),
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Color.fromRGBO(72, 72, 72, 1.0),
-                  labelStyle: boldTextStyle(color: Colors.white, size: 14),
-                  tabs: [
-                    Text(language.today),
-                    Text(language.weekly),
-                    Text(language.report),
-                  ]),
+                indicator: BoxDecoration(borderRadius: radius(), color: primaryColor),
+                labelColor: Colors.white,
+                unselectedLabelColor: primaryColor,
+                labelStyle: boldTextStyle(color: Colors.white, size: 14),
+                tabs: [
+                  Text(language.today),
+                  Text(language.weekly),
+                  Text(language.report),
+                ],
+              ),
             ),
             Expanded(
               child: TabBarView(

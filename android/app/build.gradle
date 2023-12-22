@@ -28,7 +28,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     namespace "com.mighty.taxidriver.taki_booking_driver"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -49,10 +49,10 @@ android {
         applicationId "com.mighty.taxidriver.taki_booking_driver"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 22
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode 17
+        versionName '2.2.1'
     }
 
     buildTypes {
@@ -69,10 +69,12 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation platform('com.google.firebase:firebase-bom:26.6.0')
     implementation 'androidx.multidex:multidex:2.0.1'
-    /*implementation('com.braintreepayments.api:drop-in:5.2.1'){
+//    implementation 'com.mercadopago.android.px:checkout:4.+'
+    implementation('com.braintreepayments.api:drop-in:5.2.1'){
         exclude group: "org.jfrog.cardinalcommerce.gradle", module: "cardinalmobilesdk"
-    }*/
-    //implementation 'org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.6-1'
+    }
+    implementation("org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.7-2")
 }

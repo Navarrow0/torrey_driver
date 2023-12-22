@@ -6,6 +6,7 @@ import '../language/BaseLanguage.dart';
 import '../main.dart';
 import '../model/CurrentRequestModel.dart';
 import '../model/LanguageDataModel.dart';
+import '../model/SettingModel.dart';
 import '../utils/Colors.dart';
 import '../utils/Constants.dart';
 import '../utils/Extensions/app_common.dart';
@@ -76,7 +77,22 @@ abstract class _AppStore with Store {
   String? extraChargeValue;
 
   @observable
+  SettingModel settingModel = SettingModel();
+
+  @observable
+  String? privacyPolicy;
+
+  @observable
+  String? termsCondition;
+
+  @observable
+  String? mHelpAndSupport;
+
+  @observable
   OnRideRequest? currentRiderRequest;
+
+  @observable
+  int? isAvailable = 0;
 
   @action
   Future<void> setFirstName(String? val) async {
@@ -140,7 +156,7 @@ abstract class _AppStore with Store {
   }
 
   @action
-  Future<void> setUserProfile(String val,{bool isInitialization = false}) async {
+  Future<void> setUserProfile(String val, {bool isInitialization = false}) async {
     userProfile = val;
     if (!isInitialization) await sharedPref.setString(USER_PROFILE_PHOTO, val);
   }
@@ -179,13 +195,13 @@ abstract class _AppStore with Store {
     isDarkMode = aIsDarkMode;
 
     if (isDarkMode) {
-      textPrimaryColorGlobal = Colors.black26;
+      textPrimaryColorGlobal = Colors.white;
       textSecondaryColorGlobal = viewLineColor;
       defaultLoaderBgColorGlobal = Colors.black26;
     } else {
       textPrimaryColorGlobal = textPrimaryColor;
       textSecondaryColorGlobal = textSecondaryColor;
-      defaultLoaderBgColorGlobal = Colors.black26;
+      defaultLoaderBgColorGlobal = Colors.white;
     }
   }
 

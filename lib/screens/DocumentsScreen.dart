@@ -22,16 +22,16 @@ import '../utils/Images.dart';
 import 'DashboardScreen.dart';
 import 'package:file_picker/file_picker.dart';
 
-class VerifyDeliveryPersonScreen extends StatefulWidget {
+class DocumentsScreen extends StatefulWidget {
   final bool isShow;
 
-  VerifyDeliveryPersonScreen({this.isShow = false});
+  DocumentsScreen({this.isShow = false});
 
   @override
-  VerifyDeliveryPersonScreenState createState() => VerifyDeliveryPersonScreenState();
+  DocumentsScreenState createState() => DocumentsScreenState();
 }
 
-class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> {
+class DocumentsScreenState extends State<DocumentsScreen> {
   DateTime selectedDate = DateTime.now();
 
   List<DocumentModel> documentList = [];
@@ -68,7 +68,7 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
     afterBuildCreated(() async {
       appStore.setLoading(true);
       await getDocument();
-      await DriverDocument();
+      await driverDocument();
     });
   }
 
@@ -87,7 +87,7 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
   }
 
   ///Document List
-  Future<void> DriverDocument() async {
+  Future<void> driverDocument() async {
     appStore.setLoading(true);
     await getDriverDocumentList().then((value) {
       driverDocumentList.clear();
@@ -119,7 +119,7 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
     sendMultiPartRequest(
       multiPartRequest,
       onSuccess: (data) async {
-        await DriverDocument();
+        await driverDocument();
       },
       onError: (error) {
         toast(error.toString(), print: true);
@@ -197,7 +197,7 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
     deleteDeliveryDoc(id!).then((value) {
       toast(value.message, print: true);
 
-      DriverDocument();
+      driverDocument();
       appStore.setLoading(false);
     }).catchError((e) {
       appStore.setLoading(false);
@@ -236,7 +236,6 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         title: Text(language.documents, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
       body: Observer(builder: (context) {
@@ -252,18 +251,23 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Colors.grey.withOpacity(0.15)),
+                          decoration: BoxDecoration(color: Colors.transparent, border: Border.all(color: dividerColor), borderRadius: radius()),
                           child: DropdownButtonFormField<DocumentModel>(
-                            hint: Text(language.selectDocument, style: boldTextStyle()),
+                            hint: Text(language.selectDocument, style: primaryTextStyle()),
                             decoration: InputDecoration.collapsed(hintText: null),
                             isExpanded: true,
+                            isDense: true,
                             items: documentList.map((e) {
                               return DropdownMenuItem(
                                 value: e,
                                 child: RichText(
-                                  text: TextSpan(text: e.name.validate(), style: primaryTextStyle(), children: [
-                                    TextSpan(text: '${e.isRequired == 1 ? ' *' : ''}', style: boldTextStyle(color: Colors.red)),
-                                  ]),
+                                  text: TextSpan(
+                                    text: e.name.validate(),
+                                    style: primaryTextStyle(),
+                                    children: [
+                                      TextSpan(text: '${e.isRequired == 1 ? ' *' : ''}', style: boldTextStyle(color: Colors.red)),
+                                    ],
+                                  ),
                                 ),
                               );
                             }).toList(),
@@ -290,7 +294,7 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
                             child: Container(
                               padding: EdgeInsets.all(10),
                               margin: EdgeInsets.only(left: 16),
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Colors.grey.withOpacity(0.15)),
+                              decoration: BoxDecoration(color: Colors.transparent,border: Border.all(color: dividerColor), borderRadius: radius()),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -344,13 +348,16 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
                                   children: [
                                     driverDocumentList[index].expireDate != null ? Text(language.expireDate, style: boldTextStyle()) : Text(''),
                                     SizedBox(width: 8),
-                                    driverDocumentList[index].expireDate != null ? Expanded(child: Text(driverDocumentList[index].expireDate.toString(), style: primaryTextStyle())) : Expanded(child: Text('')),
+                                    driverDocumentList[index].expireDate != null
+                                        ? Expanded(child: Text(driverDocumentList[index].expireDate.toString(), style: primaryTextStyle()))
+                                        : Expanded(child: Text('',style: primaryTextStyle(),)),
                                     Visibility(
                                       visible: driverDocumentList[index].isVerified == 0,
                                       child: inkWellWidget(
                                         onTap: () {
                                           if (isExpire == 1) {
-                                            getMultipleFile(driverDocumentList[index].documentId, driverDocumentList[index].expireDate != null ? 1 : null, dateTime: selectedDate, updateId: driverDocumentList[index].id);
+                                            getMultipleFile(driverDocumentList[index].documentId, driverDocumentList[index].expireDate != null ? 1 : null,
+                                                dateTime: selectedDate, updateId: driverDocumentList[index].id);
                                           } else {
                                             getMultipleFile(driverDocumentList[index].documentId, driverDocumentList[index].expireDate != null ? 1 : null, updateId: driverDocumentList[index].id);
                                           }
@@ -395,7 +402,7 @@ class VerifyDeliveryPersonScreenState extends State<VerifyDeliveryPersonScreen> 
                                         ),
                                       ),
                                     ),
-                                    driverDocumentList[index].isVerified == 1?SizedBox(width: 16):SizedBox(),
+                                    driverDocumentList[index].isVerified == 1 ? SizedBox(width: 16) : SizedBox(),
                                     Visibility(
                                       visible: driverDocumentList[index].isVerified == 1,
                                       child: Icon(Icons.verified_user, color: Colors.green),

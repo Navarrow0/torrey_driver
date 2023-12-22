@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCEyLjflLF6f4UHnZOkD1EYUVyNXb-2Lx4',
-    appId: '1:241487483760:android:3310d4a39aace25082f5b5',
-    messagingSenderId: '241487483760',
-    projectId: 'torrey-f2904',
-    storageBucket: 'torrey-f2904.appspot.com',
+    apiKey: 'AIzaSyCktqW6HQlePxxb9QDc7ww4hVtFvC3Uy1w',
+    appId: '1:900146301898:android:c2d37c74bf8c34953cdd33',
+    messagingSenderId: '900146301898',
+    projectId: 'torreyfullapp',
+    storageBucket: 'torreyfullapp.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD2YKIcnkVr3bALrhmcji00OeS4PZbNX-4',
-    appId: '1:241487483760:ios:22d5bce320eacd7e82f5b5',
-    messagingSenderId: '241487483760',
-    projectId: 'torrey-f2904',
-    storageBucket: 'torrey-f2904.appspot.com',
-    iosClientId: '241487483760-552i39a3m10kpqls9p2h67tq2lrc56mq.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBvKc_YQuXia70aMHJUNKCAhRJrxW0d7Dk',
+    appId: '1:900146301898:ios:b1e9516515d3f01d3cdd33',
+    messagingSenderId: '900146301898',
+    projectId: 'torreyfullapp',
+    storageBucket: 'torreyfullapp.appspot.com',
+    iosClientId: '900146301898-penfjqbvt7sihppcpb4ikis42hqs8gao.apps.googleusercontent.com',
     iosBundleId: 'com.mighty.taxidriver.takiBookingDriver',
   );
 }

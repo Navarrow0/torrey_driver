@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 import '../Services/AuthService.dart';
 import '../main.dart';
@@ -22,27 +21,17 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen> {
   AuthServices authService = AuthServices();
 
   @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  void init() async {
-    //
-  }
-
-  @override
   void setState(fn) {
     if (mounted) super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.deleteAccount, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Stack(
+      body: Stack(
         children: [
           SingleChildScrollView(
             padding: EdgeInsets.all(16),
@@ -57,7 +46,20 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen> {
                 SizedBox(height: 24),
                 Center(
                   child: AppButtonWidget(
-                    text: language.deleteAccount,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Ionicons.ios_trash_outline,color: Colors.white),
+                        SizedBox(width: 4),
+                        Column(
+                          children: [
+                            SizedBox(height: 4),
+                            Text(language.deleteAccount, style: boldTextStyle(color: Colors.white)),
+                          ],
+                        ),
+                      ],
+                    ),
                     color: Colors.red,
                     onTap: () async {
                       await showConfirmDialogCustom(

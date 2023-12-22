@@ -1,67 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-import '../main.dart';
+//region App name
+const mAppName = 'Torrey DLC';
+//endregion
 
-const mAppName = 'Torrey Driver';
-var errorThisFieldRequired = 'This field is required';
-
-const googleMapAPIKey = 'AIzaSyDbw_1xubWppgsv9l6OrD4pdvTPn6XfQvs';
-
-final client = MqttServerClient.withPort("44.196.70.150", "torreyapp", 1883);
-
+//region DomainUrl
 const DOMAIN_URL = 'http://44.196.70.150';
-const mBaseUrl = "$DOMAIN_URL/api/";
+//endregion
 
+//region Google map key
+const GOOGLE_MAP_API_KEY = 'AIzaSyDbw_1xubWppgsv9l6OrD4pdvTPn6XfQvs';
+//endregion
+
+//region MQTT port and unique name
+final client = MqttServerClient.withPort("44.196.70.150", "", 1883);
+const MQTT_UNIQUE_TOPIC_NAME = 'torreyapp'; // Don't add underscore at the end of the name
+//endregion
+
+//region OneSignal Keys
+//You have to generate 2 onesignal account one for Rider and one for Driver
 const mOneSignalAppIdDriver = 'bd873b8c-79a4-4b66-ad89-a4dd1bf49558';
 const mOneSignalRestKeyDriver = 'Y2NlNzc2YzEtYTI2OC00N2E4LThjNzYtNjc0Mjk3N2JlOWNm';
 
 const mOneSignalAppIdRider = '6dbd5757-ce09-45c2-9cfd-8ca64ff642f4';
 const mOneSignalRestKeyRider = 'ZDkyZDcwZjgtZTBkMy00OGI4LTllMzYtZmU0NDBjZGNmZjU4';
+//endregion
 
-const PRESENT_TOP_UP_AMOUNT_CONST = '10|20|30';
-
-const passwordLengthGlobal = 8;
-const defaultRadius = 10.0;
-const defaultSmallRadius = 6.0;
-
-const textPrimarySizeGlobal = 16.00;
-const textBoldSizeGlobal = 16.00;
-const textSecondarySizeGlobal = 14.00;
-
-double tabletBreakpointGlobal = 600.0;
-double desktopBreakpointGlobal = 720.0;
-double statisticsItemWidth = 230.0;
-double defaultAppButtonElevation = 4.0;
-
-bool enableAppButtonScaleAnimationGlobal = true;
-int? appButtonScaleAnimationDurationGlobal;
-ShapeBorder? defaultAppButtonShapeBorder;
-
-var customDialogHeight = 140.0;
-var customDialogWidth = 220.0;
-
-enum ThemeModes { SystemDefault, Light, Dark }
-
-const LoginTypeApp = 'app';
-const LoginTypeGoogle = 'google';
-const LoginTypeOTP = 'otp';
-const LoginTypeApple = 'apple';
-
+//region Currency & country code
 const currencySymbol = '\$';
-const currencyNameConst = 'usd';
+const currencyNameConst = 'mxn';
 const defaultCountryCode = '+52';
+const defaultCountry = 'MX';
+//endregion
+
+//region decimal
 const digitAfterDecimal = 2;
+//endregion
 
-/// SharedReference keys
+//region PDF configuration
+const PDF_NAME = 'Torrey DLC Private Limited';
+const PDF_ADDRESS = 'Sarah Street 9, Beijing, Ahmedabad';
+const PDF_CONTACT_NUMBER = '+91 8888888888';
+//endregion
 
+//region Walkthrough
+const walk_title1 = "Obten tú solicitud\nde viaje";
+const walk_desc1 = "Obten una solicitud de transporte\npor el conductor más cercano";
+
+const walk_title2 = "Recoge la mercancía";
+const walk_desc2 = "Acepta una solicitud de viaje\ny recoge la mercancía";
+
+const walk_title3 = "Deja las tarimas";
+const walk_desc3 = "Deja las tarimas en el punto de destino";
+//endregion
+
+//region top up default value
+const PRESENT_TOP_UP_AMOUNT_CONST = '10|20|30';
+//endregion
+
+//region url
+const mBaseUrl = "$DOMAIN_URL/api/";
+const mMQTT_UNIQUE_TOPIC_NAME = MQTT_UNIQUE_TOPIC_NAME + '_';
+//endregion
+
+//region login type
+const LoginTypeGoogle = 'google';
+const LoginTypeOTP = 'mobile';
+const LoginTypeApple = 'apple';
+//endregion
+
+//region error field
+var errorThisFieldRequired = 'This field is required';
+var errorSomethingWentWrong = 'Something Went Wrong';
+//endregion
+
+//region SharedReference keys
 const REMEMBER_ME = 'REMEMBER_ME';
 const IS_FIRST_TIME = 'IS_FIRST_TIME';
 const IS_LOGGED_IN = 'IS_LOGGED_IN';
-
 const ON_RIDE_MODEL = 'ON_RIDE_MODEL';
 const IS_TIME2 = 'IS_TIME2';
-
 const USER_ID = 'USER_ID';
 const FIRST_NAME = 'FIRST_NAME';
 const LAST_NAME = 'LAST_NAME';
@@ -83,20 +102,29 @@ const IS_GOOGLE = 'IS_GOOGLE';
 const GENDER = 'GENDER';
 const IS_ONLINE = 'IS_ONLINE';
 const IS_Verified_Driver = 'is_verified_driver';
+const LATITUDE = 'LATITUDE';
+const LONGITUDE = 'LONGITUDE';
+//endregion
+
+//region user roles
 const ADMIN = 'admin';
 const DRIVER = 'driver';
 const RIDER = 'rider';
+//endregion
 
-/// Taxi Status
+//region Taxi Status
 const IN_ACTIVE = 'inactive';
 const PENDING = 'pending';
 const BANNED = 'banned';
 const REJECT = 'reject';
+//endregion
 
-/// Wallet keys
+//region Wallet keys
 const CREDIT = 'credit';
 const DEBIT = 'debit';
+//endregion
 
+//region payment
 const PAYMENT_TYPE_STRIPE = 'stripe';
 const PAYMENT_TYPE_RAZORPAY = 'razorpay';
 const PAYMENT_TYPE_PAYSTACK = 'paystack';
@@ -106,13 +134,16 @@ const PAYMENT_TYPE_PAYTABS = 'paytabs';
 const PAYMENT_TYPE_MERCADOPAGO = 'mercadopago';
 const PAYMENT_TYPE_PAYTM = 'paytm';
 const PAYMENT_TYPE_MYFATOORAH = 'myfatoorah';
-
 const CASH = 'cash';
 const Wallet = 'wallet';
 
 const stripeURL = 'https://api.stripe.com/v1/payment_intents';
 
-/// My Rides Status
+const mRazorDescription = mAppName;
+const mStripeIdentifier = defaultCountry;
+//endregion
+
+//region Rides Status
 const UPCOMING = 'upcoming';
 const NEW_RIDE_REQUESTED = 'new_ride_requested';
 const ACCEPTED = 'accepted';
@@ -123,13 +154,16 @@ const IN_PROGRESS = 'in_progress';
 const CANCELED = 'canceled';
 const COMPLETED = 'completed';
 const COMPLAIN_COMMENT = "complaintcomment";
+//endregion
 
-///FireBase Collection Name
+//region FireBase Collection Name
 const MESSAGES_COLLECTION = "messages";
 const USER_COLLECTION = "users";
 const CONTACT_COLLECTION = "contact";
 const CHAT_DATA_IMAGES = "chatImages";
+//endregion
 
+//region keys
 const IS_ENTER_KEY = "IS_ENTER_KEY";
 const SELECTED_WALLPAPER = "SELECTED_WALLPAPER";
 const PER_PAGE_CHAT_COUNT = 50;
@@ -149,7 +183,7 @@ const VIDEO = "VIDEO";
 const AUDIO = "AUDIO";
 
 const FIXED_CHARGES = "fixed_charges";
-const MIN_DISTANCE = "10000";
+const MIN_DISTANCE = "20000";
 const MIN_WEIGHT = "20000";
 const PER_DISTANCE_CHARGE = "per_distance_charges";
 const PER_WEIGHT_CHARGE = "per_weight_charges";
@@ -161,8 +195,9 @@ const MALE = 'male';
 const FEMALE = 'female';
 const OTHER = 'other';
 const LEFT = 'left';
+//endregion
 
-/// app setting key
+//region app setting key
 const CLOCK = 'clock';
 const PRESENT_TOPUP_AMOUNT = 'preset_topup_amount';
 const PRESENT_TIP_AMOUNT = 'preset_tip_amount';
@@ -171,8 +206,9 @@ const MAX_TIME_FOR_DRIVER_SECOND = 'ride_accept_decline_duration_for_driver_in_s
 const MIN_AMOUNT_TO_ADD = 'min_amount_to_add';
 const MAX_AMOUNT_TO_ADD = 'max_amount_to_add';
 const APPLY_ADDITIONAL_FEE = 'apply_additional_fee';
+//endregion
 
-//chat
+//region chat
 List<String> rtlLanguage = ['ar', 'ur'];
 
 enum MessageType {
@@ -198,24 +234,27 @@ extension MessageExtension on MessageType {
     }
   }
 }
+//endregion
 
-String printAmount(String amount) {
-  return appStore.currencyPosition == LEFT ? '${appStore.currencyCode} $amount' : '$amount ${appStore.currencyCode}';
-}
+//region const values
+const passwordLengthGlobal = 8;
+const defaultRadius = 5.0;
+const defaultSmallRadius = 6.0;
 
-const PDF_NAME = 'TORREY Private Limited';
-const PDF_ADDRESS = 'Sarah Street 9, Beijing, Ahmedabad';
-const PDF_CONTACT_NUMBER = '+91 8888888888';
+const textPrimarySizeGlobal = 16.00;
+const textBoldSizeGlobal = 16.00;
+const textSecondarySizeGlobal = 14.00;
 
-var errorSomethingWentWrong = 'Something Went Wrong';
-const mRazorDescription = 'Mighty Rider';
-const mStripeIdentifier = 'IN';
+double tabletBreakpointGlobal = 600.0;
+double desktopBreakpointGlobal = 720.0;
+double statisticsItemWidth = 230.0;
+double defaultAppButtonElevation = 0.0;
 
-const walk_title1='Bienvenido a\n"Tu Traslado Fresco';
-const walk_desc1="Conéctate con conductores listos para transportar tu mercancía.";
-const walk_title2="Rastrea tu envío,\nen tiempo real";
-const walk_desc2="Mantente informado sobre la ubicación y estado de tu envío en tiempo real.";
-const walk_title3="Conductores\nConfiables";
-const walk_desc3="Todos nuestros conductores están verificados y capacitados para manejar tu mercancía con cuidado.";
+bool enableAppButtonScaleAnimationGlobal = true;
+int? appButtonScaleAnimationDurationGlobal;
+ShapeBorder? defaultAppButtonShapeBorder;
 
+var customDialogHeight = 140.0;
+var customDialogWidth = 220.0;
 const PER_PAGE = 50;
+//endregion

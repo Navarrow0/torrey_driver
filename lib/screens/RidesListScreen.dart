@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../components/CreateTabScreen.dart';
 import '../main.dart';
@@ -9,25 +7,15 @@ import '../utils/Common.dart';
 import '../utils/Constants.dart';
 import '../utils/Extensions/app_common.dart';
 
-class MyRidesScreen extends StatefulWidget {
+class RidesListScreen extends StatefulWidget {
   @override
-  MyRidesScreenState createState() => MyRidesScreenState();
+  RidesListScreenState createState() => RidesListScreenState();
 }
 
-class MyRidesScreenState extends State<MyRidesScreen> {
+class RidesListScreenState extends State<RidesListScreen> {
   int currentPage = 1;
   int totalPage = 1;
   List<String> riderStatus = [COMPLETED, CANCELED];
-
-  @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  void init() async {
-    //
-  }
 
   @override
   void setState(fn) {
@@ -38,27 +26,20 @@ class MyRidesScreenState extends State<MyRidesScreen> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: riderStatus.length,
-      child: BackgroundPage(
-        appBar: CustomAppBar(
-
+      child: Scaffold(
+        appBar: AppBar(
           title: Text(language.rides, style: boldTextStyle(color: appTextPrimaryColorWhite)),
         ),
-        child: Column(
+        body: Column(
           children: [
             Container(
               height: 40,
               margin: EdgeInsets.only(right: 16, left: 16, top: 16),
-              decoration: BoxDecoration(
-                color: dividerColor,
-                borderRadius: radius(),
-              ),
+              decoration: BoxDecoration(color: Colors.transparent,border: Border.all(color: dividerColor), borderRadius: radius()),
               child: TabBar(
-                indicator: BoxDecoration(
-                  borderRadius: radius(),
-                  color: Color.fromRGBO(45, 45, 45, 1.0),
-                ),
+                indicator: BoxDecoration(borderRadius: radius(), color: primaryColor),
                 labelColor: Colors.white,
-                unselectedLabelColor: Color.fromRGBO(72, 72, 72, 1.0),
+                unselectedLabelColor: primaryColor,
                 labelStyle: boldTextStyle(color: Colors.white, size: 14),
                 tabs: riderStatus.map((e) {
                   return Tab(

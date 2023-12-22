@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taki_booking_driver/Services/AuthService.dart';
 import 'package:taki_booking_driver/main.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
+import 'package:taki_booking_driver/utils/Extensions/context_extensions.dart';
 import '../model/ServiceModel.dart';
 import '../network/RestApis.dart';
 import '../utils/Colors.dart';
@@ -15,7 +16,7 @@ import '../utils/Extensions/app_common.dart';
 import '../utils/Extensions/app_textfield.dart';
 import 'TermsConditionScreen.dart';
 
-class DriverRegisterScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   final bool isOtp;
   final bool socialLogin;
 
@@ -24,13 +25,13 @@ class DriverRegisterScreen extends StatefulWidget {
   final String? termsConditionUrl;
   final String? userName;
 
-  DriverRegisterScreen({this.socialLogin = false, this.userName, this.isOtp = false, this.countryCode, this.privacyPolicyUrl, this.termsConditionUrl});
+  SignUpScreen({this.socialLogin = false, this.userName, this.isOtp = false, this.countryCode, this.privacyPolicyUrl, this.termsConditionUrl});
 
   @override
-  DriverRegisterScreenState createState() => DriverRegisterScreenState();
+  SignUpScreenState createState() => SignUpScreenState();
 }
 
-class DriverRegisterScreenState extends State<DriverRegisterScreen> {
+class SignUpScreenState extends State<SignUpScreen> {
   AuthServices authService = AuthServices();
 
   List<GlobalKey<FormState>> formKeys = [
@@ -130,7 +131,7 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
                   lName: lastNameController.text.trim(),
                   userName: widget.socialLogin ? widget.userName : userNameController.text.trim(),
                   password: widget.socialLogin ? widget.userName : passController.text.trim(),
-                  userType: 'driver',
+                  userType: DRIVER,
                   isOtpLogin: widget.socialLogin)
               .then((res) async {
             //
@@ -156,8 +157,8 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(language.signUp, style: boldTextStyle(color: Colors.white)),
+      appBar: AppBar(elevation: 0,backgroundColor: Colors.transparent,leading: BackButton(color: context.iconColor),
+        title: Text(language.signUp, style: boldTextStyle()),
       ),
       body: Stack(
         children: [
@@ -196,60 +197,43 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
                     key: formKeys[0],
                     child: Column(
                       children: [
+                        AppTextField(
+                          textFieldType: TextFieldType.NAME,
+                          controller: firstController,
+                          focus: firstNameFocus,
+                          nextFocus: lastNameFocus,
+                          errorThisFieldRequired: language.thisFieldRequired,
+                          decoration: inputDecoration(context, label: language.firstName),
+                        ),
                         SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: AppTextField(
-                                textFieldType: TextFieldType.NAME,
-                                controller: firstController,
-                                focus: firstNameFocus,
-                                nextFocus: lastNameFocus,
-                                errorThisFieldRequired: language.thisFieldRequired,
-                                decoration: inputDecoration(context, label: language.firstName),
-                              ),
-                            ),
-                            SizedBox(width: 16),
-                            Expanded(
-                              child: AppTextField(
-                                textFieldType: TextFieldType.NAME,
-                                controller: lastNameController,
-                                focus: lastNameFocus,
-                                nextFocus: emailFocus,
-                                errorThisFieldRequired: language.thisFieldRequired,
-                                decoration: inputDecoration(context, label: language.lastName),
-                              ),
-                            ),
-                          ],
+                        AppTextField(
+                          textFieldType: TextFieldType.NAME,
+                          controller: lastNameController,
+                          focus: lastNameFocus,
+                          nextFocus: emailFocus,
+                          errorThisFieldRequired: language.thisFieldRequired,
+                          decoration: inputDecoration(context, label: language.lastName),
                         ),
-                        SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: AppTextField(
-                                textFieldType: TextFieldType.EMAIL,
-                                focus: emailFocus,
-                                controller: emailController,
-                                nextFocus: userNameFocus,
-                                errorThisFieldRequired: language.thisFieldRequired,
-                                decoration: inputDecoration(context, label: language.email),
-                              ),
-                            ),
-                            SizedBox(width: 16),
-                            if (widget.socialLogin != true)
-                              Expanded(
-                                child: AppTextField(
-                                  textFieldType: TextFieldType.USERNAME,
-                                  focus: userNameFocus,
-                                  controller: userNameController,
-                                  nextFocus: phoneFocus,
-                                  errorThisFieldRequired: language.thisFieldRequired,
-                                  decoration: inputDecoration(context, label: language.userName),
-                                ),
-                              ),
-                          ],
+                        SizedBox(height: 8),
+                        AppTextField(
+                          textFieldType: TextFieldType.EMAIL,
+                          focus: emailFocus,
+                          controller: emailController,
+                          nextFocus: userNameFocus,
+                          errorThisFieldRequired: language.thisFieldRequired,
+                          decoration: inputDecoration(context, label: language.email),
                         ),
-                        if (widget.socialLogin != true) SizedBox(height: 16),
+                        SizedBox(height: 8),
+                        if (widget.socialLogin != true)
+                          AppTextField(
+                            textFieldType: TextFieldType.USERNAME,
+                            focus: userNameFocus,
+                            controller: userNameController,
+                            nextFocus: phoneFocus,
+                            errorThisFieldRequired: language.thisFieldRequired,
+                            decoration: inputDecoration(context, label: language.userName),
+                          ),
+                        if (widget.socialLogin != true) SizedBox(height: 8),
                         if (widget.socialLogin != true)
                           AppTextField(
                             controller: phoneController,
@@ -299,7 +283,7 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
                               return null;
                             },
                           ),
-                        if (widget.socialLogin != true) SizedBox(height: 16),
+                        if (widget.socialLogin != true) SizedBox(height: 8),
                         if (widget.socialLogin != true)
                           AppTextField(
                             controller: passController,
@@ -328,9 +312,7 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
                                   setState(() {});
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.only(
-                                    bottom: 8,
-                                  ),
+                                  margin: EdgeInsets.only(bottom: 8),
                                   padding: EdgeInsets.only(left: 16, right: 8, top: 4, bottom: 4),
                                   decoration: BoxDecoration(
                                     border: Border.all(color: selectedService == listServices.indexOf(e) ? Colors.green : primaryColor.withOpacity(0.5)),
@@ -362,21 +344,16 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
                   title: Text(language.carModel, style: boldTextStyle()),
                   content: Form(
                     key: formKeys[2],
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 4),
-                      child: AppTextField(textFieldType: TextFieldType.NAME, controller: carModelController,decoration: inputDecoration(context, label: language.carModel)),
-                    ),
-                )),
+                    child: AppTextField(textFieldType: TextFieldType.NAME, controller: carModelController, decoration: inputDecoration(context, label: language.carModel)),
+                  ),
+                ),
                 Step(
                   isActive: currentIndex <= 3,
                   state: currentIndex <= 3 ? StepState.indexed : StepState.complete,
                   title: Text(language.carProductionYear, style: boldTextStyle()),
                   content: Form(
                     key: formKeys[3],
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 4),
-                      child: AppTextField(textFieldType: TextFieldType.PHONE, controller: carProductionController,decoration: inputDecoration(context, label: language.carProductionYear)),
-                    ),
+                    child: AppTextField(textFieldType: TextFieldType.PHONE, controller: carProductionController, decoration: inputDecoration(context, label: language.carProductionYear)),
                   ),
                 ),
                 Step(
@@ -385,10 +362,7 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
                   title: Text(language.carPlateNumber, style: boldTextStyle()),
                   content: Form(
                     key: formKeys[4],
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 4),
-                      child: AppTextField(textFieldType: TextFieldType.NAME, controller: carPlateController,decoration: inputDecoration(context, label: language.carPlateNumber)),
-                    ),
+                    child: AppTextField(textFieldType: TextFieldType.NAME, controller: carPlateController, decoration: inputDecoration(context, label: language.carPlateNumber)),
                   ),
                 ),
                 Step(
@@ -399,10 +373,7 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
                     key: formKeys[5],
                     child: Column(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 4),
-                          child: AppTextField(textFieldType: TextFieldType.NAME, controller: carColorController,decoration: inputDecoration(context, label: language.carColor)),
-                        ),
+                        AppTextField(textFieldType: TextFieldType.NAME, controller: carColorController, decoration: inputDecoration(context, label: language.carColor)),
                         SizedBox(height: 8),
                         CheckboxListTile(
                           contentPadding: EdgeInsets.zero,
@@ -417,7 +388,8 @@ class DriverRegisterScreenState extends State<DriverRegisterScreen> {
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     if (widget.termsConditionUrl != null && widget.termsConditionUrl!.isNotEmpty) {
-                                      launchScreen(context, TermsConditionScreen(title: language.termsConditions, subtitle: widget.termsConditionUrl), pageRouteAnimation: PageRouteAnimation.Slide);
+                                      launchScreen(context, TermsConditionScreen(title: language.termsConditions, subtitle: widget.termsConditionUrl),
+                                          pageRouteAnimation: PageRouteAnimation.Slide);
                                     } else {
                                       toast(language.txtURLEmpty);
                                     }

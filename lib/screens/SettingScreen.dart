@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:taki_booking_driver/utils/Common.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../main.dart';
 import '../model/SettingModel.dart';
 import '../network/RestApis.dart';
@@ -29,7 +27,6 @@ class SettingScreenState extends State<SettingScreen> {
   String? privacyPolicy;
   String? termsCondition;
   String? mHelpAndSupport;
-
   bool isAvailable = false;
 
   @override
@@ -39,33 +36,13 @@ class SettingScreenState extends State<SettingScreen> {
   }
 
   void init() async {
-    await driverDetail();
-    await getAppSetting().then((value) {
-      if (value.settingModel!.helpSupportUrl != null) mHelpAndSupport = value.settingModel!.helpSupportUrl!;
-      settingModel = value.settingModel!;
-      if (value.privacyPolicyModel!.value != null) privacyPolicy = value.privacyPolicyModel!.value!;
-      if (value.termsCondition!.value != null) termsCondition = value.termsCondition!.value!;
-      setState(() {});
-    }).catchError((error) {
-      log(error.toString());
-    });
+    if (appStore.isAvailable == 1) {
+      isAvailable = true;
+    } else {
+      isAvailable = false;
+    }
     LiveStream().on(CHANGE_LANGUAGE, (p0) {
       setState(() {});
-    });
-  }
-
-  Future<void> driverDetail() async {
-    appStore.setLoading(true);
-    await getUserDetail(userId: sharedPref.getInt(USER_ID)).then((value) {
-      if (value.data!.isAvailable == 1) {
-        isAvailable = true;
-      } else {
-        isAvailable = false;
-      }
-      appStore.setLoading(false);
-      setState(() {});
-    }).catchError((error) {
-      appStore.setLoading(false);
     });
   }
 
@@ -81,6 +58,21 @@ class SettingScreenState extends State<SettingScreen> {
     });
   }
 
+  Future<void> driverDetail() async {
+    await getUserDetail(userId: sharedPref.getInt(USER_ID)).then((value) {
+      appStore.isAvailable = value.data!.isAvailable;
+      if (value.data!.isAvailable == 1) {
+        isAvailable = true;
+      } else {
+        isAvailable = false;
+      }
+      appStore.setLoading(false);
+      setState(() {});
+    }).catchError((error) {
+      appStore.setLoading(false);
+    });
+  }
+
   @override
   void setState(fn) {
     if (mounted) super.setState(fn);
@@ -88,83 +80,86 @@ class SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
-
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.settings, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Stack(
+      body: Stack(
         children: [
           SingleChildScrollView(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: EdgeInsets.only(bottom: 16, top: 16),
             child: Column(
               children: [
                 Visibility(
-                  visible: sharedPref.getString(LOGIN_TYPE) != 'mobile' && sharedPref.getString(LOGIN_TYPE) != LoginTypeGoogle && sharedPref.getString(LOGIN_TYPE) != null,
-                  child: settingItemWidget(Icons.lock_outline, language.changePassword, () {
+                  visible: sharedPref.getString(LOGIN_TYPE) != LoginTypeOTP && sharedPref.getString(LOGIN_TYPE) != LoginTypeGoogle && sharedPref.getString(LOGIN_TYPE) != null,
+                  child: settingItemWidget(Ionicons.ios_lock_closed_outline, language.changePassword, () {
                     launchScreen(context, ChangePasswordScreen(), pageRouteAnimation: PageRouteAnimation.Slide);
                   }),
                 ),
-                settingItemWidget(Icons.language, language.language, () {
+                settingItemWidget(Ionicons.language_outline, language.language, () {
                   launchScreen(context, LanguageScreen(), pageRouteAnimation: PageRouteAnimation.Slide);
                 }),
-                settingItemWidget(Icons.assignment_outlined, language.privacyPolicy, () {
-                  if (privacyPolicy != null) {
-                    launchScreen(context, TermsConditionScreen(title: language.privacyPolicy, subtitle: privacyPolicy), pageRouteAnimation: PageRouteAnimation.Slide);
-                  } else {
-                    toast(language.txtURLEmpty);
-                  }
-                }),
-                settingItemWidget(Icons.help_outline, language.helpSupport, () {
-                  if (mHelpAndSupport != null) {
-                    launchUrl(Uri.parse(mHelpAndSupport!));
-                  } else {
-                    toast(language.txtURLEmpty);
-                  }
-                }),
-                settingItemWidget(Icons.assignment_outlined, language.termsConditions, () {
-                  if (termsCondition != null) {
-                    launchScreen(context, TermsConditionScreen(title: language.termsConditions, subtitle: termsCondition), pageRouteAnimation: PageRouteAnimation.Slide);
-                  } else {
-                    toast(language.txtURLEmpty);
-                  }
-                }),
+                if (appStore.privacyPolicy != null)
+                  settingItemWidget(Ionicons.ios_document_outline, language.privacyPolicy, () {
+                    if (appStore.privacyPolicy != null) {
+                      launchScreen(context, TermsConditionScreen(title: language.privacyPolicy, subtitle: appStore.privacyPolicy), pageRouteAnimation: PageRouteAnimation.Slide);
+                    } else {
+                      toast(language.txtURLEmpty);
+                    }
+                  }),
+                if (appStore.mHelpAndSupport != null)
+                  settingItemWidget(Ionicons.help_outline, language.helpSupport, () {
+                    if (mHelpAndSupport != null) {
+                      launchUrl(Uri.parse(appStore.mHelpAndSupport!));
+                    } else {
+                      toast(language.txtURLEmpty);
+                    }
+                  }),
+                if (appStore.termsCondition != null)
+                  settingItemWidget(Ionicons.document_outline, language.termsConditions, () {
+                    if (appStore.termsCondition != null) {
+                      launchScreen(context, TermsConditionScreen(title: language.termsConditions, subtitle: appStore.termsCondition), pageRouteAnimation: PageRouteAnimation.Slide);
+                    } else {
+                      toast(language.txtURLEmpty);
+                    }
+                  }),
                 settingItemWidget(
-                  Icons.info_outline,
+                  Ionicons.information,
                   language.aboutUs,
-                      () {
+                  () {
                     launchScreen(context, AboutScreen(settingModel: settingModel), pageRouteAnimation: PageRouteAnimation.Slide);
                   },
                 ),
-                settingItemWidget(Icons.delete_outline, language.deleteAccount, () {
+                settingItemWidget(Ionicons.ios_trash_outline, language.deleteAccount, () {
                   launchScreen(context, DeleteAccountScreen(), pageRouteAnimation: PageRouteAnimation.Slide);
                 }),
-                ListTile(
-                  contentPadding: EdgeInsets.only(left: 16, right: 16),
-                  leading: Icon(Icons.offline_bolt_outlined, size: 25, color: primaryColor),
-                  title: Text(isAvailable ? language.available : language.notAvailable, style: primaryTextStyle()),
-                  trailing: Switch(
-                      value: isAvailable,
-                      onChanged: (val) {
-                        //
-                      }),
-                  onTap: () async {
-                    if (appStore.currentRiderRequest == null) {
-                      await showConfirmDialogCustom(
-                        context,
-                        title: !isAvailable ? language.youWillReceiveNewRidersAndNotifications : language.youWillNotReceiveNewRidersAndNotifications,
-                        dialogType: DialogType.ACCEPT,
-                        positiveText: language.yes,
-                        negativeText: language.no,
-                        primaryColor: primaryColor,
-                        onAccept: (c) async {
-                          updateAvailable();
-                        },
-                      );
-                    } else {
-                      toast(language.youCanNotThisActionsPerformBecauseYourCurrentRideIsNotCompleted);
-                    }
+                settingItemWidget(
+                  !isAvailable ? Ionicons.flash_off_outline : Ionicons.flash_outline,
+                  isAvailable ? language.available : language.notAvailable,
+                  () {
+                    //
                   },
+                  isLast: true,
+                  suffixIcon: Switch(
+                      activeColor: primaryColor,
+                      value: isAvailable,
+                      onChanged: (val) async {
+                        if (appStore.currentRiderRequest == null) {
+                          await showConfirmDialogCustom(
+                            context,
+                            title: !isAvailable ? language.youWillReceiveNewRidersAndNotifications : language.youWillNotReceiveNewRidersAndNotifications,
+                            dialogType: DialogType.ACCEPT,
+                            positiveText: language.yes,
+                            negativeText: language.no,
+                            primaryColor: primaryColor,
+                            onAccept: (c) async {
+                              updateAvailable();
+                            },
+                          );
+                        } else {
+                          toast(language.youCanNotThisActionsPerformBecauseYourCurrentRideIsNotCompleted);
+                        }
+                      }),
                 ),
               ],
             ),
@@ -180,19 +175,24 @@ class SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  Widget settingItemWidget(IconData icon, String title, Function() onTap, {bool isLast = false, IconData? suffixIcon}) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ListTile(
-          contentPadding: EdgeInsets.only(left: 16, right: 16),
-          leading: Icon(icon, size: 25, color: primaryColor),
-          title: Text(title, style: primaryTextStyle()),
-          trailing: suffixIcon != null ? Icon(suffixIcon, color: Colors.green) : Icon(Icons.navigate_next, color: Colors.grey),
-          onTap: onTap,
+  Widget settingItemWidget(IconData icon, String title, Function() onTap, {bool isLast = false, Widget? suffixIcon}) {
+    return inkWellWidget(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.only(left: 16, right: 16, bottom: 12, top: 8),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(border: Border.all(color: dividerColor), borderRadius: radius(defaultRadius)),
+              child: Icon(icon, size: 20, color: primaryColor),
+            ),
+            SizedBox(width: 12),
+            Expanded(child: Text(title, style: primaryTextStyle())),
+            suffixIcon != null ? suffixIcon : Icon(Icons.navigate_next, color: dividerColor),
+          ],
         ),
-        if (!isLast) Divider(height: 0)
-      ],
+      ),
     );
   }
 }

@@ -1,978 +1,506 @@
 import 'BaseLanguage.dart';
 
 class LanguageFr extends BaseLanguage {
-  @override
-  String get appName => 'Mighty Driver';
+  @override String get appName => "Might Driver";
 
-  @override
-  String get welcomeBack => 'Content de te revoir !';
+  @override String get thisFieldRequired => "C champ est obligatoire";
 
-  @override
-  String get signInYourAccount => 'Connectez votre compte';
+  @override String get email => "-mail";
 
-  @override
-  String get thisFieldRequired => 'Ce champ est requis';
+  @override String get password => "Mo de passe";
 
-  @override
-  String get email => 'E-mail';
+  @override String get forgotPassword => "Mo de passe oublié?";
 
-  @override
-  String get password => 'Mot de passe';
+  @override String get logIn => "S connecter";
 
-  @override
-  String get forgotPassword => 'Mot de passe oublié?';
+  @override String get orLogInWith => "O connecter avec";
 
-  @override
-  String get logIn => 'Connexion';
+  @override String get donHaveAnAccount => "avez-vous pas de compte?";
 
-  @override
-  String get orLogInWith => 'Ou connecter avec';
+  @override String get signUp => "inscrire";
 
-  @override
-  String get donHaveAnAccount => 'N\'avez -vous pasde compte ?';
+  @override String get firstName => "Préno";
 
-  @override
-  String get signUp => 'S\'inscrire';
+  @override String get lastName => "No de famille";
 
-  @override
-  String get createAccount => 'Créer un compte';
+  @override String get userName => "No d'utilisateur";
 
-  @override
-  String get createYourAccountToContinue => 'Créez votre compte pour continuer';
+  @override String get phoneNumber => "Numér de téléphone";
 
-  @override
-  String get firstName => 'Prénom';
+  @override String get changePassword => "Change le mot de passe";
 
-  @override
-  String get lastName => 'Nom de famille';
+  @override String get oldPassword => "ancie mot de passe";
 
-  @override
-  String get userName => 'Nom d\'utilisateur';
+  @override String get newPassword => "nouvea mot de passe";
 
-  @override
-  String get phoneNumber => 'Numéro de téléphone';
+  @override String get confirmPassword => "Confirme le mot de passe";
 
-  @override
-  String get alreadyHaveAnAccount => 'Vous avez déjà un compte?';
+  @override String get passwordDoesNotMatch => "L mot de passe ne correspond pas";
 
-  @override
-  String get contactUs => 'Nous contacter';
+  @override String get passwordInvalid => "L longueur minimale du mot de passe devrait être de 8";
 
-  @override
-  String get purchase => 'Acheter';
+  @override String get yes => "Ou";
 
-  @override
-  String get changePassword => 'Changer le mot de passe';
+  @override String get no => "No";
 
-  @override
-  String get oldPassword => 'ancien mot de passe';
+  @override String get writeMessage => "Écrir un message....";
 
-  @override
-  String get newPassword => 'nouveau mot de passe';
+  @override String get enterTheEmailAssociatedWithYourAccount => "Entre l'e-mail associé à votre compte";
 
-  @override
-  String get confirmPassword => 'Confirmez le mot de passe';
+  @override String get submit => "Soumettr";
 
-  @override
-  String get passwordDoesNotMatch => 'Le mot de passe ne correspond pas';
+  @override String get language => "Langu";
 
-  @override
-  String get passwordInvalid => 'La longueur minimale du mot de passe devrait être de 8';
+  @override String get notification => "Notificatio";
 
-  @override
-  String get yes => 'Oui';
+  @override String get useInCaseOfEmergency => "Utilise en cas d'urgence";
 
-  @override
-  String get no => 'Non';
+  @override String get notifyAdmin => "Informe l'administrateur";
 
-  @override
-  String get writeMessage => 'Écrire un message';
+  @override String get notifiedSuccessfully => "Notifi avec succès";
 
-  @override
-  String get enterTheEmailAssociatedWithYourAccount => 'Entrez l\'e -mail associéàvotre compte';
+  @override String get complain => "S plaindre";
 
-  @override
-  String get submit => 'Soumettre';
+  @override String get pleaseEnterSubject => "Veuille saisir le sujet";
 
-  @override
-  String get language => 'Langue';
+  @override String get writeDescription => "Écrive une description ....";
 
-  @override
-  String get notification => 'Notification';
+  @override String get saveComplain => "Sauve la plainte";
 
-  @override
-  String get otpVeriFiCation => 'Vérification OTP';
+  @override String get address => "Adress";
 
-  @override
-  String get weHaveSentDigitCode => 'Nous avons envoyé un code à 4 chiffres';
+  @override String get updateProfile => "Mettr à jour le profil";
 
-  @override
-  String get contactLength => 'La longueur du numéro de contact doit être de 10 à 14 chiffres.';
+  @override String get notChangeUsername => "Vou ne pouvez pas changer le nom d'utilisateur";
 
-  @override
-  String get about => 'À propos de';
+  @override String get notChangeEmail => "Vou ne pouvez pas modifier l'ID de messagerie";
 
-  @override
-  String get useInCaseOfEmergency => 'Utiliser en cas d\'urgence';
+  @override String get profileUpdateMsg => "Mis à jour du profil réussie";
 
-  @override
-  String get notifyAdmin => 'Avertir l\'administrateur';
+  @override String get emergencyContact => "Personn à contacter en cas d'urgence";
 
-  @override
-  String get notifiedSuccessfully => 'Notifié avec succès';
+  @override String get areYouSureYouWantDeleteThisNumber => "Ête-vous sûr de vouloir supprimer ce numéro?";
 
-  @override
-  String get complain => 'Se plaindre';
+  @override String get addContact => "Ajoute le contact";
 
-  @override
-  String get pleaseEnterSubject => 'Veuillez saisir le sujet';
+  @override String get save => "Sauvegarde";
 
-  @override
-  String get writeDescription => 'Écrivez une description ....';
+  @override String get availableBalance => "Sold disponible";
 
-  @override
-  String get saveComplain => 'Sauver la plainte';
+  @override String get recentTransactions => "transaction récentes";
 
-  @override
-  String get editProfile => 'Editer le profil';
+  @override String get moneyDeposited => "Argen déposé";
 
-  @override
-  String get gender => 'Le genre';
+  @override String get addMoney => "Ajoute de l'argent";
 
-  @override
-  String get address => 'Adresse';
+  @override String get cancel => "Annule";
 
-  @override
-  String get updateProfile => 'Mettre à jour le profil';
+  @override String get pleaseSelectAmount => "Veuille sélectionner le montant";
 
-  @override
-  String get notChangeUsername => 'Vous ne pouvez pas changer le nom d\'utilisateur';
+  @override String get amount => "Montan";
 
-  @override
-  String get notChangeEmail => 'Vous ne pouvez pas modifier l\'ID demessagerie';
+  @override String get confirm => "Confirme";
 
-  @override
-  String get profileUpdateMsg => 'Mise à jour du profil réussie';
+  @override String get wallet => "Portefeuill";
 
-  @override
-  String get emergencyContact => 'Personne à contacter en cas d\'urgence';
+  @override String get paymentDetail => "Détai du paiement";
 
-  @override
-  String get areYouSureYouWantDeleteThisNumber => 'Êtes-vous sûr de vouloir supprimer ce numéro?';
+  @override String get rideId => "I-id";
 
-  @override
-  String get addContact => 'Ajouter le contact';
+  @override String get viewHistory => "Voi l'historique";
 
-  @override
-  String get googleMap => 'Google Map';
+  @override String get paymentDetails => "Détail de paiement";
 
-  @override
-  String get save => 'sauvegarder';
+  @override String get paymentType => "Typ de paiement";
 
-  @override
-  String get myRides => 'Mes manèges';
+  @override String get paymentStatus => "Statu de paiement";
 
-  @override
-  String get myWallet => 'Mon portefeuille';
+  @override String get priceDetail => "Détai des prix";
 
-  @override
-  String get availableBalance => 'Solde disponible';
+  @override String get basePrice => "Pri ​​de base";
 
-  @override
-  String get recentTransactions => 'transactions récentes';
+  @override String get distancePrice => "Pri ​​à distance";
 
-  @override
-  String get moneyDeposited => 'Argent déposé';
+  @override String get waitTime => "Temp d'attente";
 
-  @override
-  String get addMoney => 'Ajouter de l\'argent';
+  @override String get extraCharges => "Frai supplémentaires";
 
-  @override
-  String get cancel => 'Annuler';
+  @override String get couponDiscount => "Remis des coupons";
 
-  @override
-  String get pleaseSelectAmount => 'Veuillez sélectionner le montant';
+  @override String get total => "Tota";
 
-  @override
-  String get amount => 'Montant';
+  @override String get payment => "Paiemen";
 
-  @override
-  String get capacity => 'Capacité';
+  @override String get cash => "Espèce";
 
-  @override
-  String get paymentMethod => 'Mode de paiement';
+  @override String get waitingForDriverConformation => "E attendant que Rider se conforme";
 
-  @override
-  String get chooseYouPaymentLate => 'Choisissez votre paiement maintenant ou en retard';
+  @override String get tip => "Consei";
 
-  @override
-  String get enterPromoCode => 'Saisir le code promotionnel';
+  @override String get pay => "Paye";
 
-  @override
-  String get confirm => 'Confirmer';
+  @override String get howWasYourRide => "Commen s'est passé votre balade?";
 
-  @override
-  String get wallet => 'Porte monnaie';
+  @override String get addReviews => "Ajoute des critiques";
 
-  @override
-  String get forInstantPayment => 'Pour le paiement instantané';
+  @override String get writeYourComments => "Écrive vos critiques ...";
 
-  @override
-  String get bookNow => 'Reserve maintenant';
+  @override String get continueD => "Continue";
 
-  @override
-  String get paymentDetail => 'Détail du paiement';
+  @override String get detailScreen => "Détai de la conduite";
 
-  @override
-  String get rideId => 'Id-id';
+  @override String get rideHistory => "Histoir de la conduite";
 
-  @override
-  String get createdAt => 'Créé à';
+  @override String get emergencyContacts => "Contact d'urgence";
 
-  @override
-  String get viewHistory => 'Voir l\'historique';
+  @override String get logOut => "S déconnecter";
 
-  @override
-  String get paymentDetails => 'Détails de paiement';
+  @override String get areYouSureYouWantToLogoutThisApp => "Ête-vous sûr de vouloir déconnecter cette application?";
 
-  @override
-  String get paymentType => 'Type de paiement';
+  @override String get destinationLocation => "Lie de destination";
 
-  @override
-  String get paymentStatus => 'Statut de paiement';
+  @override String get profile => "Profi";
 
-  @override
-  String get priceDetail => 'Détail des prix';
+  @override String get privacyPolicy => "politiqu de confidentialité";
 
-  @override
-  String get basePrice => 'Prix ​​de base';
+  @override String get helpSupport => "Suppor d'aide";
 
-  @override
-  String get distancePrice => 'Prix ​​à distance';
+  @override String get termsConditions => "terme et conditions";
 
-  @override
-  String get timePrice => 'Prix ​​de temps';
+  @override String get aboutUs => " propos de nous";
 
-  @override
-  String get waitTime => 'Temps d\'attente';
+  @override String get rides => "Mont";
 
-  @override
-  String get extraCharges => 'Frais supplémentaires';
+  @override String get sendOTP => "Envoye OTP";
 
-  @override
-  String get couponDiscount => 'Remise des coupons';
+  @override String get carModel => "Modèl de voiture";
 
-  @override
-  String get total => 'Total';
+  @override String get sos => "So";
 
-  @override
-  String get payment => 'Paiement';
+  @override String get signInUsingYourMobileNumber => "Connecte-vous en utilisant votre numéro \ nmobile";
 
-  @override
-  String get cash => 'En espèces';
+  @override String get accepted => "Accept";
 
-  @override
-  String get updatePaymentStatus => 'Mettre à jour l\'état depaiement';
+  @override String get arriving => "E arrivant";
 
-  @override
-  String get waitingForDriverConformation => 'En attendant que le conducteur se conforme';
+  @override String get arrived => "Arriv";
 
-  @override
-  String get continueNewRide => 'Continuer une nouvelle balade';
+  @override String get cancelled => "Annul";
 
-  @override
-  String get payToPayment => 'Payer le paiement';
+  @override String get completed => "Complét";
 
-  @override
-  String get tip => 'Pointe';
+  @override String get pleaseEnableLocationPermission => "Veuille activer l'autorisation de localisation";
 
-  @override
-  String get pay => 'Payer';
+  @override String get pending => "E attente";
 
-  @override
-  String get howWasYourRide => 'Comment s\'est passévotre balade ?';
+  @override String get failed => "Échou";
 
-  @override
-  String get wouldYouLikeToAddTip => 'Souhaitez-vous ajouter un pourboire?';
+  @override String get paid => "Pay";
 
-  @override
-  String get addMoreTip => 'Ajouter plus d\'astuce';
+  @override String get male => "Mâl";
 
-  @override
-  String get addMore => 'Ajouter plus';
+  @override String get female => "Femell";
 
-  @override
-  String get addReviews => 'Ajouter des critiques';
+  @override String get other => "Autr";
 
-  @override
-  String get writeYourComments => 'Écrivez vos revies ....';
+  @override String get addExtraCharges => "Ajoute des frais supplémentaires";
 
-  @override
-  String get continueD => 'Continuer';
+  @override String get enterAmount => "Entre le montant";
 
-  @override
-  String get detailScreen => 'Détail de la conduite';
+  @override String get pleaseAddedAmount => "Veuille ajouter le montant";
 
-  @override
-  String get aboutDriver => 'À propos du conducteur';
+  @override String get title => "Titr";
 
-  @override
-  String get rideHistory => 'Histoire de la conduite';
+  @override String get charges => "De charges";
 
-  @override
-  String get myProfile => 'Mon profil';
+  @override String get saveCharges => "Économise des frais";
 
-  @override
-  String get myTrips => 'Mes excursions';
+  @override String get bankName => "No de banque";
 
-  @override
-  String get emergencyContacts => 'Contacts d\'urgence';
+  @override String get bankCode => "Cod bancaire";
 
-  @override
-  String get logOut => 'Se déconnecter';
+  @override String get accountHolderName => "No du titulaire du compte";
 
-  @override
-  String get areYouSureYouWantToLogoutThisApp => 'Êtes-vous sûr de vouloir déconnecter cette application?';
+  @override String get accountNumber => "Numér de compte";
 
-  @override
-  String get whatWouldYouLikeToGo => 'Qu\'aimeriez-vous aller ?';
+  @override String get updateBankDetail => "Mettr à jour les détails de la banque";
 
-  @override
-  String get enterYourDestination => 'Entrez votre destination';
+  @override String get addBankDetail => "Ajoute les détails de la banque";
 
-  @override
-  String get currentLocation => 'Localisation actuelle';
+  @override String get bankInfoUpdateSuccessfully => "Mis à jour des informations bancaires avec succès";
 
-  @override
-  String get destinationLocation => 'Lieu de destination';
+  @override String get youAreOnlineNow => "Vou êtes en ligne maintenant";
 
-  @override
-  String get chooseOnMap => 'Choisir la carte';
+  @override String get youAreOfflineNow => "Vou êtes hors ligne maintenant";
 
-  @override
-  String get profile => 'Profil';
+  @override String get requests => "Demande";
 
-  @override
-  String get theme => 'Thème';
+  @override String get areYouSureYouWantToCancelThisRequest => "Ête-vous sûr de vouloir annuler cette demande?";
 
-  @override
-  String get privacyPolicy => 'Politique de confidentialité';
+  @override String get decline => "Décli";
 
-  @override
-  String get helpSupport => 'Support d\'aide';
+  @override String get accept => "Accepte";
 
-  @override
-  String get termsConditions => 'termes et conditions';
+  @override String get areYouSureYouWantToAcceptThisRequest => "Ête-vous sûr de vouloir accepter cette demande?";
 
-  @override
-  String get aboutUs => 'À propos de nous';
+  @override String get call => "Appe";
 
-  @override
-  String get lookingForNearbyDrivers => 'À la recherche de pilotes à proximité';
+  @override String get areYouSureYouWantToArriving => "Ête-vous sûr de vouloir arriver?";
 
-  @override
-  String get weAreLookingForNearDriversAcceptsYourRide => 'Nous recherchons des conducteurs à proximité pour \ naccepts votre trajet';
+  @override String get areYouSureYouWantToArrived => "Ête-vous sûr de vouloir arriver?";
 
-  @override
-  String get areYouSureYouWantToCancelThisRide => 'Êtes-vous sûr de vouloir annuler cette balade?';
+  @override String get enterOtp => "Entre OTP";
 
-  @override
-  String get serviceDetail => 'Détail du service';
+  @override String get pleaseEnterValidOtp => "Veuille saisir un OTP valide";
 
-  @override
-  String get get => 'Obtenir';
+  @override String get pleaseSelectService => "Veuille sélectionner le service";
 
-  @override
-  String get rides => 'Monte';
+  @override String get userDetail => "Détai de l'utilisateur";
 
-  @override
-  String get people => 'Personnes';
+  @override String get selectService => "Sélectionne le service";
 
-  @override
-  String get fare => 'Tarif';
+  @override String get carColor => "Couleu de voiture";
 
-  @override
-  String get done => 'Fait';
+  @override String get carPlateNumber => "Numér de plaque de voiture";
 
-  @override
-  String get availableOffers => 'Offres disponibles';
+  @override String get carProductionYear => "Anné de production automobile";
 
-  @override
-  String get off => 'À L\'ARRÊT';
+  @override String get withDraw => "Retire";
 
-  @override
-  String get sendOTP => 'Envoyer OTP';
+  @override String get withdrawHistory => "Retire l'histoire";
 
-  @override
-  String get otpVerification => 'Vérification OTP';
+  @override String get approved => "Approuv";
 
-  @override
-  String get enterTheCodeSendTo => 'Entrez le code Sendto';
+  @override String get requested => "Demand";
 
-  @override
-  String get didNotReceiveTheCode => 'N\'a pasreçu lecode';
+  @override String get updateVehicle => "Mettr à jour le véhicule";
 
-  @override
-  String get resend => 'Repenser';
+  @override String get userNotApproveMsg => "Votr profil est en cours d'examen. Attendez un peu de temps ou un contact avec votre administrateur.";
 
-  @override
-  String get carModel => 'Modèle de voiture';
+  @override String get uploadFileConfirmationMsg => "Ête-vous sûr de vouloir télécharger ce fichier?";
 
-  @override
-  String get sos => 'Sos';
+  @override String get selectDocument => "Sélectionne un document";
 
-  @override
-  String get driverReview => 'Examen du conducteur';
+  @override String get addDocument => "Ajoute un document";
 
-  @override
-  String get signInUsingYourMobileNumber => 'Connectez-vous en utilisant votre numéro \ nmobile';
+  @override String get areYouSureYouWantToDeleteThisDocument => "Ête-vous sûr de vouloir supprimer ce document?";
 
-  @override
-  String get otp => 'OTP';
+  @override String get expireDate => "Dat d'expiration";
 
-  @override
-  String get newRideRequested => 'Nouvelle conduite demandée';
+  @override String get goDashBoard => "Tablea de bord";
 
-  @override
-  String get accepted => 'Accepté';
+  @override String get deleteAccount => "Supprime le compte";
 
-  @override
-  String get arriving => 'En arrivant';
+  @override String get account => "Compt";
 
-  @override
-  String get arrived => 'Arrivé';
+  @override String get areYouSureYouWantPleaseReadAffect => "Ête-vous sûr de vouloir supprimer votre compte? Veuillez lire comment la suppression du compte affectera.";
 
-  @override
-  String get inProgress => 'En cours';
+  @override String get deletingAccountEmail => "L suppression de votre compte supprime les informations personnelles de notre base de données. Votre e-mail devient permanent et le même e-mail ne peut pas être réutilisé pour enregistrer un nouveau compte";
 
-  @override
-  String get cancelled => 'Annulé';
+  @override String get areYouSureYouWantDeleteAccount => "Ête-vous sûr de vouloir supprimer le compte?";
 
-  @override
-  String get completed => 'Complété';
+  @override String get yourInternetIsNotWorking => "Votr Internet ne fonctionne pas";
 
-  @override
-  String get pleaseEnableLocationPermission => 'Veuillez activer l\'autorisation delocalisation';
+  @override String get allow => "Permettr";
 
-  @override
-  String get pending => 'En attente';
+  @override String get mostReliableMightyDriverApp => "Applicatio de pilote puissante la plus fiable";
 
-  @override
-  String get failed => 'Manqué';
+  @override String get toEnjoyYourRideExperiencePleaseAllowPermissions => "Pou profiter de votre expérience de conduite \ nPlopase, permettez-nous les autorisations suivantes";
 
-  @override
-  String get paid => 'Payé';
+  @override String get cashCollected => "Argen collecté";
 
-  @override
-  String get male => 'Homme';
+  @override String get areYouSureCollectThisPayment => "Ête-vous sûr de percevoir ce paiement?";
 
-  @override
-  String get female => 'Femelle';
+  @override String get txtURLEmpty => "URL est vide";
 
-  @override
-  String get other => 'Autre';
+  @override String get lblFollowUs => "Suive-nous";
 
-  @override
-  String get addExtraCharges => 'Ajouter des frais supplémentaires';
+  @override String get bankInfo => "Information bancaires";
 
-  @override
-  String get enterAmount => 'Entrer le montant';
+  @override String get duration => "Duré";
 
-  @override
-  String get pleaseAddedAmount => 'Veuillez ajouter le montant';
+  @override String get moneyDebit => "Débi monétaire";
 
-  @override
-  String get title => 'Titre';
+  @override String get vehicleInfo => "Information sur le véhicule";
 
-  @override
-  String get charges => 'Des charges';
+  @override String get demoMsg => "L rôle du testeur n'est pas autorisé à effectuer cette action";
 
-  @override
-  String get saveCharges => 'Économiser des frais';
+  @override String get youCannotChangePhoneNumber => "Vou ne pouvez pas modifier le numéro de téléphone";
 
-  @override
-  String get mailTo => 'courrier';
+  @override String get offLine => "Hor ligne";
 
-  @override
-  String get bankDetail => 'Détail de la Banque';
+  @override String get online => "E ligne";
 
-  @override
-  String get bankName => 'Nom de banque';
+  @override String get aboutRider => " propos de Rider";
 
-  @override
-  String get bankCode => 'Code bancaire';
+  @override String get pleaseEnterMessage => "Veuille saisir le message";
 
-  @override
-  String get accountHolderName => 'Nom du titulaire du compte';
+  @override String get pleaseSelectRating => "Veuille sélectionner la cote";
 
-  @override
-  String get accountNumber => 'Numéro de compte';
+  @override String get serviceInfo => "Information sur le service";
 
-  @override
-  String get updateBankDetail => 'Mettre à jour les détails de la banque';
+  @override String get youCannotChangeService => "Vou ne pouvez pas changer de service";
 
-  @override
-  String get addBankDetail => 'Ajouter le détail bancaire';
+  @override String get vehicleInfoUpdateSucessfully => "Mis à jour des informations sur le véhicule avec succès";
 
-  @override
-  String get bankInfoUpdateSuccessfully => 'Mise à jour des informations bancaires avec succès';
+  @override String get isMandatoryDocument => " est un document obligatoire.";
 
-  @override
-  String get vehicleDetail => 'Détail du véhicule';
+  @override String get someRequiredDocumentAreNotUploaded => "Certain documents requis ne sont pas téléchargés. Veuillez télécharger tous les documents requis.";
 
-  @override
-  String get verifyDocument => 'Vérifier le document';
+  @override String get areYouCertainOffline => "Ête-vous certain que vous voulez vous déconnecter?";
 
-  @override
-  String get setting => 'Paramètre';
+  @override String get areYouCertainOnline => "Ête-vous certain que vous voulez aller en ligne?";
 
-  @override
-  String get youAreOnlineNow => 'Vous êtes en ligne maintenant';
+  @override String get pleaseAcceptTermsOfServicePrivacyPolicy => "Veuille accepter les conditions d'utilisation et la politique de confidentialité";
 
-  @override
-  String get youAreOfflineNow => 'Vous êtes hors ligne maintenant';
+  @override String get rememberMe => "Souvien-toi de moi";
 
-  @override
-  String get requests => 'Demandes';
+  @override String get agreeToThe => "j suis d'accord avec le";
 
-  @override
-  String get areYouSureYouWantToCancelThisRequest => 'Êtes-vous sûr que vous souhaitez annuler cette demande?';
+  @override String get invoice => "Factur";
 
-  @override
-  String get decline => 'Déclin';
+  @override String get riderInformation => "Information sur le cavalier";
 
-  @override
-  String get accept => 'Accepter';
+  @override String get customerName => "No du client";
 
-  @override
-  String get areYouSureYouWantToAcceptThisRequest => 'Êtes-vous sûr de vouloir accepter cette demande?';
+  @override String get sourceLocation => "Emplacemen de la source";
 
-  @override
-  String get call => 'Appel';
+  @override String get invoiceNo => "Factur non";
 
-  @override
-  String get chat => 'Discuter';
+  @override String get invoiceDate => "Dat de facture";
 
-  @override
-  String get applyExtraFree => 'Appliquer plus gratuit?';
+  @override String get orderedDate => "Dat commandée";
 
-  @override
-  String get areYouSureYouWantToArriving => 'Êtes-vous sûr de vouloir arriver?';
+  @override String get totalEarning => "Gai total";
 
-  @override
-  String get areYouSureYouWantToArrived => 'Êtes-vous sûr de vouloir arriver?';
+  @override String get pleaseSelectFromDateAndToDate => "Veuille sélectionner parmi la date et à ce jour";
 
-  @override
-  String get enterOtp => 'Entrez OTP';
+  @override String get fromDate => "Parti de la date";
 
-  @override
-  String get enterTheOtpDisplayInCustomersMobileToStartTheRide => 'Entrez l\'affichage OTPdans lesclients mobilespour démarrer letrajet';
+  @override String get toDate => " ce jour";
 
-  @override
-  String get pleaseEnterValidOtp => 'Veuillez saisir OTP valide';
+  @override String get ride => "Monte";
 
-  @override
-  String get areYouSureYouWantToCompletedThisRide => 'Êtes-vous sûr de vouloir terminer cette balade?';
+  @override String get weeklyOrderCount => "Nombr de commandes hebdomadaire";
 
-  @override
-  String get updateBankInfo => 'Mettre à jour les informations bancaires';
+  @override String get distance => "Distanc";
 
-  @override
-  String get regisTRation => 'Inscription';
+  @override String get iAgreeToThe => "j suis d'accord avec le";
 
-  @override
-  String get pleaseSelectService => 'Veuillez sélectionner le service';
+  @override String get today => "Aujour'hui";
 
-  @override
-  String get userDetail => 'Détail de l\'utilisateur';
+  @override String get weekly => "Hebdomadair";
 
-  @override
-  String get selectService => 'Sélectionner le service';
+  @override String get report => "Rappor";
 
-  @override
-  String get selectGender => 'Sélectionnez le sexe';
+  @override String get earning => "Revenu";
 
-  @override
-  String get carColor => 'Couleur de voiture';
+  @override String get todayEarning => "Aujour'hui Gagner";
 
-  @override
-  String get carPlateNumber => 'Numéro de plaque de voiture';
+  @override String get available => "Disponibl";
 
-  @override
-  String get carProductionYear => 'Année de production automobile';
+  @override String get notAvailable => "Pa disponible";
 
-  @override
-  String get withDraw => 'Se désister';
+  @override String get youWillReceiveNewRidersAndNotifications => "Vou recevrez de nouveaux coureurs et notifications";
 
-  @override
-  String get withdrawHistory => 'Retirer l\'histoire';
+  @override String get youWillNotReceiveNewRidersAndNotifications => "Vou ne recevrez pas de nouveaux cyclistes et notifications";
 
-  @override
-  String get approved => 'Approuvé';
+  @override String get yourAccountIs => "Votr compte est";
 
-  @override
-  String get requested => 'Demandé';
+  @override String get pleaseContactSystemAdministrator => "Veuille contacter l'administrateur du système";
 
-  @override
-  String get updateVehicle => 'Mettre à jour le véhicule';
+  @override String get youCanNotThisActionsPerformBecauseYourCurrentRideIsNotCompleted => "Vou ne pouvez pas fonctionner ces actions, car votre conduite actuelle n'est pas terminée";
 
-  @override
-  String get userNotApproveMsg => 'Votre profil est en cours d\'examen.Attendez unpeu detemps ouun contactavec votreadministrateur.';
+  @override String get applyExtraCharges => "Applique des frais supplémentaires";
 
-  @override
-  String get uploadFileConfirmationMsg => 'Êtes-vous sûr que vous souhaitez télécharger ce fichier?';
+  @override String get pleaseSelectExtraCharges => "Veuille sélectionner des frais supplémentaires";
 
-  @override
-  String get selectDocument => 'SelectDocument';
+  @override String get unsupportedPlatForm => "Plat-forme non prise en charge";
 
-  @override
-  String get addDocument => 'Ajouter un document';
+  @override String get description => "Descriptio";
 
-  @override
-  String get areYouSureYouWantToDeleteThisDocument => 'Êtes-vous sûr de vouloir supprimer ce document?';
+  @override String get price => "Pri";
 
-  @override
-  String get expireDate => 'Date d\'expiration';
+  @override String get gallery => "Galeri";
 
-  @override
-  String get goDashBoard => 'Tableau de bord';
+  @override String get camera => "Camér";
 
-  @override
-  String get deleteAccount => 'Supprimer le compte';
+  @override String get locationNotAvailable => "Emplacemen non disponible";
 
-  @override
-  String get account => 'Compte';
+  @override String get bankInfoNotFound => "Information bancaires introuvables";
 
-  @override
-  String get areYouSureYouWantPleaseReadAffect => 'Êtes-vous sûr de vouloir supprimer votre compte? Veuillez lire comment la suppression du compte affectera.';
+  @override String get minimum => "L minimum";
 
-  @override
-  String get deletingAccountEmail =>
-      'La suppression de votre compte supprime les informations personnelles de notre base de données. Votre e-mail devient permanent et le même e-mail ne peut pas être réutilisé pour enregistrer un nouveau compte';
+  @override String get maximum => "Maximu";
 
-  @override
-  String get areYouSureYouWantDeleteAccount => 'Êtes-vous sûr de vouloir supprimer le compte?';
+  @override String get required => "requi";
 
-  @override
-  String get yourInternetIsNotWorking => 'Votre Internet ne fonctionne pas';
+  @override String get paymentFailed => "Paiemen échoué";
 
-  @override
-  String get allow => 'Permettre';
+  @override String get checkConsoleForError => "Vérifie l'erreur de la console";
 
-  @override
-  String get mostReliableMightyDriverApp => 'Application de pilote puissante la plus fiable';
+  @override String get transactionFailed => "L transaction a échoué";
 
-  @override
-  String get toEnjoyYourRideExperiencePleaseAllowPermissions => 'Pour profiter de votre expérience de conduite \ nPlopase, permettez-nous les autorisations suivantes';
+  @override String get transactionSuccessful => "Transactio réussie";
 
-  @override
-  String get cashCollected => 'Argent collecté';
+  @override String get payWithCard => "Paye avec carte";
 
-  @override
-  String get areYouSureCollectThisPayment => 'Êtes-vous sûr de percevoir ce paiement?';
+  @override String get success => "Succè";
 
-  @override
-  String get txtURLEmpty => 'L\'URL estvide';
+  @override String get declined => "Diminu";
 
-  @override
-  String get lblFollowUs => 'Suivez-nous';
+  @override String get endRide => "Promenad finale";
 
-  @override
-  String get bankInfo => 'Informations bancaires';
+  @override String get startRide => "Commence à rouler";
 
-  @override
-  String get duration => 'Durée';
+  @override String get invoiceCapital => "FACTUR";
 
-  @override
-  String get paymentVia => 'Paiement via';
+  @override String get validateOtp => "Valide OTP";
 
-  @override
-  String get moneyDebit => 'Débit monétaire';
+  @override String get otpCodeHasBeenSentTo => "L code OTP a été envoyé à";
 
-  @override
-  String get vehicleInfo => 'Informations sur le véhicule';
+  @override String get pleaseEnterOtp => "Veuille saisir OTP ci-dessous pour vérifier votre numéro de mobile.";
 
-  @override
-  String get demoMsg => 'Le rôle du testeur n\'est pasautoriséàeffectuer cetteaction';
+  @override String get selectSources => "Sélectionne des sources";
 
-  @override
-  String get youCannotChangePhoneNumber => 'Vous ne pouvez pas modifier le numéro de téléphone';
+  @override String get file => "Dépose";
 
-  @override
-  String get offLine => 'Hors ligne';
+  @override String get earnings => "Gain";
 
-  @override
-  String get online => 'En ligne';
+  @override String get documents => "Document";
 
-  @override
-  String get walletLessAmountMsg =>
-      'Vous ne pouvez pas rouler parce que vous avez moins d\'argent dans votre portefeuille. Vous devez donc ajouter de l\'argent à votre portefeuille afin que vous puissiez rouler plus tard.';
+  @override String get settings => "Paramètre";
 
-  @override
-  String get aboutRider => 'À propos de Rider';
+  @override String get finishMsg => "Ête-vous sûr que le trajet est terminé?";
 
-  @override
-  String get pleaseEnterMessage => 'Veuillez saisir le message';
+  @override String get extraFees => "Applique des frais supplémentaires";
 
-  @override
-  String get complainList => 'Liste des plaintes';
+  @override String get skip => "Saute";
 
-  @override
-  String get viewAll => 'Voir tout';
+  @override String get noteSelectFromDate => "Remarqu: sélectionnez à ce jour";
 
-  @override
-  String get pleaseSelectRating => 'Veuillez sélectionner la cote';
+  @override String get chatWithAdmin => "Discute avec admin";
 
-  @override
-  String get serviceInfo => 'Informations sur le service';
+  @override String get startRideAskOTP => "Pou commencer le trajet, demandez au client son OTP.";
 
-  @override
-  String get youCannotChangeService => 'Vous ne pouvez pas changer de service';
+  @override String get lessWalletAmountMsg => "Vou ne pouvez pas rouler car votre équilibre de portefeuille est inférieur à la limite. Ajoutez de l'argent à votre portefeuille maintenant pour continuer à utiliser l'application Driver";
 
-  @override
-  String get vehicleInfoUpdateSucessfully => 'Mise à jour des informations sur le véhicule avec succès';
+  @override String get via => "Vi";
 
-  @override
-  String get subscription => 'Abonnement';
+  @override String get status => "Statu";
 
-  @override
-  String get yourCurrentBalanceIs => 'Votre solde actuel est:';
+  @override String get minutePrice => "Pri ​​minutieux";
 
-  @override
-  String get yourSubscriptionPlanIsOver => 'Votre plan d\'abonnement est terminé. Veuillez vous abonner pour utiliser cette application';
+  @override String get waitingTimePrice => "Pri ​​d'attente";
 
-  @override
-  String get perDay => 'PAR JOUR';
+  @override String get additionalFees => "Frai supplémentaires";
 
-  @override
-  String get renew => 'Renouveler';
+  @override String get minimumFees => "Frai minimum";
 
-  @override
-  String get yourWalletDoNotHaveEnoughBalance => 'Votre portefeuille n\'a pas assez d\'équilibre. Veuillez ajouter l\'équilibre dans le portefeuille puis renouveler votre plan d\'abonnement.';
+  @override String get tips => "Conseil";
 
-  @override
-  String get addWallet => 'Ajouter le portefeuille';
+  @override String get welcome => "Accueilli,";
 
-  @override
-  String get yourDailyAppUseLimitHasBeenExpired => 'Votre limite d\'utilisation quotidienne de l\'application a été expirée. Appuyez sur pour recharger et utilisez l\'application.';
+  @override String get signcontinue => "Connecte-vous pour continuer";
 
-  @override
-  String get recharge => 'Recharger';
-
-  @override
-  String get isMandatoryDocument => '* est un document obligatoire.';
-
-  @override
-  String get someRequiredDocumentAreNotUploaded => 'Certains documents requis ne sont pas téléchargés. Veuillez télécharger tous les documents requis.';
-
-  @override
-  String get areYouCertainOffline => 'Êtes-vous certain que vous voulez vous déconnecter?';
-
-  @override
-  String get areYouCertainOnline => 'Êtes-vous certain que vous voulez aller en ligne?';
-
-  @override
-  String get pleaseAcceptTermsOfServicePrivacyPolicy => 'Veuillez accepter les conditions d\'utilisation et la politique de confidentialité';
-
-  @override
-  String get rememberMe => 'Souviens-toi de moi';
-
-  @override
-  String get agreeToThe => 'je suis d\'accord avec le';
-
-  @override
-  String get invoice => 'Facture d\'achat';
-
-  @override
-  String get riderInformation => 'Informations sur le cavalier';
-
-  @override
-  String get customerName => 'Nom du client';
-
-  @override
-  String get sourceLocation => 'Emplacement de la source';
-
-  @override
-  String get invoiceNo => 'Facture non';
-
-  @override
-  String get invoiceDate => 'Date de facture';
-
-  @override
-  String get orderedDate => 'Date commandée';
-
-  @override
-  String get totalCash => 'Total de trésorerie';
-
-  @override
-  String get totalRide => 'Trajet total';
-
-  @override
-  String get totalWallet => 'Portefeuille total';
-
-  @override
-  String get totalEarning => 'Gain total';
-
-  @override
-  String get pleaseSelectFromDateAndToDate => 'Veuillez sélectionner parmi la date et à ce jour';
-
-  @override
-  String get from => 'À partir de';
-
-  @override
-  String get fromDate => 'Partir de la date';
-
-  @override
-  String get to => 'Pour';
-
-  @override
-  String get toDate => 'À ce jour';
-
-  @override
-  String get ride => 'Balade';
-
-  @override
-  String get todayRide => 'Roule aujourd\'hui';
-
-  @override
-  String get weeklyOrderCount => 'Nombre de commandes hebdomadaire';
-
-  @override
-  String get distance => 'Distance';
-
-  @override
-  String get rideInformation => 'Des informations sur la conduite';
-
-  @override
-  String get iAgreeToThe => 'je suis d\'accord avecle';
-
-  @override
-  String get today => 'Aujourd\'hui';
-
-  @override
-  String get weekly => 'Hebdomadaire';
-
-  @override
-  String get report => 'Reportage';
-
-  @override
-  String get earning => 'Revenus';
-
-  @override
-  String get todayEarning => 'Aujourd\'hui, gagnant';
-
-  @override
-  String get available => 'Disponible';
-
-  @override
-  String get notAvailable => 'Pas disponible';
-
-  @override
-  String get youWillReceiveNewRidersAndNotifications => 'Vous recevrez de nouveaux coureurs et notifications';
-
-  @override
-  String get youWillNotReceiveNewRidersAndNotifications => 'Vous ne recevrez pas de nouveaux coureurs et notifications';
-
-  @override
-  String get yourAccountIs => 'Votre compte est';
-
-  @override
-  String get pleaseContactSystemAdministrator => 'Veuillez contacter l\'administrateur du système';
-
-  @override
-  String get youCanNotThisActionsPerformBecauseYourCurrentRideIsNotCompleted => 'Vous ne pouvez pas fonctionner ces actions, car votre conduite actuelle n\'est pas terminée';
-
-  @override
-  String get minimumFare => 'Tarif minimum';
-
-  @override
-  String get applyExtraCharges => 'Appliquer des frais supplémentaires';
-
-  @override
-  String get pleaseSelectExtraCharges => 'Veuillez sélectionner des frais supplémentaires';
-
-  @override
-  String get unsupportedPlatForm => 'Plate-forme non prise en charge';
-
-  @override
-  String get description => 'Description';
-
-  @override
-  String get price => 'Prix';
-
-  @override
-  String get gallery => 'Galerie';
-
-  @override
-  String get camera => 'Caméra';
-
-  @override
-  String get locationNotAvailable => 'Emplacement non disponible';
-
-  @override
-  String get bankInfoNotFound => 'Informations bancaires introuvables';
-
-  @override
-  String get minimum => 'Le minimum';
-
-  @override
-  String get maximum => 'Maximum';
-
-  @override
-  String get required => 'requis';
-
-  @override
-  String get paymentFailed => 'Paiement échoué';
-
-  @override
-  String get checkConsoleForError => 'Vérifier l\'erreur de la console';
-
-  @override
-  String get transactionFailed => 'La transaction a échoué';
-
-  @override
-  String get transactionSuccessful => 'Transaction réussie';
-
-  @override
-  String get payWithCard => 'Payer avec carte';
-
-  @override
-  String get success => 'Succès';
-
-  @override
-  String get declined => 'Diminué';
-
-  @override
-  String get endRide => 'Promenade finale';
-
-  @override
-  String get startRide => 'Commencer à rouler';
-
-  @override
-  String get invoiceCapital => 'FACTURE';
-
-  @override
-  String get validateOtp => 'Valider OTP';
-
-  @override
-  String get otpCodeHasBeenSentTo => 'Le code OTP a été envoyé à';
-
-  @override
-  String get pleaseEnterOtp => 'Veuillez saisir OTP ci-dessous pour vérifier votre numéro de mobile.';
-
-  @override
-  String get add => 'Ajouter';
-
-  @override
-  String get selectSources => 'Sélectionner des sources';
-
-  @override
-  String get file => 'Déposer';
-
-  String get earnings => 'Gains';
-  String get documents => 'Documents';
-  String get settings => 'Paramètres';
-  String get finishMsg => 'Êtes-vous sûr que le trajet est terminé?';
-  String get extraFees => 'Appliquer des frais supplémentaires';
-  String get skip => 'Sauter';
 }

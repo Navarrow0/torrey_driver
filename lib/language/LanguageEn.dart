@@ -2,13 +2,7 @@ import 'BaseLanguage.dart';
 
 class LanguageEn extends BaseLanguage {
   @override
-  String get appName => 'Mighty Driver';
-
-  @override
-  String get welcomeBack => 'Welcome Back !';
-
-  @override
-  String get signInYourAccount => 'Sign in your account';
+  String get appName => 'Torrey DLC';
 
   @override
   String get thisFieldRequired => 'This field is required';
@@ -35,12 +29,6 @@ class LanguageEn extends BaseLanguage {
   String get signUp => 'Sign Up';
 
   @override
-  String get createAccount => 'Create Account';
-
-  @override
-  String get createYourAccountToContinue => 'Create your account to continue';
-
-  @override
   String get firstName => 'First Name';
 
   @override
@@ -51,15 +39,6 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get phoneNumber => 'Phone Number';
-
-  @override
-  String get alreadyHaveAnAccount => 'Already have an account?';
-
-  @override
-  String get contactUs => 'Contact Us';
-
-  @override
-  String get purchase => 'Purchase';
 
   @override
   String get changePassword => 'Change Password';
@@ -101,18 +80,6 @@ class LanguageEn extends BaseLanguage {
   String get notification => 'Notification';
 
   @override
-  String get otpVeriFiCation => 'OTP VeriFiCation';
-
-  @override
-  String get weHaveSentDigitCode => 'We have sent a 4 digit code';
-
-  @override
-  String get contactLength => 'Contact number length must be of 10 to 14 digit.';
-
-  @override
-  String get about => 'About';
-
-  @override
   String get useInCaseOfEmergency => 'USE IN CASE OF EMERGENCY';
 
   @override
@@ -132,12 +99,6 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get saveComplain => 'Save Complain';
-
-  @override
-  String get editProfile => 'Edit Profile';
-
-  @override
-  String get gender => 'Gender';
 
   @override
   String get address => 'Address';
@@ -164,16 +125,7 @@ class LanguageEn extends BaseLanguage {
   String get addContact => 'Add Contact';
 
   @override
-  String get googleMap => 'Google Map';
-
-  @override
   String get save => 'Save';
-
-  @override
-  String get myRides => 'My Rides';
-
-  @override
-  String get myWallet => 'My Wallet';
 
   @override
   String get availableBalance => 'Available Balance';
@@ -197,25 +149,7 @@ class LanguageEn extends BaseLanguage {
   String get amount => 'Amount';
 
   @override
-  String get capacity => 'Capacity';
-
-  @override
-  String get paymentMethod => 'Payment Method';
-
-  @override
-  String get chooseYouPaymentLate => 'Choose you payment now or late';
-
-  @override
-  String get enterPromoCode => 'Enter Promo Code';
-
-  @override
   String get confirm => 'Confirm';
-
-  @override
-  String get forInstantPayment => 'For Instant Payment';
-
-  @override
-  String get bookNow => 'Book Now';
 
   @override
   String get wallet => 'Wallet';
@@ -225,9 +159,6 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get rideId => 'Ride Id';
-
-  @override
-  String get createdAt => 'Created at';
 
   @override
   String get viewHistory => 'View History';
@@ -242,25 +173,22 @@ class LanguageEn extends BaseLanguage {
   String get paymentStatus => 'Payment Status';
 
   @override
-  String get priceDetail => 'Price Detail';
+  String get priceDetail => 'Price Details';
 
   @override
-  String get basePrice => 'Base Price';
+  String get basePrice => 'Base price';
 
   @override
-  String get distancePrice => 'Distance Price';
+  String get distancePrice => 'Distance price';
 
   @override
-  String get timePrice => 'Time Price';
+  String get waitTime => 'Wait time';
 
   @override
-  String get waitTime => 'Wait Time';
+  String get extraCharges => 'Extra charges';
 
   @override
-  String get extraCharges => 'Extra Charges';
-
-  @override
-  String get couponDiscount => 'Coupon Discount';
+  String get couponDiscount => 'Coupon discount';
 
   @override
   String get total => 'Total';
@@ -272,34 +200,16 @@ class LanguageEn extends BaseLanguage {
   String get cash => 'Cash';
 
   @override
-  String get updatePaymentStatus => 'Update Payment Status';
-
-  @override
   String get waitingForDriverConformation => 'WAITING FOR RIDER TO CONFORMATION';
 
   @override
-  String get continueNewRide => 'Continue new ride';
-
-  @override
-  String get payToPayment => 'Pay to payment';
-
-  @override
-  String get tip => 'Tip';
+  String get tip => 'Tips';
 
   @override
   String get pay => 'Pay';
 
   @override
   String get howWasYourRide => 'How was your Ride?';
-
-  @override
-  String get wouldYouLikeToAddTip => 'Would you like to add tip?';
-
-  @override
-  String get addMoreTip => 'Add More Tip';
-
-  @override
-  String get addMore => 'Add More';
 
   @override
   String get addReviews => 'Add Reviews';
@@ -314,16 +224,7 @@ class LanguageEn extends BaseLanguage {
   String get detailScreen => 'Ride Detail';
 
   @override
-  String get aboutDriver => 'About Driver';
-
-  @override
   String get rideHistory => 'Ride History';
-
-  @override
-  String get myProfile => 'My Profile';
-
-  @override
-  String get myTrips => 'My Trips';
 
   @override
   String get emergencyContacts => 'Emergency Contacts';
@@ -335,25 +236,10 @@ class LanguageEn extends BaseLanguage {
   String get areYouSureYouWantToLogoutThisApp => 'Are you sure you want to logout this app?';
 
   @override
-  String get whatWouldYouLikeToGo => 'What would you like to go?';
-
-  @override
-  String get enterYourDestination => 'Enter your destination';
-
-  @override
-  String get currentLocation => 'Destination location';
-
-  @override
   String get destinationLocation => 'Destination location';
 
   @override
-  String get chooseOnMap => 'Choose on map';
-
-  @override
   String get profile => 'Profile';
-
-  @override
-  String get theme => 'Theme';
 
   @override
   String get privacyPolicy => 'Privacy Policy';
@@ -368,52 +254,10 @@ class LanguageEn extends BaseLanguage {
   String get aboutUs => 'About Us';
 
   @override
-  String get lookingForNearbyDrivers => 'Looking for nearby drivers';
-
-  @override
-  String get weAreLookingForNearDriversAcceptsYourRide => 'We are looking for nearby drivers to\naccepts your ride';
-
-  @override
-  String get areYouSureYouWantToCancelThisRide => 'Are you sure you want to cancel this ride?';
-
-  @override
-  String get serviceDetail => 'Service Detail';
-
-  @override
-  String get get => 'Get';
-
-  @override
   String get rides => 'Rides';
 
   @override
-  String get people => 'People';
-
-  @override
-  String get fare => 'Fare';
-
-  @override
-  String get done => 'Done';
-
-  @override
-  String get availableOffers => 'Available Offers';
-
-  @override
-  String get off => 'OFF';
-
-  @override
   String get sendOTP => 'Send OTP';
-
-  @override
-  String get otpVerification => 'Otp Verification';
-
-  @override
-  String get enterTheCodeSendTo => 'Enter The Code SendTo';
-
-  @override
-  String get didNotReceiveTheCode => 'Did not Receive The Code';
-
-  @override
-  String get resend => 'Resend';
 
   @override
   String get carModel => 'Car Model';
@@ -422,16 +266,7 @@ class LanguageEn extends BaseLanguage {
   String get sos => 'SOS';
 
   @override
-  String get driverReview => 'Driver Review';
-
-  @override
   String get signInUsingYourMobileNumber => 'Sign In Using Your\nMobile Number';
-
-  @override
-  String get otp => 'OTP';
-
-  @override
-  String get newRideRequested => 'New Ride Requested';
 
   @override
   String get accepted => 'Accepted';
@@ -441,9 +276,6 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get arrived => 'Arrived';
-
-  @override
-  String get inProgress => 'In Progress';
 
   @override
   String get cancelled => 'Cancelled';
@@ -491,12 +323,6 @@ class LanguageEn extends BaseLanguage {
   String get saveCharges => "Save Charges";
 
   @override
-  String get mailTo => "mailto";
-
-  @override
-  String get bankDetail => 'Bank Detail';
-
-  @override
   String get bankName => 'Bank Name';
 
   @override
@@ -516,15 +342,6 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get bankInfoUpdateSuccessfully => 'Bank info update successfully';
-
-  @override
-  String get vehicleDetail => 'Vehicle Detail';
-
-  @override
-  String get verifyDocument => 'Verify Document';
-
-  @override
-  String get setting => 'Setting';
 
   @override
   String get youAreOnlineNow => 'You are online now';
@@ -551,12 +368,6 @@ class LanguageEn extends BaseLanguage {
   String get call => 'Call';
 
   @override
-  String get chat => 'Chat';
-
-  @override
-  String get applyExtraFree => 'Apply extra free?';
-
-  @override
   String get areYouSureYouWantToArriving => 'Are you sure you want to arriving?';
 
   @override
@@ -566,19 +377,7 @@ class LanguageEn extends BaseLanguage {
   String get enterOtp => 'Enter OTP';
 
   @override
-  String get enterTheOtpDisplayInCustomersMobileToStartTheRide => 'Enter the otp display in customers mobile to start the ride';
-
-  @override
   String get pleaseEnterValidOtp => 'Please enter valid otp';
-
-  @override
-  String get areYouSureYouWantToCompletedThisRide => 'Are you sure you want to completed this ride?';
-
-  @override
-  String get updateBankInfo => 'Update Bank Info';
-
-  @override
-  String get regisTRation => 'Registration';
 
   @override
   String get pleaseSelectService => 'Please Select Service';
@@ -588,9 +387,6 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get selectService => 'Select Service';
-
-  @override
-  String get selectGender => 'Select Gender';
 
   @override
   String get carColor => 'Car Color';
@@ -647,7 +443,8 @@ class LanguageEn extends BaseLanguage {
   String get areYouSureYouWantPleaseReadAffect => 'Are you sure you want to delete your account? Please read how account deletion will affect.';
 
   @override
-  String get deletingAccountEmail => 'Deleting your account removes personal information from our database. Your email becomes permanently reserved and same email cannot be re-used to register a new account';
+  String get deletingAccountEmail =>
+      'Deleting your account removes personal information from our database. Your email becomes permanently reserved and same email cannot be re-used to register a new account';
 
   @override
   String get areYouSureYouWantDeleteAccount => 'Are you sure you want to delete Account?';
@@ -683,9 +480,6 @@ class LanguageEn extends BaseLanguage {
   String get duration => 'Duration';
 
   @override
-  String get paymentVia => 'Payment via';
-
-  @override
   String get moneyDebit => 'Money Debit';
 
   @override
@@ -704,19 +498,10 @@ class LanguageEn extends BaseLanguage {
   String get online => 'Online';
 
   @override
-  String get walletLessAmountMsg => 'You can\'t ride because you have less money in your wallet. So you have to add money to your wallet so that you can ride later.';
-
-  @override
   String get aboutRider => 'About Rider';
 
   @override
   String get pleaseEnterMessage => 'Please Enter Message';
-
-  @override
-  String get complainList => 'Complain List';
-
-  @override
-  String get viewAll => 'View All';
 
   @override
   String get pleaseSelectRating => 'Please select rating';
@@ -729,33 +514,6 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get vehicleInfoUpdateSucessfully => 'Vehicle info update sucessfully';
-
-  @override
-  String get subscription => 'Subscription';
-
-  @override
-  String get yourCurrentBalanceIs => 'Your current balance is:';
-
-  @override
-  String get yourSubscriptionPlanIsOver => 'Your subscription plan is over. Please subscribe to use this application';
-
-  @override
-  String get perDay => 'PER DAY';
-
-  @override
-  String get renew => 'Renew';
-
-  @override
-  String get yourWalletDoNotHaveEnoughBalance => 'Your wallet do not have enough balance. Please add balance in Wallet then Renew your subscription plan.';
-
-  @override
-  String get addWallet => 'Add Wallet';
-
-  @override
-  String get yourDailyAppUseLimitHasBeenExpired => 'Your daily app use limit has been expired. Tap to recharge and use the app.';
-
-  @override
-  String get recharge => 'Recharge';
 
   @override
   String get isMandatoryDocument => '* is a mandatory document.';
@@ -800,28 +558,13 @@ class LanguageEn extends BaseLanguage {
   String get orderedDate => 'Ordered Date';
 
   @override
-  String get totalCash => 'Total Cash';
-
-  @override
-  String get totalRide => 'Total Ride';
-
-  @override
-  String get totalWallet => 'Total Wallet';
-
-  @override
   String get totalEarning => 'Total Earning';
 
   @override
   String get pleaseSelectFromDateAndToDate => 'Please select from date and to date';
 
   @override
-  String get from => 'From';
-
-  @override
   String get fromDate => 'From Date';
-
-  @override
-  String get to => 'To';
 
   @override
   String get toDate => 'To Date';
@@ -830,16 +573,10 @@ class LanguageEn extends BaseLanguage {
   String get ride => 'Ride';
 
   @override
-  String get todayRide => 'Today Ride';
-
-  @override
   String get weeklyOrderCount => 'Weekly Order Count';
 
   @override
   String get distance => 'Distance';
-
-  @override
-  String get rideInformation => 'Ride Information';
 
   @override
   String get iAgreeToThe => 'I agree to the';
@@ -879,9 +616,6 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get youCanNotThisActionsPerformBecauseYourCurrentRideIsNotCompleted => 'You can not this actions perform,because your current ride is not completed';
-
-  @override
-  String get minimumFare => 'Minimum Fare';
 
   @override
   String get applyExtraCharges => 'Apply extra charges';
@@ -959,9 +693,6 @@ class LanguageEn extends BaseLanguage {
   String get pleaseEnterOtp => 'Please enter OTP below to verify your mobile number.';
 
   @override
-  String get add => 'Add';
-
-  @override
   String get selectSources => 'Select Sources';
 
   @override
@@ -984,4 +715,43 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get skip => 'Skip';
+
+  @override
+  String get noteSelectFromDate => 'Note: Select From To Date';
+
+  @override
+  String get chatWithAdmin => 'Chat with Admin';
+
+  @override
+  String get startRideAskOTP => 'To start the ride, ask the client for their OTP.';
+
+  @override
+  String get lessWalletAmountMsg => "You can't ride because your wallet balance is below the limit.  Add money to your wallet now to continue using the driver app";
+
+  @override
+  String get via => 'Via';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get minutePrice => 'Minute price';
+
+  @override
+  String get waitingTimePrice => 'Waiting time price';
+
+  @override
+  String get additionalFees => 'Additional fees';
+
+  @override
+  String get minimumFees => 'Minimum fees';
+
+  @override
+  String get tips => 'Tips';
+
+  @override
+  String get welcome => 'Welcome,';
+
+  @override
+  String get signcontinue => 'Sign in to continue ';
 }

@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "372646782047",
-    "project_id": "torreydriver0",
-    "storage_bucket": "torreydriver0.appspot.com"
+    "project_number": "900146301898",
+    "project_id": "torreyfullapp",
+    "storage_bucket": "torreyfullapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:372646782047:android:90046489fbc7eaf9f0a7ea",
+        "mobilesdk_app_id": "1:900146301898:android:c2d37c74bf8c34953cdd33",
         "android_client_info": {
           "package_name": "com.mighty.taxidriver.taki_booking_driver"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "900146301898-2uh2c15lvdcnki8evqi041mtp2153ti5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyD4HvXh2dP-WBMbWb_Npee-M2B8p9fetvA"
+          "current_key": "AIzaSyCktqW6HQlePxxb9QDc7ww4hVtFvC3Uy1w"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900146301898-2uh2c15lvdcnki8evqi041mtp2153ti5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

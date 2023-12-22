@@ -6,8 +6,6 @@ import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:taki_booking_driver/model/UserDetailModel.dart';
 import 'package:taki_booking_driver/utils/Common.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../../main.dart';
 import '../Services/ChatMessagesService.dart';
@@ -17,7 +15,7 @@ import '../model/FileModel.dart';
 import '../utils/Colors.dart';
 import '../utils/Constants.dart';
 import '../utils/Extensions/app_common.dart';
-import 'ChatItemWidget.dart';
+import '../components/ChatItemWidget.dart';
 
 class ChatScreen extends StatefulWidget {
   final UserData? userData;
@@ -49,7 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
   init() async {
     id = sharedPref.getString(UID)!;
     mIsEnterKey = sharedPref.getBool(IS_ENTER_KEY).validate();
-    mSelectedImage = sharedPref.getString(SELECTED_WALLPAPER).validate();
+    // mSelectedImage = sharedPref.getString(SELECTED_WALLPAPER).validate();
 
     chatMessageService = ChatMessageService();
     chatMessageService.setUnReadStatusToTrue(senderId: sender.uid!, receiverId: widget.userData!.uid!);
@@ -128,118 +126,108 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
-        ///automaticallyImplyLeading: false,
-        title: StreamBuilder<UserData>(
-          stream: UserService().singleUser(widget.userData!.uid),
-          builder: (context, snap) {
-            if (snap.hasData) {
-              return Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Icon(Icons.arrow_back, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  CircleAvatar(backgroundImage: NetworkImage(widget.userData!.profileImage.validate()), minRadius: 20),
-                  SizedBox(width: 10),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Text(widget.userData!.username.validate(), style: TextStyle(color: Colors.white)),
-                  ),
-                ],
-              );
-            }
-            return snapWidgetHelper(snap, loadingWidget: Offstage());
-          },
-        ),
-        ///backgroundColor: primaryColor,
-      ),
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Row(
           children: [
-            Container(
-              padding: EdgeInsets.only(bottom: 76),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: PaginateFirestore(
-                reverse: true,
-                isLive: true,
-                padding: EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 0),
-                physics: BouncingScrollPhysics(),
-                query: chatMessageService.chatMessagesWithPagination(currentUserId: sharedPref.getString(UID), receiverUserId: widget.userData!.uid!),
-                itemsPerPage: PER_PAGE_CHAT_COUNT,
-                shrinkWrap: true,
-                onEmpty: Offstage(),
-                itemBuilderType: PaginateBuilderType.listView,
-                itemBuilder: (context, snap, index) {
-                  ChatMessageModel data = ChatMessageModel.fromJson(snap[index].data() as Map<String, dynamic>);
-                  data.isMe = data.senderId == sender.uid;
-                  return ChatItemWidget(data: data);
-                },
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Icon(Icons.arrow_back, color: Colors.white),
               ),
             ),
-            Positioned(
-              bottom: 16,
-              left: 16,
-              right: 16,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: radius(),
-                  color: Theme.of(context).cardColor,
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 0.2,
-                      blurRadius: 0.2,
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.only(left: 8, right: 8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: messageCont,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: language.writeMessage,
-                          hintStyle: secondaryTextStyle(),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                        ),
-                        cursorColor: appStore.isDarkMode ? Colors.white : Colors.black,
-                        focusNode: messageFocus,
-                        textCapitalization: TextCapitalization.sentences,
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        style: primaryTextStyle(),
-                        textInputAction: mIsEnterKey ? TextInputAction.send : TextInputAction.newline,
-                        onSubmitted: (s) {
-                          sendMessage();
-                        },
-                        maxLines: 5,
-                      ),
-                    ),
-                    inkWellWidget(
-                      child: Icon(Icons.send, color: primaryColor,size: 25),
-                      onTap: () {
-                        sendMessage();
-                      },
-                    )
-                  ],
-                ),
-                width: MediaQuery.of(context).size.width,
-              ),
-            )
+            SizedBox(width: 8),
+            ClipRRect(
+                borderRadius: BorderRadius.all(radiusCircular(20)),
+                child: commonCachedNetworkImage(widget.userData!.profileImage.validate(),height: 40,width: 40)),
+            SizedBox(width: 8),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Text(widget.userData!.username.validate(), style: TextStyle(color: Colors.white)),
+            ),
           ],
         ),
+        backgroundColor: primaryColor,
+      ),
+      body: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(bottom: 76),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: PaginateFirestore(
+              reverse: true,
+              isLive: true,
+              padding: EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 0),
+              physics: BouncingScrollPhysics(),
+              query: chatMessageService.chatMessagesWithPagination(currentUserId: sharedPref.getString(UID), receiverUserId: widget.userData!.uid!),
+              itemsPerPage: PER_PAGE_CHAT_COUNT,
+              shrinkWrap: true,
+              onEmpty: Offstage(),
+              itemBuilderType: PaginateBuilderType.listView,
+              itemBuilder: (context, snap, index) {
+                ChatMessageModel data = ChatMessageModel.fromJson(snap[index].data() as Map<String, dynamic>);
+                data.isMe = data.senderId == sender.uid;
+                return ChatItemWidget(data: data);
+              },
+            ),
+          ),
+          Positioned(
+            bottom: 16,
+            left: 16,
+            right: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: radius(),
+                color: Theme.of(context).cardColor,
+                boxShadow: [
+                  BoxShadow(
+                    spreadRadius: 0.2,
+                    blurRadius: 0.2,
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.only(left: 8, right: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: messageCont,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: language.writeMessage,
+                        hintStyle: secondaryTextStyle(),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                      ),
+                      cursorColor: appStore.isDarkMode ? Colors.white : Colors.black,
+                      focusNode: messageFocus,
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      style: primaryTextStyle(),
+                      textInputAction: mIsEnterKey ? TextInputAction.send : TextInputAction.newline,
+                      onSubmitted: (s) {
+                        sendMessage();
+                      },
+                      maxLines: 5,
+                    ),
+                  ),
+                  inkWellWidget(
+                    child: Icon(Icons.send, color: primaryColor,size: 25),
+                    onTap: () {
+                      sendMessage();
+                    },
+                  )
+                ],
+              ),
+              width: MediaQuery.of(context).size.width,
+            ),
+          )
+        ],
       ),
     );
   }

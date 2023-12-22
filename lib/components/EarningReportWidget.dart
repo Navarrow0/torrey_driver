@@ -6,7 +6,6 @@ import '../main.dart';
 import '../network/RestApis.dart';
 import '../utils/Colors.dart';
 import '../utils/Common.dart';
-import '../utils/Extensions/AppButtonWidget.dart';
 import '../utils/Extensions/app_common.dart';
 
 class EarningReportWidget extends StatefulWidget {
@@ -69,16 +68,14 @@ class EarningReportWidgetState extends State<EarningReportWidget> {
         return Stack(
           children: [
             SingleChildScrollView(
-              padding: EdgeInsets.only(top: 32, bottom: 16, left: 16, right: 16),
+              padding: EdgeInsets.only(top: 16, bottom: 16, left: 16, right: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(language.noteSelectFromDate, style: secondaryTextStyle(color: Colors.red)),
+                  SizedBox(height: 8),
                   Row(
                     children: [
-                      SizedBox(
-                        width: 50,
-                        child: Text(language.from, style: primaryTextStyle()),
-                      ),
-                      SizedBox(width: 16),
                       Expanded(
                         child: DateTimePicker(
                           controller: fromDateController,
@@ -93,16 +90,9 @@ class EarningReportWidgetState extends State<EarningReportWidget> {
                           decoration: inputDecoration(context, label: language.fromDate, suffixIcon: Icon(Icons.calendar_today)),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 50,
-                        child: Text(language.to, style: primaryTextStyle()),
-                      ),
-                      SizedBox(width: 16),
+                      SizedBox(width: 4),
+                      Icon(Icons.arrow_right_alt_outlined),
+                      SizedBox(width: 4),
                       Expanded(
                         child: DateTimePicker(
                           controller: toDateController,
@@ -112,6 +102,7 @@ class EarningReportWidgetState extends State<EarningReportWidget> {
                           onChanged: (value) {
                             toDate = DateTime.parse(value);
                             toDateController.text = value;
+                            init();
                             setState(() {});
                           },
                           decoration: inputDecoration(context, label: language.toDate, suffixIcon: Icon(Icons.calendar_today)),
@@ -120,24 +111,14 @@ class EarningReportWidgetState extends State<EarningReportWidget> {
                     ],
                   ),
                   SizedBox(height: 16),
-                  AppButtonWidget(
-                    width: MediaQuery.of(context).size.width,
-                    text: language.confirm,
-                    onTap: () async {
-                      init();
-                    },
-                  ),
+                  earningText(title: language.rides, amount: totalRideCount, isRides: true),
                   SizedBox(height: 16),
-                  if (fromDateController.text.isNotEmpty && toDateController.text.isNotEmpty) Text('${fromDateController.text} - ${toDateController.text}', style: boldTextStyle()),
+                  earningText(title: language.cash, amount: totalCashRide),
                   SizedBox(height: 16),
-                  earningText(title: language.totalCash, amount: totalCashRide),
-                  SizedBox(height: 16),
-                  earningText(title: language.totalWallet, amount: totalWalletRide),
-                  SizedBox(height: 16),
-                  earningText(title: language.totalRide, amount: totalRideCount),
+                  earningText(title: language.wallet, amount: totalWalletRide),
                   SizedBox(height: 16),
                   Divider(color: primaryColor),
-                  earningText(title: language.totalEarning, amount: totalEarnings),
+                  earningText(title: language.totalEarning, amount: totalEarnings, isTotal: true),
                   SizedBox(height: 16),
                 ],
               ),

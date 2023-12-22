@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/Colors.dart';
@@ -40,17 +38,17 @@ class AboutScreenState extends State<AboutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.aboutUs, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Container(
+      body: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(ic_taxi_logo, height: 150, width: 150, fit: BoxFit.cover),
+            Image.asset(ic_taxi_logo, height: 150, width: 150, fit: BoxFit.contain),
             SizedBox(height: 16),
             Text(mAppName, style: primaryTextStyle(size: 20)),
             SizedBox(height: 8),
@@ -76,86 +74,88 @@ class AboutScreenState extends State<AboutScreen> {
             children: [
               Text(language.lblFollowUs, style: boldTextStyle()),
               SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Wrap(
                 children: <Widget>[
-                  inkWellWidget(
-                    onTap: () {
-                      if (widget.settingModel.instagramUrl != null && widget.settingModel.instagramUrl!.isNotEmpty) {
-                        launchUrl(Uri.parse(widget.settingModel.instagramUrl.validate()), mode: LaunchMode.externalApplication);
-                      } else {
-                        toast(language.txtURLEmpty);
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset(ic_insta_logo, height: 35, width: 35),
-                    ),
-                  ),
-                  inkWellWidget(
-                    onTap: () {
-                      if (widget.settingModel.twitterUrl != null && widget.settingModel.twitterUrl!.isNotEmpty) {
-                        launchUrl(Uri.parse(widget.settingModel.twitterUrl.validate()), mode: LaunchMode.externalApplication);
-                      } else {
-                        toast(language.txtURLEmpty);
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset(ic_twitter_logo, height: 35, width: 35),
-                    ),
-                  ),
-                  inkWellWidget(
-                    onTap: () {
-                      if (widget.settingModel.linkedinUrl != null && widget.settingModel.linkedinUrl!.isNotEmpty) {
-                        launchUrl(Uri.parse(widget.settingModel.linkedinUrl.validate()), mode: LaunchMode.externalApplication);
-                      } else {
-                        toast(language.txtURLEmpty);
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset(ic_linked_logo, height: 35, width: 35),
-                    ),
-                  ),
-                  inkWellWidget(
-                    onTap: () {
-                      if (widget.settingModel.facebookUrl != null && widget.settingModel.facebookUrl!.isNotEmpty) {
-                        launchUrl(Uri.parse(widget.settingModel.facebookUrl.validate()), mode: LaunchMode.externalApplication);
-                      } else {
-                        toast(language.txtURLEmpty);
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset(ic_facebook_logo, height: 35, width: 35),
-                    ),
-                  ),
-                  inkWellWidget(
-                    onTap: () {
-                      if (widget.settingModel.contactNumber != null && widget.settingModel.contactNumber!.isNotEmpty) {
-                        launchUrl(Uri.parse('tel:${widget.settingModel.contactNumber}'), mode: LaunchMode.externalApplication);
-                      } else {
-                        toast(language.txtURLEmpty);
-                      }
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: 16),
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.call,
-                        color: appStore.isDarkMode ? Colors.white : primaryColor,
-                        size: 36,
+                  if (widget.settingModel.instagramUrl != null && widget.settingModel.instagramUrl!.isNotEmpty)
+                    inkWellWidget(
+                      onTap: () {
+                        if (widget.settingModel.instagramUrl != null && widget.settingModel.instagramUrl!.isNotEmpty) {
+                          launchUrl(Uri.parse(widget.settingModel.instagramUrl.validate()), mode: LaunchMode.externalApplication);
+                        } else {
+                          toast(language.txtURLEmpty);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Image.asset(ic_insta_logo, height: 28, width: 28),
                       ),
                     ),
-                  )
+                  if (widget.settingModel.twitterUrl != null && widget.settingModel.twitterUrl!.isNotEmpty)
+                    inkWellWidget(
+                      onTap: () {
+                        if (widget.settingModel.twitterUrl != null && widget.settingModel.twitterUrl!.isNotEmpty) {
+                          launchUrl(Uri.parse(widget.settingModel.twitterUrl.validate()), mode: LaunchMode.externalApplication);
+                        } else {
+                          toast(language.txtURLEmpty);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Image.asset(ic_twitter_logo, height: 28, width: 28),
+                      ),
+                    ),
+                  if (widget.settingModel.linkedinUrl != null && widget.settingModel.linkedinUrl!.isNotEmpty)
+                    inkWellWidget(
+                      onTap: () {
+                        if (widget.settingModel.linkedinUrl != null && widget.settingModel.linkedinUrl!.isNotEmpty) {
+                          launchUrl(Uri.parse(widget.settingModel.linkedinUrl.validate()), mode: LaunchMode.externalApplication);
+                        } else {
+                          toast(language.txtURLEmpty);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Image.asset(ic_linked_logo, height: 28, width: 28),
+                      ),
+                    ),
+                  if (widget.settingModel.facebookUrl != null && widget.settingModel.facebookUrl!.isNotEmpty)
+                    inkWellWidget(
+                      onTap: () {
+                        if (widget.settingModel.facebookUrl != null && widget.settingModel.facebookUrl!.isNotEmpty) {
+                          launchUrl(Uri.parse(widget.settingModel.facebookUrl.validate()), mode: LaunchMode.externalApplication);
+                        } else {
+                          toast(language.txtURLEmpty);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Image.asset(ic_facebook_logo, height: 28, width: 28),
+                      ),
+                    ),
+                  if (widget.settingModel.contactNumber != null && widget.settingModel.contactNumber!.isNotEmpty)
+                    inkWellWidget(
+                      onTap: () {
+                        if (widget.settingModel.contactNumber != null && widget.settingModel.contactNumber!.isNotEmpty) {
+                          launchUrl(Uri.parse('tel:${widget.settingModel.contactNumber}'), mode: LaunchMode.externalApplication);
+                        } else {
+                          toast(language.txtURLEmpty);
+                        }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 16),
+                        padding: EdgeInsets.all(10),
+                        child: Icon(
+                          Icons.call,
+                          color: appStore.isDarkMode ? Colors.white : primaryColor,
+                          size: 36,
+                        ),
+                      ),
+                    )
                 ],
               ),
               SizedBox(height: 8),
-              widget.settingModel.siteCopyright != null && widget.settingModel.siteCopyright!.isNotEmpty
-                  ? Text(widget.settingModel.siteCopyright.validate(), style: secondaryTextStyle(), maxLines: 1)
-                  : Text('Copyright' + " @${DateTime.now().year} meetmighty", style: secondaryTextStyle(size: 12)),
+              if (widget.settingModel.siteCopyright != null && widget.settingModel.siteCopyright!.isNotEmpty)
+                Text(widget.settingModel.siteCopyright.validate(), style: secondaryTextStyle(), maxLines: 1)
             ],
           ),
         ),

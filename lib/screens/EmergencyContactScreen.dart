@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-///import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:taki_booking_driver/model/ContactNumberListModel.dart';
+import 'package:taki_booking_driver/utils/Constants.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../../network/RestApis.dart';
 import '../main.dart';
@@ -22,8 +21,8 @@ class EmergencyContactScreen extends StatefulWidget {
 class EmergencyContactScreenState extends State<EmergencyContactScreen> {
   ScrollController scrollController = ScrollController();
 
-  /**final FlutterContactPicker _contactPicker = new FlutterContactPicker();
-  Contact? _contact;**/
+  final FlutterContactPicker _contactPicker = new FlutterContactPicker();
+  Contact? _contact;
 
   int page = 1;
   int currentPage = 1;
@@ -103,11 +102,11 @@ class EmergencyContactScreenState extends State<EmergencyContactScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.emergencyContact, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Observer(builder: (context) {
+      body: Observer(builder: (context) {
         return Stack(
           children: [
             SingleChildScrollView(
@@ -121,7 +120,7 @@ class EmergencyContactScreenState extends State<EmergencyContactScreen> {
                       Container(
                         padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(shape: BoxShape.circle, color: primaryColor),
-                        child: Text(contactNumber[index].title![0], style: boldTextStyle(color: Colors.white)),
+                        child: Text(contactNumber[index].title![0], style: secondaryTextStyle(color: Colors.white,size: 16)),
                       ),
                       SizedBox(width: 8),
                       Expanded(
@@ -130,19 +129,23 @@ class EmergencyContactScreenState extends State<EmergencyContactScreen> {
                           children: [
                             Text(contactNumber[index].title.validate(), style: boldTextStyle()),
                             SizedBox(height: 4),
-                            Text(contactNumber[index].contactNumber.validate(), style: boldTextStyle()),
+                            Text(contactNumber[index].contactNumber.validate(), style: secondaryTextStyle()),
                           ],
                         ),
                       ),
                       if (contactNumber[index].regionId == null)
-                        inkWellWidget(
-                          onTap: () async {
-                            showConfirmDialogCustom(context, title: language.areYouSureYouWantDeleteThisNumber, positiveText: language.yes, negativeText: language.no, dialogType: DialogType.DELETE,
-                                onAccept: (c) async {
-                              await delete(id: contactNumber[index].id!);
-                            }, primaryColor: primaryColor);
-                          },
-                          child: Icon(Icons.delete_outline),
+                        Container(
+                          decoration: BoxDecoration(border: Border.all(color: dividerColor), borderRadius: radius(defaultRadius)),
+padding: EdgeInsets.all(2),
+                          child: inkWellWidget(
+                            onTap: () async {
+                              showConfirmDialogCustom(context, title: language.areYouSureYouWantDeleteThisNumber, positiveText: language.yes, negativeText: language.no, dialogType: DialogType.DELETE,
+                                  onAccept: (c) async {
+                                await delete(id: contactNumber[index].id!);
+                              }, primaryColor: primaryColor);
+                            },
+                            child: Icon(Icons.delete_outline),
+                          ),
                         )
                     ],
                   );
@@ -166,11 +169,11 @@ class EmergencyContactScreenState extends State<EmergencyContactScreen> {
           width: MediaQuery.of(context).size.width,
           text: language.addContact,
           onTap: () async {
-            /**Contact? contact = await _contactPicker.selectContact();
+            Contact? contact = await _contactPicker.selectContact();
             setState(() {
               _contact = contact;
             });
-            if (_contact != null) addContact(name: _contact!.fullName.validate(), contactNumber: _contact!.phoneNumbers!.first);**/
+            if (_contact != null) addContact(name: _contact!.fullName.validate(), contactNumber: _contact!.phoneNumbers!.first);
           },
         ),
       ),

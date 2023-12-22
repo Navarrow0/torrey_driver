@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:taki_booking_driver/screens/VerifyDeliveryPersonScreen.dart';
+import 'package:taki_booking_driver/screens/DocumentsScreen.dart';
 import 'package:taki_booking_driver/utils/Constants.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 
 import '../../main.dart';
 import '../../network/RestApis.dart';
 import '../Services/AuthService.dart';
-import '../screens/DriverDashboardScreen.dart';
-import '../screens/DriverRegisterScreen.dart';
+import '../screens/DashboardScreen.dart';
+import '../screens/SignUpScreen.dart';
 import '../utils/Colors.dart';
 import '../utils/Common.dart';
 import '../utils/Extensions/AppButtonWidget.dart';
@@ -73,15 +73,15 @@ class OTPDialogState extends State<OTPDialog> {
         appStore.setLoading(false);
         if (value.data == null) {
           Navigator.pop(context);
-          launchScreen(context, DriverRegisterScreen(countryCode: widget.phoneNumber!.split(" ").first, userName: widget.phoneNumber!.split(" ").last, socialLogin: true));
+          launchScreen(context, SignUpScreen(countryCode: widget.phoneNumber!.split(" ").first, userName: widget.phoneNumber!.split(" ").last, socialLogin: true));
         } else {
           updatePlayerId();
           if (sharedPref.getInt(IS_Verified_Driver) == 1) {
             Navigator.pop(context);
-            launchScreen(context, DriverDashboardScreen(), isNewTask: true);
+            launchScreen(context, DashboardScreen(), isNewTask: true);
           } else {
             Navigator.pop(context);
-            launchScreen(context, VerifyDeliveryPersonScreen(isShow: true), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
+            launchScreen(context, DocumentsScreen(isShow: true), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
           }
         }
       }).catchError((e) {

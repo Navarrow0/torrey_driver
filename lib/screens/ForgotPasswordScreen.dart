@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../../main.dart';
 import '../../network/RestApis.dart';
@@ -61,20 +59,20 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(),
-      child: Stack(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Stack(
         children: [
           Form(
             key: formKey,
             child: SingleChildScrollView(
               padding: EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(language.forgotPassword, style: boldTextStyle(size: 20)),
                   SizedBox(height: 16),
-                  Text(language.enterTheEmailAssociatedWithYourAccount, style: primaryTextStyle(size: 14), textAlign: TextAlign.start),
+                  Text(language.enterTheEmailAssociatedWithYourAccount, style: primaryTextStyle(size: 14), textAlign: TextAlign.center),
                   SizedBox(height: 32),
                   AppTextField(
                     controller: forgotEmailController,

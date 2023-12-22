@@ -5,7 +5,6 @@ import '../Common.dart';
 import '../Constants.dart';
 import 'app_common.dart';
 
-
 /// Default App Button
 class AppButtonWidget extends StatefulWidget {
   final Function? onTap;
@@ -52,25 +51,21 @@ class AppButtonWidget extends StatefulWidget {
   _AppButtonWidgetState createState() => _AppButtonWidgetState();
 }
 
-class _AppButtonWidgetState extends State<AppButtonWidget>
-    with SingleTickerProviderStateMixin {
+class _AppButtonWidgetState extends State<AppButtonWidget> with SingleTickerProviderStateMixin {
   double _scale = 1.0;
   AnimationController? _controller;
 
   @override
   void initState() {
-    if (widget.enableScaleAnimation
-        .validate(value: enableAppButtonScaleAnimationGlobal)) {
+    if (widget.enableScaleAnimation.validate(value: enableAppButtonScaleAnimationGlobal)) {
       _controller = AnimationController(
         vsync: this,
-        duration: Duration(
-          milliseconds: appButtonScaleAnimationDurationGlobal ?? 50,
-        ),
+        duration: Duration(milliseconds: appButtonScaleAnimationDurationGlobal ?? 50),
         lowerBound: 0.0,
         upperBound: 0.1,
       )..addListener(() {
-        setState(() {});
-      });
+          setState(() {});
+        });
     }
     super.initState();
   }
@@ -87,8 +82,7 @@ class _AppButtonWidgetState extends State<AppButtonWidget>
       _scale = 1 - _controller!.value;
     }
 
-    if (widget.enableScaleAnimation
-        .validate(value: enableAppButtonScaleAnimationGlobal)) {
+    if (widget.enableScaleAnimation.validate(value: enableAppButtonScaleAnimationGlobal)) {
       return Listener(
         onPointerDown: (details) {
           _controller?.forward();
@@ -114,9 +108,7 @@ class _AppButtonWidgetState extends State<AppButtonWidget>
         child: MaterialButton(
           minWidth: widget.width,
           padding: widget.padding ?? dynamicAppButtonPadding(context),
-          onPressed: widget.enabled.validate(value: true)
-              ? widget.onTap as void Function()?
-              : null,
+          onPressed: widget.enabled.validate(value: true) ? widget.onTap as void Function()? : null,
           color: widget.color ?? appButtonBackgroundColorGlobal,
           child: widget.child ??
               Text(
@@ -139,4 +131,3 @@ class _AppButtonWidgetState extends State<AppButtonWidget>
     );
   }
 }
-

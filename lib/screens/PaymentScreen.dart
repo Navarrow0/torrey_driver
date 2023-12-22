@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-///import 'package:flutter_braintree/flutter_braintree.dart';
+import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-///import 'package:flutter_paystack/flutter_paystack.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart' as payTab;
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
@@ -15,13 +15,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutterwave_standard/flutterwave.dart';
 import 'package:flutterwave_standard/view/view_utils.dart';
 import 'package:http/http.dart' as http;
-///import 'package:mercado_pago_mobile_checkout/mercado_pago_mobile_checkout.dart';
+
+// import 'package:mercado_pago_mobile_checkout/mercado_pago_mobile_checkout.dart';
 import 'package:my_fatoorah/my_fatoorah.dart';
 import 'package:paytm/paytm.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
-import 'package:taki_booking_driver/widgets/background.page.dart';
-import 'package:taki_booking_driver/widgets/custom_appbar.dart';
 
 import '../../main.dart';
 import '../../network/NetworkUtils.dart';
@@ -34,7 +33,7 @@ import '../../utils/Extensions/app_common.dart';
 import '../model/PaymentListModel.dart';
 import '../model/StripePayModel.dart';
 import '../utils/Images.dart';
-import 'DriverDashboardScreen.dart';
+import 'DashboardScreen.dart';
 
 class PaymentScreen extends StatefulWidget {
   final int? amount;
@@ -68,9 +67,9 @@ class PaymentScreenState extends State<PaymentScreen> {
   String? razorKey;
   bool isTestType = true;
   bool loading = false;
-  ///final plugin = PaystackPlugin();
+  final plugin = PaystackPlugin();
   late Razorpay _razorpay;
-  ///CheckoutMethod method = CheckoutMethod.card;
+  CheckoutMethod method = CheckoutMethod.card;
 
   @override
   void initState() {
@@ -88,7 +87,7 @@ class PaymentScreenState extends State<PaymentScreen> {
       });
     }
     if (paymentList.any((element) => element.type == PAYMENT_TYPE_PAYSTACK)) {
-      ///plugin.initialize(publicKey: payStackPublicKey.validate());
+      plugin.initialize(publicKey: payStackPublicKey.validate());
     }
     if (paymentList.any((element) => element.type == PAYMENT_TYPE_RAZORPAY)) {
       _razorpay = Razorpay();
@@ -134,6 +133,7 @@ class PaymentScreenState extends State<PaymentScreen> {
           }
         });
       }
+      selectedPaymentType = paymentList.first.type;
       setState(() {});
     }).catchError((error) {
       appStore.setLoading(false);
@@ -225,7 +225,6 @@ class PaymentScreenState extends State<PaymentScreen> {
           }).catchError((e) {
             log("presentPaymentSheet ${e.toString()}");
           });
-
         }
       }).catchError((e) {
         appStore.setLoading(false);
@@ -248,7 +247,7 @@ class PaymentScreenState extends State<PaymentScreen> {
     appStore.isLoading = true;
     await saveWallet(req).then((value) {
       appStore.isLoading = false;
-      launchScreen(context, DriverDashboardScreen(), isNewTask: true);
+      launchScreen(context, DashboardScreen(), isNewTask: true);
     }).catchError((error) {
       appStore.isLoading = false;
 
@@ -258,21 +257,21 @@ class PaymentScreenState extends State<PaymentScreen> {
 
   ///PayStack Payment
   void payStackPayment(BuildContext context) async {
-    /**Charge charge = Charge()
+    Charge charge = Charge()
       ..amount = (widget.amount! * 100).toInt() // In base currency
       ..email = sharedPref.getString(USER_EMAIL)
       ..currency = appStore.currencyName.toUpperCase();
 
-    charge.reference = _getReference();**/
+    charge.reference = _getReference();
 
     try {
-      /**CheckoutResponse response = await plugin.checkout(context, method: method, charge: charge, fullscreen: false);
+      CheckoutResponse response = await plugin.checkout(context, method: method, charge: charge, fullscreen: false);
       payStackUpdateStatus(response.reference, response.message);
       if (response.message == 'Success') {
         paymentConfirm();
       } else {
         toast(language.paymentFailed);
-      }**/
+      }
     } catch (e) {
       payStackShowMessage(language.checkConsoleForError);
       rethrow;
@@ -300,14 +299,14 @@ class PaymentScreenState extends State<PaymentScreen> {
 
   /// Paypal Payment
   void payPalPayment() async {
-    /***final request = BraintreePayPalRequest(amount: widget.amount.toString(), currencyCode: appStore.currencyName.toUpperCase(), displayName: sharedPref.getString(USER_NAME));
+    final request = BraintreePayPalRequest(amount: widget.amount.toString(), currencyCode: appStore.currencyName.toUpperCase(), displayName: sharedPref.getString(USER_NAME));
     final result = await Braintree.requestPaypalNonce(
       payPalTokenizationKey!,
       request,
     );
     if (result != null) {
       paymentConfirm();
-    }***/
+    }
   }
 
   /// FlutterWave Payment
@@ -393,37 +392,37 @@ class PaymentScreenState extends State<PaymentScreen> {
     return configuration;
   }
 
-  /// Mercado Pago payment
-  void mercadoPagoPayment() async {
-    var body = json.encode({
-      "items": [
-        {"title": "Mighty Rider", "description": "Mighty Rider", "quantity": 1, "currency_id": appStore.currencyName.toUpperCase(), "unit_price": widget.amount}
-      ],
-      "payer": {"email": sharedPref.getString(USER_EMAIL)}
-    });
-
-    try {
-      final response = await http.post(
-        Uri.parse('https://api.mercadopago.com/checkout/preferences?access_token=${mercadoPagoAccessToken.toString()}'),
-        body: body,
-        headers: {'Content-type': "application/json"},
-      );
-      String? preferenceId = json.decode(response.body)['id'];
-      if (preferenceId != null) {
-        /***PaymentResult result = await MercadoPagoMobileCheckout.startCheckout(
-          mercadoPagoPublicKey!,
-          preferenceId,
-        );
-        if (result.status == 'approved') {
-          paymentConfirm();
-        }***/
-      } else {
-        toast(json.decode(response.body)['message']);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  // /// Mercado Pago payment
+  // void mercadoPagoPayment() async {
+  //   var body = json.encode({
+  //     "items": [
+  //       {"title": "Mighty Rider", "description": "Mighty Rider", "quantity": 1, "currency_id": appStore.currencyName.toUpperCase(), "unit_price": widget.amount}
+  //     ],
+  //     "payer": {"email": sharedPref.getString(USER_EMAIL)}
+  //   });
+  //
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse('https://api.mercadopago.com/checkout/preferences?access_token=${mercadoPagoAccessToken.toString()}'),
+  //       body: body,
+  //       headers: {'Content-type': "application/json"},
+  //     );
+  //     String? preferenceId = json.decode(response.body)['id'];
+  //     if (preferenceId != null) {
+  //       PaymentResult result = await MercadoPagoMobileCheckout.startCheckout(
+  //         mercadoPagoPublicKey!,
+  //         preferenceId,
+  //       );
+  //       if (result.status == 'approved') {
+  //         paymentConfirm();
+  //       }
+  //     } else {
+  //       toast(json.decode(response.body)['message']);
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   /// My Fatoorah Payment
   Future<void> myFatoorahPayment() async {
@@ -442,21 +441,21 @@ class PaymentScreenState extends State<PaymentScreen> {
       errorChild: Center(child: Text(language.failed, style: boldTextStyle(color: Colors.red, size: 24))),
       request: isTestType
           ? MyfatoorahRequest.test(
-        currencyIso: Country.SaudiArabia,
-        successUrl: 'https://pub.dev/packages/get',
-        errorUrl: 'https://www.google.com/',
-        invoiceAmount: widget.amount!.toDouble(),
-        language: default_Language == 'ar' ? ApiLanguage.Arabic : ApiLanguage.English,
-        token: myFatoorahToken!,
-      )
+              currencyIso: Country.SaudiArabia,
+              successUrl: 'https://pub.dev/packages/get',
+              errorUrl: 'https://www.google.com/',
+              invoiceAmount: widget.amount!.toDouble(),
+              language: default_Language == 'ar' ? ApiLanguage.Arabic : ApiLanguage.English,
+              token: myFatoorahToken!,
+            )
           : MyfatoorahRequest.live(
-        currencyIso: Country.SaudiArabia,
-        successUrl: 'https://pub.dev/packages/get',
-        errorUrl: 'https://www.google.com/',
-        invoiceAmount: widget.amount!.toDouble(),
-        language: default_Language == 'ar' ? ApiLanguage.Arabic : ApiLanguage.English,
-        token: myFatoorahToken!,
-      ),
+              currencyIso: Country.SaudiArabia,
+              successUrl: 'https://pub.dev/packages/get',
+              errorUrl: 'https://www.google.com/',
+              invoiceAmount: widget.amount!.toDouble(),
+              language: default_Language == 'ar' ? ApiLanguage.Arabic : ApiLanguage.English,
+              token: myFatoorahToken!,
+            ),
     );
     if (response.isSuccess) {
       paymentConfirm();
@@ -534,11 +533,11 @@ class PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundPage(
-      appBar: CustomAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(language.payment, style: boldTextStyle(color: appTextPrimaryColorWhite)),
       ),
-      child: Stack(
+      body: Stack(
         children: [
           SingleChildScrollView(
             padding: EdgeInsets.all(16),
@@ -558,7 +557,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                     decoration: BoxDecoration(
                       //backgroundColor: Colors.white,
                       borderRadius: BorderRadius.circular(defaultRadius),
-                      border: Border.all(color: selectedPaymentType == e.type ? primaryColor : Colors.grey.withOpacity(0.5)),
+                      border: Border.all(width: selectedPaymentType == e.type ? 1.5 : 1, color: selectedPaymentType == e.type ? primaryColor : dividerColor),
                     ),
                     child: Row(
                       children: [
@@ -603,7 +602,7 @@ class PaymentScreenState extends State<PaymentScreen> {
               } else if (selectedPaymentType == PAYMENT_TYPE_PAYTABS) {
                 payTabsPayment();
               } else if (selectedPaymentType == PAYMENT_TYPE_MERCADOPAGO) {
-                mercadoPagoPayment();
+                // mercadoPagoPayment();
               } else if (selectedPaymentType == PAYMENT_TYPE_MYFATOORAH) {
                 myFatoorahPayment();
               } else if (selectedPaymentType == PAYMENT_TYPE_PAYTM) {

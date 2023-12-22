@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,14 +7,21 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:map_launcher/map_launcher.dart' as map;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:taki_booking_driver/utils/Extensions/Loader.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 import 'package:taki_booking_driver/utils/Images.dart';
-
 import '../main.dart';
+import '../model/RideDetailModel.dart';
+import '../model/UserDetailModel.dart';
+import '../network/RestApis.dart';
+import '../screens/ChatScreen.dart';
+import '../screens/DashboardScreen.dart';
+import '../screens/RidesListScreen.dart';
 import 'Colors.dart';
 import 'Constants.dart';
 import 'Extensions/app_common.dart';
@@ -26,7 +34,7 @@ Widget dotIndicator(list, i) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         list.length,
-        (ind) {
+            (ind) {
           return Container(
             height: 8,
             width: 8,
@@ -43,13 +51,14 @@ InputDecoration inputDecoration(BuildContext context, {String? label, Widget? pr
   return InputDecoration(
     prefixIcon: prefixIcon,
     suffixIcon: suffixIcon,
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: Colors.transparent)),
-    focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: Colors.transparent)),
-    disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color:Colors.transparent)),
-    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: Colors.transparent)),
-    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: Colors.transparent)),
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: dividerColor)),
+    focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: dividerColor)),
+    disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: dividerColor)),
+    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: Colors.black)),
+    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: dividerColor)),
+    errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(defaultRadius), borderSide: BorderSide(color: Colors.red)),
     alignLabelWithHint: true,
-    filled: true,
+    filled: false,
     isDense: true,
     labelText: label ?? "Sample Text",
     labelStyle: primaryTextStyle(),
@@ -66,11 +75,14 @@ EdgeInsets dynamicAppButtonPadding(BuildContext context) {
 }
 
 Widget inkWellWidget({Function()? onTap, required Widget child}) {
-  return InkWell(onTap: onTap, child: child, highlightColor: Colors.transparent, hoverColor: Colors.transparent, splashColor: Colors.transparent);
+  return InkWell(onTap: onTap,
+      child: child,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashColor: Colors.transparent);
 }
 
-Widget commonCachedNetworkImage(
-  String? url, {
+Widget commonCachedNetworkImage(String? url, {
   double? height,
   double? width,
   BoxFit? fit,
@@ -79,7 +91,11 @@ Widget commonCachedNetworkImage(
   double? radius,
 }) {
   if (url != null && url.isEmpty) {
-    return placeHolderWidget(height: height, width: width, fit: fit, alignment: alignment, radius: radius);
+    return placeHolderWidget(height: height,
+        width: width,
+        fit: fit,
+        alignment: alignment,
+        radius: radius);
   } else if (url.validate().startsWith('http')) {
     return CachedNetworkImage(
       imageUrl: url!,
@@ -88,11 +104,19 @@ Widget commonCachedNetworkImage(
       fit: fit,
       alignment: alignment as Alignment? ?? Alignment.center,
       errorWidget: (_, s, d) {
-        return placeHolderWidget(height: height, width: width, fit: fit, alignment: alignment, radius: radius);
+        return placeHolderWidget(height: height,
+            width: width,
+            fit: fit,
+            alignment: alignment,
+            radius: radius);
       },
       placeholder: (_, s) {
         if (!usePlaceholderIfUrlEmpty) return SizedBox();
-        return placeHolderWidget(height: height, width: width, fit: fit, alignment: alignment, radius: radius);
+        return placeHolderWidget(height: height,
+            width: width,
+            fit: fit,
+            alignment: alignment,
+            radius: radius);
       },
     );
   } else {
@@ -166,14 +190,12 @@ String printDate(String date) {
   return DateFormat('dd MMM yyyy').format(DateTime.parse(date).toLocal()) + " at " + DateFormat('hh:mm a').format(DateTime.parse(date).toLocal());
 }
 
-Widget emptyWidget() {
-  return Center(child: Image.asset(ic_no_data, width: 150, height: 250));
+String printAmount(String amount) {
+  return appStore.currencyPosition == LEFT ? '${appStore.currencyCode} $amount' : '$amount ${appStore.currencyCode}';
 }
 
-Future<void> saveOneSignalPlayerId() async {
-  await OneSignal.shared.getDeviceState().then((value) async {
-    if (value!.userId.validate().isNotEmpty) await sharedPref.setString(PLAYER_ID, value.userId.validate());
-  });
+Widget emptyWidget() {
+  return Center(child: Image.asset(ic_no_data, width: 150, height: 250));
 }
 
 buttonText({String? status}) {
@@ -219,21 +241,16 @@ bool get isRTL => rtlLanguage.contains(appStore.selectedLanguage);
 double calculateDistance(lat1, lon1, lat2, lon2) {
   var p = 0.017453292519943295;
   var a = 0.5 - cos((lat2 - lat1) * p) / 2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
-  return (12742 * asin(sqrt(a))).toStringAsFixed(2).toDouble();
+  return (12742 * asin(sqrt(a))).toStringAsFixed(digitAfterDecimal).toDouble();
 }
 
-Widget totalCount({String? title, String? subTitle, String? description, bool? isTotal = false}) {
+Widget totalCount({String? title, num? amount, bool? isTotal = false}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Expanded(
-        child: Text(title!, style: isTotal == true ? boldTextStyle() : primaryTextStyle()),
-      ),
-      Expanded(
-        child: Text(description!, style: isTotal == true ? boldTextStyle() : primaryTextStyle()),
-      ),
-      Text(appStore.currencyPosition == LEFT ? '${appStore.currencyCode} $subTitle' : '$subTitle ${appStore.currencyCode}', style: isTotal == true ? boldTextStyle() : primaryTextStyle()),
+      Expanded(child: Text(title!, style: isTotal == true ? boldTextStyle(color: Colors.green, size: 18) : secondaryTextStyle())),
+      Text(printAmount(amount!.toStringAsFixed(digitAfterDecimal)), style: isTotal == true ? boldTextStyle(color: Colors.green, size: 18) : boldTextStyle(size: 14)),
     ],
   );
 }
@@ -260,13 +277,12 @@ Future<bool> checkPermission() async {
 }
 
 /// Handle error and loading widget when using FutureBuilder or StreamBuilder
-Widget snapWidgetHelper<T>(
-  AsyncSnapshot<T> snap, {
+Widget snapWidgetHelper<T>(AsyncSnapshot<T> snap, {
   Widget? errorWidget,
   Widget? loadingWidget,
   String? defaultErrorMessage,
   @Deprecated('Do not use this') bool checkHasData = false,
-  Widget Function(String)? errorBuilder,
+  Widget Function(String)? errorBuilder
 }) {
   if (snap.hasError) {
     log(snap.error);
@@ -369,12 +385,13 @@ Widget earningWidget({String? text, String? image, num? totalAmount}) {
   );
 }
 
-Widget earningText({String? title, num? amount}) {
+Widget earningText({String? title, num? amount, bool? isTotal = false, bool? isRides = false}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(title!, style: primaryTextStyle()),
-      Text(amount!.toStringAsFixed(digitAfterDecimal), style: boldTextStyle()),
+      Text(title!, style: isTotal == true ? boldTextStyle(size: 18) : primaryTextStyle()),
+      Text(isRides.validate() ? amount.toString() : printAmount(amount!.toStringAsFixed(digitAfterDecimal)),
+          style: isTotal == true ? boldTextStyle(size: 18, color: Colors.green) : primaryTextStyle()),
     ],
   );
 }
@@ -407,11 +424,128 @@ String getMessageFromErrorCode(FirebaseException error) {
       return error.message.toString();
   }
 }
-Widget socialWidget({String? image, String? text}) {
-  return Container(
-    alignment: Alignment.center,
-    padding: EdgeInsets.all(8),
-    decoration: BoxDecoration(border: Border.all(width: 1, color: dividerColor), borderRadius: radius(defaultRadius)),
-    child: Image.asset(image.validate(), fit: BoxFit.cover, height: 30, width: 30),
+
+Widget mapRedirectionWidget({required LatLng latLong}) {
+  return inkWellWidget(
+    onTap: () async {
+      log("lat long $latLong");
+      final availableMaps = await map.MapLauncher.installedMaps;
+      await availableMaps.first.showDirections(
+        destination: map.Coords(latLong.latitude, latLong.longitude),
+      );
+    },
+    child: Container(
+      padding: EdgeInsets.all(4),
+      decoration:
+      BoxDecoration(color: !appStore.isDarkMode ? scaffoldColorLight : scaffoldColorDark, borderRadius: BorderRadius.all(radiusCircular(8)), border: Border.all(width: 1, color: dividerColor)),
+      child: Image.asset(ic_map_icon),
+      width: 30,
+      height: 30,
+    ),
   );
+}
+
+Widget chatCallWidget(IconData icon) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    decoration: BoxDecoration(border: Border.all(color: dividerColor), color: appStore.isDarkMode ? scaffoldColorDark : scaffoldColorLight, borderRadius: BorderRadius.circular(defaultRadius)),
+    child: Icon(icon, size: 18, color: primaryColor),
+  );
+}
+
+Color paymentStatusColor(String paymentStatus) {
+  Color color = textPrimaryColor;
+
+  switch (paymentStatus) {
+    case PAYMENT_PAID:
+      color = Colors.green;
+    case PAYMENT_FAILED:
+      color = Colors.red;
+    case PAYMENT_PENDING:
+      color = Colors.grey;
+  }
+  return color;
+}
+
+Future<void> updatePlayerId() async {
+  Map req = {
+    "player_id": sharedPref.getString(PLAYER_ID),
+  };
+  updateStatus(req).then((value) {
+    log(value.message);
+  }).catchError((error) {});
+}
+
+oneSignalSettings() async {
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.Debug.setAlertLevel(OSLogLevel.none);
+  OneSignal.consentRequired(false);
+
+  OneSignal.initialize(mOneSignalAppIdDriver);
+
+
+  OneSignal.Notifications.requestPermission(true);
+
+  OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+    print('NOTIFICATION WILL DISPLAY LISTENER CALLED WITH: ${event.notification.jsonRepresentation()}');
+    event.preventDefault();
+    event.notification.display();
+  });
+
+  saveOneSignalPlayerId();
+  if (appStore.isLoggedIn) {
+    updatePlayerId();
+  }
+  OneSignal.Notifications.addClickListener((notification) async {
+    var notId = notification.notification.additionalData!["id"];
+    log("$notId---" + notification.notification.additionalData!['type'].toString());
+    var notType = notification.notification.additionalData!['type'];
+    if (notType != null) {
+      await rideDetail(orderId: notId).then((value) {
+        RideDetailModel mRideModel = value;
+        if (mRideModel.data!.driverId != null) {
+          if (sharedPref.getInt(USER_ID) == mRideModel.data!.driverId) {
+            if (mRideModel.data!.paymentStatus == "paid") {
+              launchScreen(getContext, RidesListScreen());
+            } else {
+              launchScreen(getContext, DashboardScreen());
+            }
+          } else {
+            toast("Sorry! You missed this ride");
+          }
+        }
+      }).catchError((error) {
+        appStore.setLoading(false);
+        log('${error.toString()}');
+      });
+    }
+    if (notId != null) {
+      if (notId.toString().contains('CHAT')) {
+        UserDetailModel user = await getUserDetail(userId: int.parse(notId.toString().replaceAll("CHAT_", "")));
+        launchScreen(getContext, ChatScreen(userData: user.data));
+      }
+    }
+  });
+}
+
+Future<void> saveOneSignalPlayerId() async {
+  // await OneSignal.shared.getDeviceState().then((value) async {
+  // });
+  OneSignal.User.pushSubscription.addObserver((state) async {
+    print(OneSignal.User.pushSubscription.optedIn);
+    print("Player Id" + OneSignal.User.pushSubscription.id.toString());
+    print(OneSignal.User.pushSubscription.token);
+    print(state.current.jsonRepresentation());
+
+    if (OneSignal.User.pushSubscription.id
+        .validate()
+        .isNotEmpty) await sharedPref.setString(PLAYER_ID, OneSignal.User.pushSubscription.id.validate());
+  });
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
 }
