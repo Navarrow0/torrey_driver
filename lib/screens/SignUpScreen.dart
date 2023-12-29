@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taki_booking_driver/Services/AuthService.dart';
 import 'package:taki_booking_driver/main.dart';
+import 'package:taki_booking_driver/utils/Extensions/AppButtonWidget.dart';
 import 'package:taki_booking_driver/utils/Extensions/StringExtensions.dart';
 import 'package:taki_booking_driver/utils/Extensions/context_extensions.dart';
 import '../model/ServiceModel.dart';
@@ -39,10 +42,11 @@ class SignUpScreenState extends State<SignUpScreen> {
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
+    /*GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),*/
   ];
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -76,6 +80,8 @@ class SignUpScreenState extends State<SignUpScreen> {
 
   XFile? imageProfile;
   int radioValue = -1;
+
+  XFile? imageTarima;
 
   @override
   void initState() {
@@ -173,10 +179,10 @@ class SignUpScreenState extends State<SignUpScreen> {
                 }
               },
               onStepContinue: () {
-                if (formKeys[currentIndex].currentState!.validate()) {
+                if (currentIndex == 4 || formKeys[currentIndex].currentState!.validate()) {
                   if (currentIndex == 1 && listServices.isEmpty) {
                     return toast(language.pleaseSelectService);
-                  } else if (currentIndex <= 4) {
+                  } else if (currentIndex <= 3) {
                     currentIndex++;
                     setState(() {});
                   } else {
@@ -359,6 +365,112 @@ class SignUpScreenState extends State<SignUpScreen> {
                 Step(
                   isActive: currentIndex <= 4,
                   state: currentIndex <= 4 ? StepState.disabled : StepState.complete,
+                  title: Text('Foto del camion', style: boldTextStyle()),
+                  content: Column(
+                    children: [
+
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: dividerColor),
+                            borderRadius: BorderRadius.circular(defaultRadius)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Sube imagen del camión',
+                                style: secondaryTextStyle(size: 12)),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            if (imageTarima != null)
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: SizedBox(
+                                    height: 120,
+                                    width: double.infinity,
+                                    child: Image.file(
+                                      File(imageTarima!.path),
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            AppButtonWidget(
+                              onTap: () async {
+                                imageTarima = await ImagePicker()
+                                    .pickImage(source: ImageSource.camera, imageQuality: 100, maxWidth: 800, maxHeight: 800);
+                              },
+                              text: 'Seleccionar imagen',
+                              textStyle: boldTextStyle(color: Colors.black, size: 14),
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.transparent,
+                              elevation: 0,
+                              shapeBorder: RoundedRectangleBorder(
+                                  side: const BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
+
+
+
+                          ],
+                        ),
+                      ),
+
+                      CheckboxListTile(
+                        contentPadding: EdgeInsets.zero,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        activeColor: primaryColor,
+                        title: RichText(
+                          text: TextSpan(children: [
+                            TextSpan(text: '${language.agreeToThe} ', style: secondaryTextStyle()),
+                            TextSpan(
+                              text: language.termsConditions,
+                              style: boldTextStyle(color: primaryColor, size: 14),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  if (widget.termsConditionUrl != null && widget.termsConditionUrl!.isNotEmpty) {
+                                    launchScreen(context, TermsConditionScreen(title: language.termsConditions, subtitle: widget.termsConditionUrl),
+                                        pageRouteAnimation: PageRouteAnimation.Slide);
+                                  } else {
+                                    toast(language.txtURLEmpty);
+                                  }
+                                },
+                            ),
+                            TextSpan(text: ' & ', style: secondaryTextStyle()),
+                            TextSpan(
+                              text: language.privacyPolicy,
+                              style: boldTextStyle(color: primaryColor, size: 14),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  if (widget.privacyPolicyUrl != null && widget.privacyPolicyUrl!.isNotEmpty) {
+                                    launchScreen(context, TermsConditionScreen(title: language.privacyPolicy, subtitle: widget.privacyPolicyUrl), pageRouteAnimation: PageRouteAnimation.Slide);
+                                  } else {
+                                    toast(language.txtURLEmpty);
+                                  }
+                                },
+                            ),
+                          ]),
+                          textAlign: TextAlign.left,
+                        ),
+                        value: isAcceptedTc,
+                        onChanged: (val) async {
+                          isAcceptedTc = val!;
+                          setState(() {});
+                        },
+                      ),
+                      /*Form(
+                        key: formKeys[4],
+                        child: AppTextField(textFieldType: TextFieldType.NAME, controller: carPlateController, decoration: inputDecoration(context, label: language.carPlateNumber)),
+                      ),*/
+                    ],
+                  ),
+                ),
+                /*Step(
+                  isActive: currentIndex <= 4,
+                  state: currentIndex <= 4 ? StepState.disabled : StepState.complete,
                   title: Text(language.carPlateNumber, style: boldTextStyle()),
                   content: Form(
                     key: formKeys[4],
@@ -420,7 +532,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
